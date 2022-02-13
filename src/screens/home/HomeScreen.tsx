@@ -5,6 +5,11 @@ import MainNavbar from '../../components/elements/navbar/MainNavbar';
 import Title from '../../components/elements/text/Title/Title';
 import { HomepageIcon } from '../../components/elements/icons';
 
+const navigation = [
+  { name: 'Product', href: '#' },
+  { name: 'Features', href: '#' },
+  { name: 'Company', href: '#' },
+];
 export interface HomeScreenProps {}
 
 export default function HomeScreen() {

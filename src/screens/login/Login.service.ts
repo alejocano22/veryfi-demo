@@ -7,7 +7,4 @@ export const loginService = async (data: any) => {
   );
 
   return response.data;
-
-  // console.log('in Login.service.ts', response.data);
-  // return null;
 };
