@@ -11,13 +11,13 @@ export default function Language() {
     <>
       {locale === 'en' ? (
         <Link href={asPath} locale={'es'}>
-          <a className='block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50'>
+          <a className='block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-light'>
             {'ES'}
           </a>
         </Link>
       ) : (
         <Link href={asPath} locale={'en'}>
-          <a className='block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50'>
+          <a className='block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-light'>
             {'EN'}
           </a>
         </Link>

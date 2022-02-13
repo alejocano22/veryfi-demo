@@ -1,37 +1,38 @@
-import axios from 'axios';
+import { NextApiHandler } from 'next';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { loginService } from '../../../screens/login/Login.service';
 
-export default NextAuth({
-  providers: [
-    CredentialsProvider({
-      name: 'Credentials',
-      credentials: {
-        username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize(credentials, req) {
-        const response = await loginService({
-          email: credentials.username,
-          password: credentials.password,
-        });
+const authHandler: NextApiHandler = (req, res) =>
+  NextAuth(req, res, {
+    providers: [
+      CredentialsProvider({
+        name: 'Credentials',
+        credentials: {
+          username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
+          password: { label: 'Password', type: 'password' },
+        },
+        async authorize(credentials, req) {
+          const response = await loginService({
+            email: credentials.username,
+            password: credentials.password,
+          });
+          if (!response.error) {
+            const user = {
+              name: response['first_name'],
+              email: response['email'],
+            };
+            return user;
+          } else {
+            throw '/login';
+          }
+        },
+      }),
+    ],
+    pages: {
+      signIn: '/login',
+      signOut: '/',
+    },
+  });
 
-        const user = {
-          name: response.data['first_name'],
-          email: response.data['email'],
-        };
-
-        if (user) {
-          return user;
-        } else {
-          return null;
-        }
-      },
-    }),
-  ],
-  pages: {
-    signIn: '/login',
-    signOut: '/',
-  },
-});
+export default authHandler;
