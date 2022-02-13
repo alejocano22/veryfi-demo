@@ -1,8 +1,10 @@
 import { useSession, signOut } from 'next-auth/react';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
+import { useDispatch } from 'react-redux';
+import { addUser } from '@redux/user/slice';
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
@@ -20,11 +22,24 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export interface DashboardScreenProps {}
+export interface DashboardScreenProps {
+  user: any;
+}
 
-export default function DashboardScree({}: DashboardScreenProps) {
+export default function DashboardScree({ user }: DashboardScreenProps) {
   const session = useSession();
-  const user = {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log('dashboard', user);
+    dispatch(
+      addUser({
+        value: user,
+      })
+    );
+  }, []);
+
+  console.log(session);
+  const user2 = {
     name: session?.data?.user?.name,
     email: session?.data?.user?.email,
     imageUrl:
@@ -84,7 +99,7 @@ export default function DashboardScree({}: DashboardScreenProps) {
                             <span className='sr-only'>Open user menu</span>
                             <img
                               className='h-8 w-8 rounded-full'
-                              src={user.imageUrl}
+                              src={user2.imageUrl}
                               alt=''
                             />
                           </Menu.Button>
@@ -222,7 +237,8 @@ export default function DashboardScree({}: DashboardScreenProps) {
           <div className='max-w-7xl mx-auto py-6 sm:px-6 lg:px-8'>
             <div className='px-4 py-6 sm:px-0'>
               <div className='border-4 border-dashed border-gray-200 rounded-lg h-96'>
-                <h1>{`Welcome! ${user.name}`}</h1>
+                <h1>{`Welcome! ${user2.name}`}</h1>
+                <h1>{`Welcome! ${session}`}</h1>
               </div>
             </div>
           </div>
