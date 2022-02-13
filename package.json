@@ -6,7 +6,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
     "axios": "^0.25.0",
     "cors": "^2.8.5",
