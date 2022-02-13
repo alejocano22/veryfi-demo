@@ -8,7 +8,6 @@ import { MenuIcon, XIcon } from '@heroicons/react/outline';
 const navigation = [
   { name: 'Product', href: '#' },
   { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
   { name: 'Company', href: '#' },
 ];
 export interface HomeScreenProps {}
@@ -113,6 +112,7 @@ export default function HomeScreen() {
                         {item.name}
                       </a>
                     ))}
+                    <Language />
                   </div>
                   <button
                     className='block w-full px-5 py-3 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100'
@@ -147,6 +147,7 @@ export default function HomeScreen() {
                     Get started
                   </a>
                 </div>
+
                 <div className='mt-3 sm:mt-0 sm:ml-3'>
                   <a
                     href='#'
@@ -155,9 +156,7 @@ export default function HomeScreen() {
                     Live demo
                   </a>
                 </div>
-                <div>
-                  <Language />
-                </div>
+                <Language />
               </div>
             </div>
           </main>
@@ -173,14 +172,3 @@ export default function HomeScreen() {
     </div>
   );
 }
-
-// <div className='h-screen flex flex-col items-center justify-center '>
-//   <h1 className='text-xl mb-5'>{title}</h1>
-//   <button
-//     className='border-2 rounded-xl border-red-500 p-4 cursor-pointer hover:bg-red-100'
-//     onClick={() => routerPush('/login')}
-//   >
-//     {go}
-//   </button>
-//   <Language />
-// </div>;
