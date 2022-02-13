@@ -8,20 +8,20 @@ export default function Language() {
   const { locale, asPath } = useRouter();
   const { title } = i18nLogin[locale];
   return (
-    <div className='flex flex-col items-center justify-center'>
+    <>
       {locale === 'en' ? (
         <Link href={asPath} locale={'es'}>
-          <a className='border-2 rounded-xl border-red-500 p-4 cursor-pointer hover:bg-red-100'>
+          <a className='block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50'>
             {'ES'}
           </a>
         </Link>
       ) : (
         <Link href={asPath} locale={'en'}>
-          <a className='border-2 rounded-xl border-red-500 p-4 cursor-pointer hover:bg-red-100'>
+          <a className='block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50'>
             {'EN'}
           </a>
         </Link>
       )}
-    </div>
+    </>
   );
 }
