@@ -43,7 +43,7 @@ export default function DashboardScree({}: DashboardScreenProps) {
                     <div className='flex-shrink-0'>
                       <img
                         className='h-8 w-8'
-                        src='./images/veryfi-log.png'
+                        src='./images/veryfi-logo.png'
                         alt='Workflow'
                       />
                     </div>
