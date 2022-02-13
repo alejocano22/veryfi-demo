@@ -5,5 +5,6 @@ export const loginService = async (data: any) => {
     `${process.env.NEXTAUTH_URL}/api/login`,
     data
   );
-  return response;
+
+  return response.data;
 };
