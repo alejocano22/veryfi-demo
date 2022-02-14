@@ -2,14 +2,18 @@ import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Language from '../../utils/language/Language';
-export interface MainNavbarProps {}
+import { useSession, signOut } from 'next-auth/react';
+
+export interface NavbarProps {}
+
 const navigation = [
   { name: 'Blogs', href: '#' },
   { name: 'Solutions', href: '#' },
   { name: 'Pricing', href: '#' },
 ];
-export const MainNavbar = ({}: MainNavbarProps) => {
-  const { push: routerPush, pathname } = useRouter();
+
+export const Navbar = ({}: NavbarProps) => {
+  const { push: routerPush, locale } = useRouter();
   const [isMobileMenu, setIsMobileMenu] = useState<boolean>(false);
   return (
     <nav className='fixed w-full z-30 top-0 bg-gradient-to-r from-purple to-purple-darker py-4'>
@@ -39,17 +43,7 @@ export const MainNavbar = ({}: MainNavbarProps) => {
                   onClick={() => setIsMobileMenu(false)}
                 />
               </button>
-              <div className='px-2 pt-2 pb-3 space-y-1'>
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className='block w-full px-5 py-1 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100'
-                  >
-                    {item.name}
-                  </a>
-                ))}
-              </div>
+
               <button
                 className='block w-full px-5 py-3 text-center font-medium text-purple-dark bg-gray-50 hover:bg-gray-100'
                 onClick={() => {
@@ -70,44 +64,16 @@ export const MainNavbar = ({}: MainNavbarProps) => {
         >
           <ul className='list-reset lg:flex justify-end flex-1 items-center'>
             <li className='mr-3'>
-              <a
-                className='inline-block py-2 px-4 text-white font-bold no-underline'
-                href='#'
-              >
-                Blogs
-              </a>
-            </li>
-            <li className='mr-3'>
-              <a
-                className='inline-block text-white no-underline hover:text-gray-800 hover:text-underline py-2 px-4'
-                href='#'
-              >
-                Solutions
-              </a>
-            </li>
-            <li className='mr-3'>
-              <a
-                className='inline-block text-white no-underline hover:text-gray-800 hover:text-underline py-2 px-4'
-                href='#'
-              >
-                Pricing
-              </a>
-            </li>
-            <li className='mr-3'>
               <Language />
             </li>
-            {pathname !== '/login' ? (
-              <li className='mr-3'>
-                <button
-                  className='inline-block text-white no-underline hover:bg-purple-darker py-2 px-4 border-2 border-white rounded-md'
-                  onClick={() => routerPush('/login')}
-                >
-                  {'Login'}
-                </button>
-              </li>
-            ) : (
-              ''
-            )}
+            <li className='mr-3'>
+              <button
+                className='inline-block text-white no-underline hover:bg-purple-darker py-2 px-4 border-2 border-white rounded-md'
+                onClick={() => signOut()}
+              >
+                {'Logout'}
+              </button>
+            </li>
           </ul>
         </div>
       </div>
@@ -115,4 +81,4 @@ export const MainNavbar = ({}: MainNavbarProps) => {
   );
 };
 
-export default MainNavbar;
+export default Navbar;

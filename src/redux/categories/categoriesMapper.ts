@@ -13,7 +13,7 @@ export const responseToCategoryModel = (category: any): categoryI => {
     id: category['id'],
     isFavorite: category['is_favorite'],
     monthlyBudget: category['monthly_budget'],
-    name: category[''],
+    name: category['name'],
     receiptsCount: category['receipts_count'],
     spent: category['spent'],
     status: category['status'],
