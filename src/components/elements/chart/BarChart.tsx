@@ -30,8 +30,8 @@ export const BarChart = ({ labels, values, label }: BarChartProps) => {
       {
         label: label,
         data: values,
-        backgroundColor: ['purple'],
-        borderColor: ['purple'],
+        backgroundColor: ['#292043'],
+        borderColor: ['#292043'],
         borderWidth: 1,
       },
     ],

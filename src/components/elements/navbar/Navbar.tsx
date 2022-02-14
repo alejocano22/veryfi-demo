@@ -16,7 +16,7 @@ export const Navbar = ({}: NavbarProps) => {
   const { push: routerPush, locale } = useRouter();
   const [isMobileMenu, setIsMobileMenu] = useState<boolean>(false);
   return (
-    <nav className='fixed w-full z-30 top-0 bg-gradient-to-r from-purple to-purple-darker py-4'>
+    <nav className='fixed w-full z-30 top-0 bg-white py-4 border-b-2 border-purple-darker'>
       <div className='w-full container mx-auto flex flex-wrap items-center justify-between mt-0'>
         <div
           className='pl-4 flex items-center cursor-pointer space-x-1'
@@ -26,10 +26,10 @@ export const Navbar = ({}: NavbarProps) => {
         </div>
         <div className='block lg:hidden pr-4'>
           <button
-            className='flex items-center p-1 hover:text-gray0 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out'
+            className='flex items-center p-1 hover:text-gray-lighter focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out'
             onClick={() => setIsMobileMenu(true)}
           >
-            <MenuIcon className='text-white w-8 h-8'></MenuIcon>
+            <MenuIcon className='text-purple-darker w-8 h-8'></MenuIcon>
           </button>
         </div>
         {isMobileMenu ? (
@@ -45,7 +45,7 @@ export const Navbar = ({}: NavbarProps) => {
               </button>
 
               <button
-                className='block w-full px-5 py-3 text-center font-medium text-purple-dark bg-gray-50 hover:bg-gray-100'
+                className='block w-full px-5 py-3 text-center font-medium text-purple-darker bg-gray-50 hover:bg-gray-100'
                 onClick={() => {
                   setIsMobileMenu(false);
                   signOut();
@@ -68,7 +68,7 @@ export const Navbar = ({}: NavbarProps) => {
             </li>
             <li className='mr-3'>
               <button
-                className='inline-block text-white no-underline hover:bg-purple-darker py-2 px-4 border-2 border-white rounded-md'
+                className='inline-block text-purple-darker no-underline hover:bg-gray-lighter py-2 px-4 border-2 border-purple-darker rounded-md'
                 onClick={() => signOut()}
               >
                 {'Logout'}
