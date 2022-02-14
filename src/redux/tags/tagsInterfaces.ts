@@ -1,24 +1,24 @@
-export interface categoriesI {
-  categories: categoryI[];
+export interface tagsI {
+  tags: tagI[];
 }
 
-export interface categoryI {
+export interface tagI {
   code: string;
-  currency: categoryCurrencyI;
+  created: string;
+  currency: tagCurrencyI;
   currencyCode: string;
-  externalId: string;
   id: number;
   isFavorite: boolean;
-  monthlyBudget: number;
   name: string;
   receiptsCount: number;
+  source: string;
   spent: number;
   status: string;
   type: string;
   weight: number;
 }
 
-export interface categoryCurrencyI {
+export interface tagCurrencyI {
   code: string;
   name: string;
   symbol: string;

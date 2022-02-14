@@ -9,7 +9,7 @@ const handler = nc<NextApiRequest, NextApiResponse>()
     try {
       const { session, startDate, endDate } = req.body;
       const response = await axios.get(
-        `${process.env.VERYFI_API_URL}/categories/?include_accounting_tags=0&accounting_entry _type=debit&status=active&include_team=1&start_date=${startDate}&end_date=${endDate}`,
+        `${process.env.VERYFI_API_URL}/tags/?include_accounting_tags=0&accounting_entry_type=debit&status=active&orderby=name&include_team=1&start_date${startDate}&end_date=${endDate}`,
         {
           headers: {
             'Content-Type': 'application/json',

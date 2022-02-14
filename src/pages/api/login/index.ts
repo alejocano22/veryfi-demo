@@ -21,12 +21,10 @@ const handler = nc<NextApiRequest, NextApiResponse>()
       );
       res.send(response.data);
     } catch (error) {
-      // TODO define type for the response (error handler)
-      const errorMessage: {
-        status: string;
-        error: string;
-      } = error.response.data;
-      res.send(errorMessage);
+      res.send({
+        status: error.response.data.status,
+        error: error.response.data.error,
+      });
     }
   });
 

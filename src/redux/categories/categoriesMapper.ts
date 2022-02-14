@@ -1,4 +1,4 @@
-import { categoriesI, categoryI, currencyI } from './categoriesInterfaces';
+import { categoryI, categoryCurrencyI } from './categoriesInterfaces';
 
 export const responseToCategoriesModel = (categories: any[]): categoryI[] => {
   return categories.map((category) => responseToCategoryModel(category));
@@ -7,7 +7,7 @@ export const responseToCategoriesModel = (categories: any[]): categoryI[] => {
 export const responseToCategoryModel = (category: any): categoryI => {
   return {
     code: category['code'],
-    currency: responseToCurrencyModel(category['currency']),
+    currency: responseToCategoryCurrencyModel(category['currency']),
     currencyCode: category['currency_code'],
     externalId: category['external_id'],
     id: category['id'],
@@ -22,7 +22,9 @@ export const responseToCategoryModel = (category: any): categoryI => {
   };
 };
 
-export const responseToCurrencyModel = (currency: any): currencyI => {
+export const responseToCategoryCurrencyModel = (
+  currency: any
+): categoryCurrencyI => {
   return {
     code: currency['code'],
     name: currency['name'],

@@ -1,10 +1,7 @@
-import { tagsI } from './../../redux/tags/tagsInterfaces';
+import { tagI } from './../../redux/tags/tagsInterfaces';
 import { BarChartProps } from 'src/components/elements/chart/BarChart';
-import { categoryI } from './../../redux/categories/categoriesInterfaces';
 
-export const handleCategoriesChartData = (
-  elements: categoryI[]
-): BarChartProps => {
+export const handleTagsChartData = (elements: tagI[]): BarChartProps => {
   console.log('categories', elements);
   let labels: string[] = [];
   let values: number[] = [];

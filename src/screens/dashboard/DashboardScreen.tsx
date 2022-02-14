@@ -11,6 +11,9 @@ import BarChart, {
 import { userI } from 'src/redux/user/userInterfaces';
 import { selectCategories } from 'src/redux/categories/categoriesSelectors';
 import { handleCategoriesChartData } from 'src/utils/categories';
+import { loadTags } from 'src/redux/tags/tagsThunks';
+import { selectTags } from 'src/redux/tags/tagsSelectors';
+import { handleTagsChartData } from 'src/utils/tags';
 
 export interface DashboardScreenProps {
   user: userI;
@@ -23,21 +26,34 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     useAppSelector(selectCategories)
   );
 
+  const tags = handleTagsChartData(useAppSelector(selectTags));
+
   const [chart, setChart] = useState(0);
 
   useEffect(() => {
     console.log('in useEffect');
     dispatch(addUser({ value: { ...user } }));
     if (session) {
-      dispatch(
-        loadCategories({
-          session,
-          startDate: '2000-01-01',
-          endDate: '2022-02-14',
-        })
-      );
+      fetch();
     }
   }, [session]);
+
+  const fetch = () => {
+    dispatch(
+      loadCategories({
+        session,
+        startDate: '2000-01-01',
+        endDate: '2022-02-14',
+      })
+    );
+    dispatch(
+      loadTags({
+        session,
+        startDate: '2000-01-01',
+        endDate: '2022-02-14',
+      })
+    );
+  };
 
   const chartSwitch = (chart: number) => {
     switch (chart) {
@@ -66,8 +82,8 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
             </h1>
             <div className='h-96 p-4 rounded-md'>
               <BarChart
-                labels={categories?.labels}
-                values={categories?.values}
+                labels={tags?.labels}
+                values={tags?.values}
                 label={'Spent'}
               />
             </div>
@@ -142,7 +158,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
             <div className='flex flex-col justify-center items-center'>
               <div className='flex flex-col w-full h-full border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
                 <h1 className='text-xl text-center text-purple-dark my-4'>
-                  {'Projects'}
+                  {'Categories'}
                 </h1>
                 <div className='flex-grow h-96 p-4 rounded-md'>
                   <BarChart
