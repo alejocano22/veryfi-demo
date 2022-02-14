@@ -5,6 +5,9 @@ import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { addUser } from '@redux/user/slice';
+import { loadCategories } from 'src/redux/categories/categoriesThunks';
+import { selectSession } from 'src/redux/user/userSelectors';
+import { useAppSelector } from '@redux-hooks';
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
@@ -27,18 +30,22 @@ export interface DashboardScreenProps {
 }
 
 export default function DashboardScree({ user }: DashboardScreenProps) {
-  const session = useSession();
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log('dashboard', user);
-    dispatch(
-      addUser({
-        value: user,
-      })
-    );
-  }, []);
 
-  console.log(session);
+  const session = useAppSelector(selectSession);
+  useEffect(() => {
+    dispatch(addUser({ value: { ...user } }));
+    if (session) {
+      dispatch(
+        loadCategories({
+          session,
+          startDate: '2000-01-01',
+          endDate: '2022-02-14',
+        })
+      );
+    }
+  }, [session]);
+
   const user2 = {
     name: session?.data?.user?.name,
     email: session?.data?.user?.email,

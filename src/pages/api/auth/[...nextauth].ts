@@ -1,3 +1,7 @@
+import {
+  responseToModel,
+  userToModel,
+} from './../../../screens/login/Login.mappers';
 import { useAppDispatch } from '@redux-hooks';
 import { addUser } from '@redux/user/slice';
 import { NextApiHandler } from 'next';
@@ -5,6 +9,7 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { loginService } from '../../../screens/login/Login.service';
 import { AppStore } from '../../../redux/store';
+import { JWT } from 'next-auth/jwt';
 
 const authHandler: NextApiHandler = (req, res) =>
   NextAuth(req, res, {
@@ -22,19 +27,7 @@ const authHandler: NextApiHandler = (req, res) =>
           });
 
           if (!response.error) {
-            const user = {
-              error: null,
-              id: null,
-              firstName: response['first_name'],
-              lastName: response['last_name'],
-              email: response['email'],
-              username: null,
-              companyName: null,
-              created: null,
-              session: response['session'],
-              status: null,
-              type: null,
-            };
+            const user = responseToModel(response);
 
             return user;
           } else {
@@ -53,6 +46,7 @@ const authHandler: NextApiHandler = (req, res) =>
           token.error = user.error;
           token.id = user.id;
           token.firstName = user.firstName;
+          token.lastName = user.lastName;
           token.username = user.username;
           token.companyName = user.companyName;
           token.created = user.created;
@@ -60,24 +54,11 @@ const authHandler: NextApiHandler = (req, res) =>
           token.status = user.status;
           token.type = user.type;
         }
-
         return Promise.resolve(token);
       },
-      session: async ({ session, token }) => {
-        const userData = {
-          error: token.error,
-          id: token.id,
-          firstName: token.firstName,
-          username: token.username,
-          companyName: token.companyName,
-          created: token.created,
-          session: token.session,
-          status: token.status,
-          type: token.type,
-        };
-
-        session.user = userData; //sending payload as session
-
+      session: async ({ session, user, token }) => {
+        const userData = userToModel(token);
+        session.user = userData as any;
         return Promise.resolve(session);
       },
     },

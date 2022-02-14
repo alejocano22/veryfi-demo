@@ -1,7 +1,7 @@
 import { createSlice, Slice } from '@reduxjs/toolkit';
-import { userSliceI } from './userInterface';
+import { userI } from './userInterfaces';
 
-const initialState: userSliceI = {
+const initialState: userI = {
   error: null,
   id: null,
   firstName: null,
@@ -20,7 +20,7 @@ export const userSlice: Slice = createSlice({
   initialState,
   reducers: {
     addUser: (state, action) => {
-      state.session = action.payload.value.session;
+      return { ...state, ...action.payload.value };
     },
   },
 });

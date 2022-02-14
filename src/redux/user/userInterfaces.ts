@@ -1,4 +1,4 @@
-export interface userSliceI {
+export interface userI {
   error: string;
   id: number;
   firstName: string;

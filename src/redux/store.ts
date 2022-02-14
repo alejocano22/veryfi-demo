@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { createWrapper } from 'next-redux-wrapper';
+import categoriesSlice from './categories/categoriesSlice';
 import userSlice from './user/userSlice';
 
 const store = configureStore({
   reducer: {
     userSlice: userSlice,
+    categoriesSlice: categoriesSlice,
   },
 });
 setupListeners(store.dispatch);
