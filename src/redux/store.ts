@@ -4,12 +4,14 @@ import { createWrapper } from 'next-redux-wrapper';
 import categoriesSlice from './categories/categoriesSlice';
 import tagsSlice from './tags/tagsSlice';
 import userSlice from './user/userSlice';
+import projectsSlice from './projects/projectsSlice';
 
 const store = configureStore({
   reducer: {
     userSlice: userSlice,
     categoriesSlice: categoriesSlice,
     tagsSlice: tagsSlice,
+    projectsSlice: projectsSlice,
   },
 });
 setupListeners(store.dispatch);

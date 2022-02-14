@@ -3,14 +3,13 @@ import { BarChartProps } from 'src/components/elements/chart/BarChart';
 import { categoryI } from './../../redux/categories/categoriesInterfaces';
 
 export const handleCategoriesChartData = (
-  elements: categoryI[]
+  categories: categoryI[]
 ): BarChartProps => {
-  console.log('categories', elements);
   let labels: string[] = [];
   let values: number[] = [];
 
-  if (elements) {
-    elements
+  if (categories) {
+    categories
       .filter((category) => category.spent > 0)
       .map((c) => {
         labels.push(c.name);

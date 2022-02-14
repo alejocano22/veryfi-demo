@@ -1,12 +1,14 @@
-import { tagI } from './../../redux/tags/tagsInterfaces';
 import { BarChartProps } from 'src/components/elements/chart/BarChart';
+import { projectI } from 'src/redux/projects/projectsInterfaces';
 
-export const handleTagsChartData = (tags: tagI[]): BarChartProps => {
+export const handleProjectsChartData = (
+  projects: projectI[]
+): BarChartProps => {
   let labels: string[] = [];
   let values: number[] = [];
 
-  if (tags) {
-    tags
+  if (projects) {
+    projects
       .filter((category) => category.spent > 0)
       .map((c) => {
         labels.push(c.name);
@@ -14,8 +16,8 @@ export const handleTagsChartData = (tags: tagI[]): BarChartProps => {
       });
     if (labels.length === 0) {
       return {
-        labels: tagsLabelsMockData,
-        values: tagsValuesMockData,
+        labels: projectLabelsMockData,
+        values: projectValuesMockData,
         mock: true,
       };
     }
@@ -27,6 +29,10 @@ export const handleTagsChartData = (tags: tagI[]): BarChartProps => {
   };
 };
 
-const tagsLabelsMockData = ['#Food', '#Books', '#Travel'];
+const projectLabelsMockData = [
+  'NY Project',
+  'London Project',
+  'Medellin Project',
+];
 
-const tagsValuesMockData = [400, 600, 450];
+const projectValuesMockData = [1000, 1600, 1450];

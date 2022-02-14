@@ -14,6 +14,9 @@ import { handleCategoriesChartData } from 'src/utils/categories';
 import { loadTags } from 'src/redux/tags/tagsThunks';
 import { selectTags } from 'src/redux/tags/tagsSelectors';
 import { handleTagsChartData } from 'src/utils/tags';
+import { handleProjectsChartData } from 'src/utils/projects';
+import { selectProjects } from 'src/redux/projects/tagsSelectors';
+import { loadProjects } from 'src/redux/projects/projectsThunks';
 
 export interface DashboardScreenProps {
   user: userI;
@@ -25,13 +28,13 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   const categories = handleCategoriesChartData(
     useAppSelector(selectCategories)
   );
+  const projects = handleProjectsChartData(useAppSelector(selectProjects));
 
   const tags = handleTagsChartData(useAppSelector(selectTags));
 
   const [chart, setChart] = useState(0);
 
   useEffect(() => {
-    console.log('in useEffect');
     dispatch(addUser({ value: { ...user } }));
     if (session) {
       fetch();
@@ -48,6 +51,13 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     );
     dispatch(
       loadTags({
+        session,
+        startDate: '2000-01-01',
+        endDate: '2022-02-14',
+      })
+    );
+    dispatch(
+      loadProjects({
         session,
         startDate: '2000-01-01',
         endDate: '2022-02-14',
@@ -98,8 +108,8 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
             </h1>
             <div className='h-96 p-4 rounded-md'>
               <BarChart
-                labels={categories?.labels}
-                values={categories?.values}
+                labels={projects?.labels}
+                values={projects?.values}
                 label={'Spent'}
               />
             </div>
@@ -155,25 +165,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                 ''
               )}
             </div>
-            <div className='flex flex-col justify-center items-center'>
-              <div className='flex flex-col w-full h-full border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
-                <h1 className='text-xl text-center text-purple-dark my-4'>
-                  {'Categories'}
-                </h1>
-                <div className='flex-grow h-96 p-4 rounded-md'>
-                  <BarChart
-                    labels={categories?.labels}
-                    values={categories?.values}
-                    label={'Spent'}
-                  />
-                </div>
-              </div>
-              {categories.mock ? (
-                <h4 className='text-gray-light'>{`Pssst... you don't have enough data to render the Top 10 Projects chart. We added some sample data so you can see how it'd look.`}</h4>
-              ) : (
-                ''
-              )}
-            </div>
+            <div className='flex flex-col justify-center items-center'></div>
           </div>
         </main>
       </div>
