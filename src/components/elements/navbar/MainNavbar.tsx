@@ -9,7 +9,7 @@ const navigation = [
   { name: 'Pricing', href: '#' },
 ];
 export const MainNavbar = ({}: MainNavbarProps) => {
-  const { push: routerPush, locale } = useRouter();
+  const { push: routerPush, pathname } = useRouter();
   const [isMobileMenu, setIsMobileMenu] = useState<boolean>(false);
   return (
     <nav className='fixed w-full z-30 top-0 bg-gradient-to-r from-purple to-purple-darker py-4'>
@@ -18,7 +18,7 @@ export const MainNavbar = ({}: MainNavbarProps) => {
           className='pl-4 flex items-center cursor-pointer space-x-1'
           onClick={() => routerPush('/')}
         >
-          <img src='./images/veryfi-logo.png' height={40} width={40}></img>
+          <img src='./images/veryfi-logo.png' height={50} width={50}></img>
         </div>
         <div className='block lg:hidden pr-4'>
           <button
@@ -96,14 +96,18 @@ export const MainNavbar = ({}: MainNavbarProps) => {
             <li className='mr-3'>
               <Language />
             </li>
-            <li className='mr-3'>
-              <button
-                className='inline-block text-white no-underline hover:bg-purple-darker py-2 px-4 border-2 border-white rounded-md'
-                onClick={() => routerPush('/login')}
-              >
-                {'Login'}
-              </button>
-            </li>
+            {pathname !== '/login' ? (
+              <li className='mr-3'>
+                <button
+                  className='inline-block text-white no-underline hover:bg-purple-darker py-2 px-4 border-2 border-white rounded-md'
+                  onClick={() => routerPush('/login')}
+                >
+                  {'Login'}
+                </button>
+              </li>
+            ) : (
+              ''
+            )}
           </ul>
         </div>
       </div>

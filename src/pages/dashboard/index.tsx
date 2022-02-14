@@ -12,18 +12,20 @@ export async function getServerSideProps(context) {
     };
   }
   return {
-    props: {},
+    props: {
+      user: session.user,
+    },
   };
 }
 
-export default function Dashboard({}) {
+export default function Dashboard({ user }) {
   return (
     <>
       <Head>
         <title>Dashboard</title>
         <meta name='description' content='Veryfi dashboard' />
       </Head>
-      <DashboardScreen />
+      <DashboardScreen user={user} />
     </>
   );
 }

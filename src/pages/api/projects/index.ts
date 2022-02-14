@@ -2,23 +2,23 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import axios from 'axios';
 import cors from 'cors';
-import { v4 as uuidv4 } from 'uuid';
 
 const handler = nc<NextApiRequest, NextApiResponse>()
   .use(cors())
   .post(async (req, res) => {
     try {
-      const response = await axios.post(
-        `${process.env.VERYFI_API_URL}/accounts/sign-in`,
-        req.body,
+      const { session, startDate, endDate } = req.body;
+      const response = await axios.get(
+        `${process.env.VERYFI_API_URL}/projects/?accounting_entry_type=debit&status=active&or derby=name&include_team=1&start_date=${startDate}&end_date=${endDate}&include_totals=1`,
         {
           headers: {
             'Content-Type': 'application/json',
             'CLIENT-ID': `${process.env.CLIENT_ID}`,
-            AUTHORIZATION: `uuid ${uuidv4()}`,
+            'Veryfi-Session': session,
           },
         }
       );
+
       res.send(response.data);
     } catch (error) {
       res.send({

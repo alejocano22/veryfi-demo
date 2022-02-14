@@ -4,6 +4,8 @@ import { useSession, signIn, signOut, getSession } from 'next-auth/react';
 import { useState } from 'react';
 import MainNavbar from '../../components/elements/navbar/MainNavbar';
 import Footer from '../../components/elements/footers/Footer';
+import { useDispatch } from 'react-redux';
+import { addUser } from '@redux/user/slice';
 
 export interface LoginScreenProps {
   csrfToken: any;
@@ -14,12 +16,14 @@ export default function LoginScreen({
   csrfToken,
   providers,
 }: LoginScreenProps) {
-  const [email, setEmail] = useState<string>('alejocano22@hotmail.com');
+  const [email, setEmail] = useState<string>('');
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<boolean>(false);
-  const [password, setPassword] = useState<string>('Veryfitest123*');
+  const [password, setPassword] = useState<string>('');
   const { push: routerPush, locale } = useRouter();
   const { title, go } = i18nLogin[locale];
+  const session = useSession();
+  const dispatch = useDispatch();
 
   const removeErrorMessage = () => {
     setTimeout(() => {
