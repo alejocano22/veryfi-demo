@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useTable } from 'react-table';
+import { useTable, useGroupBy, useExpanded } from 'react-table';
 
 export interface TableProps {
   lastQuarter: QuarterCategoryI[];
@@ -9,29 +9,52 @@ export const Table = ({ lastQuarter }: TableProps) => {
   const data = useMemo(
     () => [
       {
-        col1: '',
-        col2: 'Spent (USD)',
-        // spent: 'Spent (USD)',
-        col3: 'Spent (USD)',
-        col4: 'Spent (USD)',
+        category: 'A',
+        budget1: 1,
+        spent1: 28,
+        balance1: 64,
+        budget2: 1,
+        spent2: 28,
+        balance2: 64,
+        budget3: 2,
+        spent3: 28,
+        balance3: 64,
       },
       {
-        col1: lastQuarter[0].name,
-        col2: `$ ${lastQuarter[0].periods[0].spent}`,
-        col3: `$ ${lastQuarter[0].periods[1].spent}`,
-        col4: `$ ${lastQuarter[0].periods[2].spent}`,
+        category: 'B',
+        budget1: 2,
+        spent1: 28,
+        balance1: 64,
+        budget2: 2,
+        spent2: 28,
+        balance2: 64,
+        budget3: 2,
+        spent3: 28,
+        balance3: 64,
       },
       {
-        col1: lastQuarter[1].name,
-        col2: `$ ${lastQuarter[1].periods[0].spent}`,
-        col3: `$ ${lastQuarter[1].periods[1].spent}`,
-        col4: `$ ${lastQuarter[1].periods[2].spent}`,
+        category: 'C',
+        budget1: 3,
+        spent1: 28,
+        balance1: 64,
+        budget2: 2,
+        spent2: 28,
+        balance2: 64,
+        budget3: 2,
+        spent3: 28,
+        balance3: 64,
       },
       {
-        col1: lastQuarter[2].name,
-        col2: `$ ${lastQuarter[2].periods[0].spent}`,
-        col3: `$ ${lastQuarter[2].periods[1].spent}`,
-        col4: `$ ${lastQuarter[2].periods[2].spent}`,
+        category: 'Total',
+        budget1: 3,
+        spent1: 28,
+        balance1: 64,
+        budget2: 2,
+        spent2: 28,
+        balance2: 64,
+        budget3: 2,
+        spent3: 28,
+        balance3: 64,
       },
     ],
     []
@@ -40,42 +63,75 @@ export const Table = ({ lastQuarter }: TableProps) => {
   const columns = useMemo(
     () => [
       {
-        Header: 'Categories',
-        accessor: 'col1', // accessor is the "key" in the data
+        Header: 'Category',
+        accessor: 'category',
       },
       {
-        Header: 'October 2021',
-        accessor: 'col2',
-        // column: [
-        //   {
-        //     Header: 'Budget',
-        //     accessor: 'budget',
-        //     aggregate: 'average',
-        //     Aggregated: ({ value }) => `${Math.round(value * 100) / 100} (avg)`,
-        //   },
-        //   {
-        //     Header: 'Spent',
-        //     accessor: 'spent',
-        //     aggregate: 'average',
-        //     Aggregated: ({ value }) => `${Math.round(value * 100) / 100} (avg)`,
-        //   },
-        // ],
+        Header: 'OCTOBER 2021',
+        columns: [
+          {
+            Header: 'Budget',
+            accessor: 'budget1',
+          },
+          {
+            Header: 'Spent',
+            accessor: 'spent1',
+          },
+          {
+            Header: 'Balance',
+            accessor: 'balance1',
+          },
+        ],
       },
       {
-        Header: 'November 2021',
-        accessor: 'col3',
+        Header: 'NOVEMBER 2021',
+
+        columns: [
+          {
+            Header: 'Budget',
+            accessor: 'budget2',
+          },
+          {
+            Header: 'Spent',
+            accessor: 'spent2',
+          },
+          {
+            Header: 'Balance',
+            accessor: 'balance2',
+          },
+        ],
       },
       {
-        Header: 'December 2021',
-        accessor: 'col4',
+        Header: 'DECEMBER 2021',
+        columns: [
+          {
+            Header: 'Budget',
+            accessor: 'budget3',
+          },
+          {
+            Header: 'Spent',
+            accessor: 'spent3',
+          },
+          {
+            Header: 'Balance',
+            accessor: 'balance3',
+          },
+        ],
       },
     ],
     []
   );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
-  const firstPageRows = rows.slice(0, 100);
+    useTable(
+      {
+        columns,
+        data,
+      },
+      useGroupBy,
+      useExpanded // useGroupBy would be pretty useless without useExpanded ;)
+    );
+
   return (
     <div className='sm:px-6 border-2 rounded-md border-gray-lighter bg-gray-lighter pb-4'>
       <h1 className='text-xl text-center text-purple-dark my-4'>
@@ -85,35 +141,39 @@ export const Table = ({ lastQuarter }: TableProps) => {
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps()}
-                  className='text-left pr-6 text-purple-dark'
-                >
-                  {column.canGroupBy ? (
-                    // If the column can be grouped, let's add a toggle
-                    <span {...column.getGroupByToggleProps()}>
-                      {column.isGrouped ? '🛑 ' : '👊 '}
-                    </span>
-                  ) : null}
-                  {column.render('Header')}
-                </th>
-              ))}
+            <tr {...headerGroup.getHeaderGroupProps()} className='rounded-md'>
+              {headerGroup.headers.map((column, index) =>
+                index > 0 ? (
+                  <th
+                    {...column.getHeaderProps()}
+                    className='border-x-2 border-t-2 border-gray-light p-2 rounded-md'
+                  >
+                    {column.render('Header')}
+                  </th>
+                ) : (
+                  <th {...column.getHeaderProps()} className='p-2'>
+                    {column.render('Header')}
+                  </th>
+                )
+              )}
             </tr>
           ))}
         </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+        <tbody {...getTableBodyProps()} className=''>
+          {rows.map((row, i) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
+                {row.cells.map((cell, index) => {
+                  return index > 0 ? (
                     <td
                       {...cell.getCellProps()}
-                      className='px-4 border-2 border-gray-light rounded-md '
+                      className='border-2 border-gray-light text-center rounded-md'
                     >
+                      $ {cell.render('Cell')}
+                    </td>
+                  ) : (
+                    <td {...cell.getCellProps()} className='text-center'>
                       {cell.render('Cell')}
                     </td>
                   );
