@@ -13,9 +13,6 @@ import { JWT } from 'next-auth/jwt';
 
 const authHandler: NextApiHandler = (req, res) =>
   NextAuth(req, res, {
-    session: {
-      updateAge: 20, // 24 hours
-    },
     providers: [
       CredentialsProvider({
         name: 'Credentials',

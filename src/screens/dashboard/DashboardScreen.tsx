@@ -5,12 +5,13 @@ import { loadCategories } from 'src/redux/categories/categoriesThunks';
 import { selectSession } from 'src/redux/user/userSelectors';
 import { useAppSelector } from '@redux-hooks';
 import Navbar from 'src/components/elements/navbar/Navbar';
-import BarChart, {
-  BarChartProps,
-} from 'src/components/elements/chart/BarChart';
+import BarChart from 'src/components/elements/chart/BarChart';
 import { userI } from 'src/redux/user/userInterfaces';
 import { selectCategories } from 'src/redux/categories/categoriesSelectors';
-import { handleCategoriesChartData } from 'src/utils/categories';
+import {
+  getLastQuarter,
+  handleCategoriesChartData,
+} from 'src/utils/categories';
 import { loadTags } from 'src/redux/tags/tagsThunks';
 import { selectTags } from 'src/redux/tags/tagsSelectors';
 import { handleTagsChartData } from 'src/utils/tags';
@@ -18,10 +19,18 @@ import { handleProjectsChartData } from 'src/utils/projects';
 import { selectProjects } from 'src/redux/projects/tagsSelectors';
 import { loadProjects } from 'src/redux/projects/projectsThunks';
 import Sidebar from 'src/components/elements/navbar/SideBar';
-import { loadMoneyIn, loadMoneyOut } from 'src/redux/money/moneyThunks';
+import {
+  loadMoneyIn,
+  loadMoneyOut,
+  loaLastQuarter,
+} from 'src/redux/money/moneyThunks';
 import BarLineChart from 'src/components/elements/chart/BarLineChart';
-import { selectMoneyIn, selectMoneyOut } from 'src/redux/money/moneySlice';
-import { netAmount } from 'src/utils/money';
+import {
+  selectLastQuarter,
+  selectMoneyIn,
+  selectMoneyOut,
+} from 'src/redux/money/moneySlice';
+import { getNetAmount } from 'src/utils/money';
 
 export interface DashboardScreenProps {
   user: userI;
@@ -38,6 +47,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   const tags = handleTagsChartData(useAppSelector(selectTags));
   const moneyIn = useAppSelector(selectMoneyIn);
   const moneyOut = useAppSelector(selectMoneyOut);
+  const lastQuarter = useAppSelector(selectLastQuarter);
 
   const [chart, setChart] = useState(0);
 
@@ -45,10 +55,12 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     dispatch(addUser({ value: { ...user } }));
     if (session) {
       fetch();
+      console.log(getLastQuarter());
     }
   }, [session]);
 
   const fetch = () => {
+    const { startDate, endDate } = getLastQuarter();
     dispatch(
       loadCategories({
         session,
@@ -82,6 +94,13 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
         session,
         startDate: '2021-11-01',
         endDate: '2022-02-14',
+      })
+    );
+    dispatch(
+      loaLastQuarter({
+        session,
+        startDate: startDate,
+        endDate: endDate,
       })
     );
   };
@@ -204,7 +223,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                           labelBarTwo={'Money Out'}
                           valuesBarTwo={moneyOut?.totals}
                           labelLine={'Net amount'}
-                          valuesLine={netAmount(
+                          valuesLine={getNetAmount(
                             moneyIn?.totals,
                             moneyOut?.totals
                           )}
@@ -216,25 +235,32 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                   </div>
                 </div>
               </div>
-              <div className='flex flex-col justify-center items-center'>
-                <div className='border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
+              <div className='w-full flex flex-col justify-center items-center'>
+                <div className='w-3/4  border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
                   <h1 className='text-xl text-center text-purple-dark my-4'>
                     {'Activity for Quarter'}
                   </h1>
                   <div className='h-60 p-4 rounded-md'>
-                    {moneyIn && moneyOut ? (
-                      <BarLineChart
-                        labels={moneyIn?.labels}
-                        labelBarOne={'Money In'}
-                        valuesBarOne={moneyIn?.totals}
-                        labelBarTwo={'Money Out'}
-                        valuesBarTwo={moneyOut?.totals}
-                        labelLine={'Net amount'}
-                        valuesLine={netAmount(
-                          moneyIn?.totals,
-                          moneyOut?.totals
-                        )}
-                      />
+                    {lastQuarter ? (
+                      <div className='flex justify-center items-center gap-11'>
+                        {lastQuarter.map((category) => (
+                          <>
+                            <h1 key={category.id} className='text-purple'>
+                              {category.name}:
+                              {category.periods.map((period) => (
+                                <>
+                                  <h1
+                                    key={`${category.id}${period.id}`}
+                                    className='text-black'
+                                  >
+                                    {`${period.id}: ${period.spent}`}
+                                  </h1>
+                                </>
+                              ))}
+                            </h1>
+                          </>
+                        ))}
+                      </div>
                     ) : (
                       <h1>Loading...</h1>
                     )}
