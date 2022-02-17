@@ -5,12 +5,13 @@ import { loadCategories } from 'src/redux/categories/categoriesThunks';
 import { selectSession } from 'src/redux/user/userSelectors';
 import { useAppSelector } from '@redux-hooks';
 import Navbar from 'src/components/elements/navbar/Navbar';
-import BarChart, {
-  BarChartProps,
-} from 'src/components/elements/chart/BarChart';
+import BarChart from 'src/components/elements/chart/BarChart';
 import { userI } from 'src/redux/user/userInterfaces';
 import { selectCategories } from 'src/redux/categories/categoriesSelectors';
-import { handleCategoriesChartData } from 'src/utils/categories';
+import {
+  getLastQuarter,
+  handleCategoriesChartData,
+} from 'src/utils/categories';
 import { loadTags } from 'src/redux/tags/tagsThunks';
 import { selectTags } from 'src/redux/tags/tagsSelectors';
 import { handleTagsChartData } from 'src/utils/tags';
@@ -18,6 +19,18 @@ import { handleProjectsChartData } from 'src/utils/projects';
 import { selectProjects } from 'src/redux/projects/tagsSelectors';
 import { loadProjects } from 'src/redux/projects/projectsThunks';
 import Sidebar from 'src/components/elements/navbar/SideBar';
+import {
+  loadMoneyIn,
+  loadMoneyOut,
+  loaLastQuarter,
+} from 'src/redux/money/moneyThunks';
+import BarLineChart from 'src/components/elements/chart/BarLineChart';
+import {
+  selectLastQuarter,
+  selectMoneyIn,
+  selectMoneyOut,
+} from 'src/redux/money/moneySlice';
+import { getNetAmount } from 'src/utils/money';
 
 export interface DashboardScreenProps {
   user: userI;
@@ -32,6 +45,9 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   const projects = handleProjectsChartData(useAppSelector(selectProjects));
 
   const tags = handleTagsChartData(useAppSelector(selectTags));
+  const moneyIn = useAppSelector(selectMoneyIn);
+  const moneyOut = useAppSelector(selectMoneyOut);
+  const lastQuarter = useAppSelector(selectLastQuarter);
 
   const [chart, setChart] = useState(0);
 
@@ -39,10 +55,12 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     dispatch(addUser({ value: { ...user } }));
     if (session) {
       fetch();
+      console.log(getLastQuarter());
     }
   }, [session]);
 
   const fetch = () => {
+    const { startDate, endDate } = getLastQuarter();
     dispatch(
       loadCategories({
         session,
@@ -64,6 +82,27 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
         endDate: '2022-02-14',
       })
     );
+    dispatch(
+      loadMoneyIn({
+        session,
+        startDate: '2021-11-01',
+        endDate: '2022-02-14',
+      })
+    );
+    dispatch(
+      loadMoneyOut({
+        session,
+        startDate: '2021-11-01',
+        endDate: '2022-02-14',
+      })
+    );
+    dispatch(
+      loaLastQuarter({
+        session,
+        startDate: startDate,
+        endDate: endDate,
+      })
+    );
   };
 
   const chartSwitch = (chart: number) => {
@@ -75,7 +114,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
             <h1 className='text-xl text-center text-purple-dark my-4'>
               {'Categories'}
             </h1>
-            <div className='h-96 p-4 rounded-md'>
+            <div className='h-72 p-4 rounded-md'>
               <BarChart
                 labels={categories?.labels}
                 values={categories?.values}
@@ -91,7 +130,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
             <h1 className='text-xl text-center text-purple-dark my-4'>
               {'Tags'}
             </h1>
-            <div className='h-96 p-4 rounded-md'>
+            <div className='h-72 p-4 rounded-md'>
               <BarChart
                 labels={tags?.labels}
                 values={tags?.values}
@@ -107,7 +146,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
             <h1 className='text-xl text-center text-purple-dark my-4'>
               {'Projects'}
             </h1>
-            <div className='h-96 p-4 rounded-md'>
+            <div className='h-72 p-4 rounded-md'>
               <BarChart
                 labels={projects?.labels}
                 values={projects?.values}
@@ -134,7 +173,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                 </h1>
               </div>
             </header>
-            <main className='flex items-center justify-center flex-cols'>
+            <main className='flex items-center justify-center flex-col'>
               <div className='flex flex-col gap-10 mx-10 justify-center items-end lg:flex-row max-w-7xl py-6 sm:px-6'>
                 <div className='flex flex-col justify-center items-center'>
                   <div className='w-full flex items-start gap-1'>
@@ -170,7 +209,63 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                     ''
                   )}
                 </div>
-                <div className='flex flex-col justify-center items-center'></div>
+                <div className='flex flex-col justify-center items-center'>
+                  <div className='border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
+                    <h1 className='text-xl text-center text-purple-dark my-4'>
+                      {'Money In/Out'}
+                    </h1>
+                    <div className='h-72 p-4 rounded-md'>
+                      {moneyIn && moneyOut ? (
+                        <BarLineChart
+                          labels={moneyIn?.labels}
+                          labelBarOne={'Money In'}
+                          valuesBarOne={moneyIn?.totals}
+                          labelBarTwo={'Money Out'}
+                          valuesBarTwo={moneyOut?.totals}
+                          labelLine={'Net amount'}
+                          valuesLine={getNetAmount(
+                            moneyIn?.totals,
+                            moneyOut?.totals
+                          )}
+                        />
+                      ) : (
+                        <h1>Loading...</h1>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className='w-full flex flex-col justify-center items-center'>
+                <div className='w-3/4  border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
+                  <h1 className='text-xl text-center text-purple-dark my-4'>
+                    {'Activity for Quarter'}
+                  </h1>
+                  <div className='h-60 p-4 rounded-md'>
+                    {lastQuarter ? (
+                      <div className='flex justify-center items-center gap-11'>
+                        {lastQuarter.map((category) => (
+                          <>
+                            <h1 key={category.id} className='text-purple'>
+                              {category.name}:
+                              {category.periods.map((period) => (
+                                <>
+                                  <h1
+                                    key={`${category.id}${period.id}`}
+                                    className='text-black'
+                                  >
+                                    {`${period.id}: ${period.spent}`}
+                                  </h1>
+                                </>
+                              ))}
+                            </h1>
+                          </>
+                        ))}
+                      </div>
+                    ) : (
+                      <h1>Loading...</h1>
+                    )}
+                  </div>
+                </div>
               </div>
             </main>
           </div>

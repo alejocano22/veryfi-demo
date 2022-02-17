@@ -11,7 +11,7 @@ export function App({ Component, pageProps: { session, ...pageProps } }) {
           <link rel='icon' href='/images/favicon.ico' />
         </Head>
         <Component {...pageProps} />
-      </SessionProvider>{' '}
+      </SessionProvider>
     </>
   );
 }

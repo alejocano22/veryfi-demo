@@ -1,5 +1,4 @@
 import { createSlice, Slice } from '@reduxjs/toolkit';
-import { categoriesI } from './categoriesInterfaces';
 import { loadCategories } from './categoriesThunks';
 
 const initialState: categoriesI = {
