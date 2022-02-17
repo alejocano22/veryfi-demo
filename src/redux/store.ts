@@ -2,9 +2,10 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { createWrapper } from 'next-redux-wrapper';
 import categoriesSlice from './categories/categoriesSlice';
+import moneySlice from './money/moneySlice';
+import projectsSlice from './projects/projectsSlice';
 import tagsSlice from './tags/tagsSlice';
 import userSlice from './user/userSlice';
-import projectsSlice from './projects/projectsSlice';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     categoriesSlice: categoriesSlice,
     tagsSlice: tagsSlice,
     projectsSlice: projectsSlice,
+    moneySlice: moneySlice,
   },
 });
 setupListeners(store.dispatch);

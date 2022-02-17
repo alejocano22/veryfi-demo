@@ -3,8 +3,8 @@ import Head from 'next/head';
 import DashboardScreen from '../../screens/dashboard/DashboardScreen';
 
 export async function getServerSideProps(context) {
-  const session = await getSession({ req: context.req });
-  if (!session) {
+  const { user } = await getSession({ req: context.req });
+  if (!user) {
     return {
       redirect: {
         destination: '/login',
@@ -13,7 +13,7 @@ export async function getServerSideProps(context) {
   }
   return {
     props: {
-      user: session.user,
+      user,
     },
   };
 }

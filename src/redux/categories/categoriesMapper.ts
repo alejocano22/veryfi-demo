@@ -1,5 +1,3 @@
-import { categoryI, categoryCurrencyI } from './categoriesInterfaces';
-
 export const responseToCategoriesModel = (categories: any[]): categoryI[] => {
   return categories.map((category) => responseToCategoryModel(category));
 };

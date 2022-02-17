@@ -1,8 +1,8 @@
-export interface categoriesI {
+interface categoriesI {
   categories: categoryI[];
 }
 
-export interface categoryI {
+interface categoryI {
   code: string;
   currency: categoryCurrencyI;
   currencyCode: string;
@@ -18,7 +18,7 @@ export interface categoryI {
   weight: number;
 }
 
-export interface categoryCurrencyI {
+interface categoryCurrencyI {
   code: string;
   name: string;
   symbol: string;
