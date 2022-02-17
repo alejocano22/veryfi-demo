@@ -31,6 +31,7 @@ import {
   selectMoneyOut,
 } from 'src/redux/money/moneySlice';
 import { getNetAmount } from 'src/utils/money';
+import Table from 'src/components/elements/table/Table';
 
 export interface DashboardScreenProps {
   user: userI;
@@ -55,7 +56,6 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     dispatch(addUser({ value: { ...user } }));
     if (session) {
       fetch();
-      console.log(getLastQuarter());
     }
   }, [session]);
 
@@ -235,37 +235,8 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                   </div>
                 </div>
               </div>
-              <div className='w-full flex flex-col justify-center items-center'>
-                <div className='w-3/4  border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
-                  <h1 className='text-xl text-center text-purple-dark my-4'>
-                    {'Activity for Quarter'}
-                  </h1>
-                  <div className='h-60 p-4 rounded-md'>
-                    {lastQuarter ? (
-                      <div className='flex justify-center items-center gap-11'>
-                        {lastQuarter.map((category) => (
-                          <>
-                            <h1 key={category.id} className='text-purple'>
-                              {category.name}:
-                              {category.periods.map((period) => (
-                                <>
-                                  <h1
-                                    key={`${category.id}${period.id}`}
-                                    className='text-black'
-                                  >
-                                    {`${period.id}: ${period.spent}`}
-                                  </h1>
-                                </>
-                              ))}
-                            </h1>
-                          </>
-                        ))}
-                      </div>
-                    ) : (
-                      <h1>Loading...</h1>
-                    )}
-                  </div>
-                </div>
+              <div className='flex flex-col justify-center items-center mx-10'>
+                {lastQuarter ? <Table lastQuarter={lastQuarter} /> : ''}
               </div>
             </main>
           </div>
