@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useTable, useGroupBy, useExpanded } from 'react-table';
+import { useTable, useGroupBy, useExpanded, useSortBy } from 'react-table';
 
 export interface TableProps {
   lastQuarter: QuarterCategoryI[];
@@ -122,6 +122,16 @@ export const Table = ({ lastQuarter }: TableProps) => {
     []
   );
 
+  // const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+  //   useTable(
+  //     {
+  //       columns,
+  //       data,
+  //     },
+  //     useGroupBy,
+  //     useExpanded // useGroupBy would be pretty useless without useExpanded ;)
+  //   );
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(
       {
@@ -129,7 +139,9 @@ export const Table = ({ lastQuarter }: TableProps) => {
         data,
       },
       useGroupBy,
-      useExpanded // useGroupBy would be pretty useless without useExpanded ;)
+
+      useSortBy,
+      useExpanded
     );
 
   return (
@@ -141,40 +153,40 @@ export const Table = ({ lastQuarter }: TableProps) => {
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()} className='rounded-md'>
-              {headerGroup.headers.map((column, index) =>
-                index > 0 ? (
-                  <th
-                    {...column.getHeaderProps()}
-                    className='border-x-2 border-t-2 border-gray-light p-2 rounded-md'
-                  >
-                    {column.render('Header')}
-                  </th>
-                ) : (
-                  <th {...column.getHeaderProps()} className='p-2'>
-                    {column.render('Header')}
-                  </th>
-                )
-              )}
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                // Add the sorting props to control sorting. For this example
+                // we can add them into the header props
+                <th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  className='p-2 border-2 border-gray-light'
+                >
+                  {column.render('Header')}
+                  {/* Add a sort direction indicator */}
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ' ⏺'}
+                  </span>
+                </th>
+              ))}
             </tr>
           ))}
         </thead>
-        <tbody {...getTableBodyProps()} className=''>
+        <tbody {...getTableBodyProps()}>
           {rows.map((row, i) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map((cell, index) => {
-                  return index > 0 ? (
+                {row.cells.map((cell) => {
+                  return (
                     <td
                       {...cell.getCellProps()}
-                      className='border-2 border-gray-light text-center rounded-md'
+                      className='p-2 border-2 border-gray-light text-center'
                     >
                       $ {cell.render('Cell')}
-                    </td>
-                  ) : (
-                    <td {...cell.getCellProps()} className='text-center'>
-                      {cell.render('Cell')}
                     </td>
                   );
                 })}
