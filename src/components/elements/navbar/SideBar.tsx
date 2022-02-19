@@ -2,7 +2,7 @@ export interface SidebarProps {}
 
 export const Sidebar = ({}: SidebarProps) => {
   return (
-    <div className='h-screen flex-row bg-white '>
+    <div className='h-100% flex-row bg-white '>
       <div className='h-full flex flex-col w-56 bg-purple-darker overflow-hidden'>
         <ul className='flex flex-col py-4 mt-20'>
           <li>

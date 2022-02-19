@@ -32,12 +32,14 @@ import {
 } from 'src/redux/money/moneySlice';
 import { getNetAmount } from 'src/utils/money';
 import Table from 'src/components/elements/table/Table';
+import { useRouter } from 'next/router';
 
 export interface DashboardScreenProps {
   user: userI;
 }
 
 export default function DashboardScree({ user }: DashboardScreenProps) {
+  const router = useRouter();
   const dispatch = useDispatch();
   const session = useAppSelector(selectSession);
   const categories = handleCategoriesChartData(
@@ -56,6 +58,8 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     dispatch(addUser({ value: { ...user } }));
     if (session) {
       fetch();
+    } else {
+      router.push('/dashboard');
     }
   }, [session]);
 
@@ -173,7 +177,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                 </h1>
               </div>
             </header>
-            <main className='flex items-center justify-center flex-col'>
+            <main className='flex items-center justify-center flex-col mb-10'>
               <div className='flex flex-col gap-10 mx-10 justify-center items-end lg:flex-row max-w-7xl py-6 sm:px-6'>
                 <div className='flex flex-col justify-center items-center'>
                   <div className='w-full flex items-start gap-1'>

@@ -1,61 +1,54 @@
 import { useMemo } from 'react';
 import { useTable, useGroupBy, useExpanded, useSortBy } from 'react-table';
+import { toLastQuarterTable } from 'src/utils/categories';
 
 export interface TableProps {
   lastQuarter: QuarterCategoryI[];
 }
 
 export const Table = ({ lastQuarter }: TableProps) => {
+  console.log('from redux', lastQuarter);
+  const d = toLastQuarterTable(lastQuarter);
+  console.log('new data', d);
   const data = useMemo(
     () => [
-      {
-        category: 'A',
-        budget1: 1,
-        spent1: 28,
-        balance1: 64,
-        budget2: 1,
-        spent2: 28,
-        balance2: 64,
-        budget3: 2,
-        spent3: 28,
-        balance3: 64,
-      },
-      {
-        category: 'B',
-        budget1: 2,
-        spent1: 28,
-        balance1: 64,
-        budget2: 2,
-        spent2: 28,
-        balance2: 64,
-        budget3: 2,
-        spent3: 28,
-        balance3: 64,
-      },
-      {
-        category: 'C',
-        budget1: 3,
-        spent1: 28,
-        balance1: 64,
-        budget2: 2,
-        spent2: 28,
-        balance2: 64,
-        budget3: 2,
-        spent3: 28,
-        balance3: 64,
-      },
-      {
-        category: 'Total',
-        budget1: 3,
-        spent1: 28,
-        balance1: 64,
-        budget2: 2,
-        spent2: 28,
-        balance2: 64,
-        budget3: 2,
-        spent3: 28,
-        balance3: 64,
-      },
+      ...d,
+      // {
+      //   category: 'A',
+      //   budgetMonth1: 1,
+      //   spentMonth1: 2,
+      //   balanceMonth1: 64,
+      //   budgetMonth2: 1,
+      //   spentMonth2: 3,
+      //   balanceMonth2: 64,
+      //   budgetMonth3: 2,
+      //   spentMonth3: 28,
+      //   balanceMonth3: 64,
+      // },
+      // {
+      //   category: 'B',
+      //   budgetMonth1: 2,
+      //   spentMonth1: 28,
+      //   balanceMonth1: 64,
+      //   budgetMonth2: 2,
+      //   spentMonth2: 28,
+      //   balanceMonth2: 64,
+      //   budgetMonth3: 2,
+      //   spentMonth3: 28,
+      //   balanceMonth3: 64,
+      // },
+      // {
+      //   category: 'C',
+      //   budgetMonth1: 3,
+      //   spentMonth1: 28,
+      //   balanceMonth1: 64,
+      //   budgetMonth2: 2,
+      //   spentMonth2: 28,
+      //   balanceMonth2: 64,
+      //   budgetMonth3: 2,
+      //   spentMonth3: 28,
+      //   balanceMonth3: 64,
+      // },
     ],
     []
   );
@@ -65,56 +58,158 @@ export const Table = ({ lastQuarter }: TableProps) => {
       {
         Header: 'Category',
         accessor: 'category',
+        Footer: 'Total',
       },
       {
         Header: 'OCTOBER 2021',
+        Footer: '',
         columns: [
           {
             Header: 'Budget',
-            accessor: 'budget1',
+            accessor: 'budgetMonth1',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.budgetMonth1 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
           },
           {
             Header: 'Spent',
-            accessor: 'spent1',
+            accessor: 'spentMonth1',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.spentMonth1 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
           },
           {
             Header: 'Balance',
-            accessor: 'balance1',
+            accessor: 'balanceMonth1',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.balanceMonth1 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
           },
         ],
       },
       {
         Header: 'NOVEMBER 2021',
-
+        Footer: '',
         columns: [
           {
             Header: 'Budget',
-            accessor: 'budget2',
+            accessor: 'budgetMonth2',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.budgetMonth2 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
           },
           {
             Header: 'Spent',
-            accessor: 'spent2',
+            accessor: 'spentMonth2',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.spentMonth2 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
           },
           {
             Header: 'Balance',
-            accessor: 'balance2',
+            accessor: 'balanceMonth2',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.balanceMonth2 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
           },
         ],
       },
       {
         Header: 'DECEMBER 2021',
+        Footer: '',
         columns: [
           {
             Header: 'Budget',
-            accessor: 'budget3',
+            accessor: 'budgetMonth3',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.budgetMonth3 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
           },
           {
             Header: 'Spent',
-            accessor: 'spent3',
+            accessor: 'spentMonth3',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.spentMonth3 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
           },
           {
             Header: 'Balance',
-            accessor: 'balance3',
+            accessor: 'balanceMonth3',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.balanceMonth3 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
           },
         ],
       },
@@ -122,27 +217,23 @@ export const Table = ({ lastQuarter }: TableProps) => {
     []
   );
 
-  // const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-  //   useTable(
-  //     {
-  //       columns,
-  //       data,
-  //     },
-  //     useGroupBy,
-  //     useExpanded // useGroupBy would be pretty useless without useExpanded ;)
-  //   );
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    footerGroups,
+  } = useTable(
+    {
+      columns,
+      data,
+    },
+    useGroupBy,
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data,
-      },
-      useGroupBy,
-
-      useSortBy,
-      useExpanded
-    );
+    useSortBy,
+    useExpanded
+  );
 
   return (
     <div className='sm:px-6 border-2 rounded-md border-gray-lighter bg-gray-lighter pb-4'>
@@ -154,21 +245,24 @@ export const Table = ({ lastQuarter }: TableProps) => {
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                // Add the sorting props to control sorting. For this example
-                // we can add them into the header props
+              {headerGroup.headers.map((column, index) => (
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className='p-2 border-2 border-gray-light'
+                  className={[
+                    'p-2',
+                    index === 0 ? '' : 'border-2 border-gray-light',
+                  ].join(' ')}
                 >
                   {column.render('Header')}
-                  {/* Add a sort direction indicator */}
+
                   <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? ' 🔽'
-                        : ' 🔼'
-                      : ' ⏺'}
+                    {column.canSort
+                      ? column.isSorted
+                        ? column.isSortedDesc
+                          ? ' 🔽'
+                          : ' 🔼'
+                        : ' ⏺'
+                      : ''}
                   </span>
                 </th>
               ))}
@@ -184,7 +278,7 @@ export const Table = ({ lastQuarter }: TableProps) => {
                   return (
                     <td
                       {...cell.getCellProps()}
-                      className='p-2 border-2 border-gray-light text-center'
+                      className='py-2 px-4 border-2 border-gray-light text-left'
                     >
                       $ {cell.render('Cell')}
                     </td>
@@ -194,6 +288,19 @@ export const Table = ({ lastQuarter }: TableProps) => {
             );
           })}
         </tbody>
+        <tfoot>
+          {footerGroups.map((group) => (
+            <tr {...group.getFooterGroupProps()}>
+              {group.headers.map((column) => {
+                return (
+                  <td {...column.getFooterProps()}>
+                    {column.render('Footer')}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tfoot>
       </table>
     </div>
   );

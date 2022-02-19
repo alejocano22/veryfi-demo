@@ -44,6 +44,21 @@ export const getLastQuarter = (): { startDate: string; endDate: string } => {
   };
 };
 
+export const toLastQuarterTable = (lastQuarter: QuarterCategoryI[]) => {
+  return lastQuarter.map((category) => {
+    const periods = {};
+    category.periods.forEach((period, index) => {
+      periods['budgetMonth' + (index + 1)] = period.budget;
+      periods['spentMonth' + (index + 1)] = period.spent;
+      periods['balanceMonth' + (index + 1)] = period.balance;
+    });
+    return {
+      category: category.name,
+      ...periods,
+    };
+  });
+};
+
 const categoriesLabelsMockData = [
   'Meals & Entertainment',
   'Advertising & Marketing',
