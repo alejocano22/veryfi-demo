@@ -8,7 +8,7 @@ import { useAppSelector } from '@redux/hooks';
 import Navbar from 'src/components/elements/navbars/Navbar';
 import BarChart from 'src/components/elements/charts/BarChart';
 import { userI } from 'src/redux/user/user.types';
-import { selectCategories } from 'src/redux/categories/categoriesSelectors';
+import { selectCategories } from 'src/redux/categories/categoriesSlice';
 import {
   createDate,
   getLastQuarter,

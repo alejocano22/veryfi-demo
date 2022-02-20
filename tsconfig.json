@@ -18,10 +18,19 @@
     "paths": {
       "@redux/hooks": ["src/redux/hooks"],
       "@redux/store": ["src/redux/store"],
+
+      "@redux/common/types": ["src/redux/common/common.types"],
+      "@redux/common/mappers": ["src/redux/common/common.mappers"],
+
       "@redux/user/slice": ["src/redux/user/userSlice"],
       "@redux/user/types": ["src/redux/user/user.types"],
       "@redux/user/mappers": ["src/redux/user/user.mappers"],
       "@redux/user/services": ["src/redux/user/user.services"],
+
+      "@redux/categories/slice": ["src/redux/categories/categoriesSlice"],
+      "@redux/categories/types": ["src/redux/categories/categories.types"],
+      "@redux/categories/mappers": ["src/redux/categories/categories.mappers"],
+      "@redux/categories/thunks": ["src/redux/categories/categoriesThunks"],
 
       "@screens": ["src/screens/index"],
       "@footers": ["src/components/elements/footers/index"],

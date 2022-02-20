@@ -1,6 +1,6 @@
 import { createSlice, Slice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-import { userI } from './user.types';
+import { RootState } from '@redux/store';
+import { userI } from '@redux/user/types';
 
 const initialState: userI = {
   error: null,
