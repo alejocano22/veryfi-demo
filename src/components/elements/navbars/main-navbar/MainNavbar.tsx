@@ -90,7 +90,7 @@ export const MainNavbar = ({}: MainNavbarProps) => {
         >
           <ul className='list-reset lg:flex justify-end flex-1 items-center'>
             {navigation.map((item) => (
-              <li className='mr-3'>
+              <li key={item.name} className='mr-3'>
                 <a
                   className='inline-block text-white no-underline hover:text-gray-light py-2 px-4'
                   href={item.href}
@@ -104,12 +104,15 @@ export const MainNavbar = ({}: MainNavbarProps) => {
             </li>
             {pathname !== '/login' ? (
               <li className='mr-3'>
-                <button
-                  className='inline-block text-white no-underline hover:bg-purple-darker py-2 px-4 border-2 border-white rounded-md'
+                <Button
+                  variant='default'
+                  text={login}
+                  textColor='text-white'
+                  type='button'
+                  backgroundColor='bg-transparent'
+                  additionalCss='no-underline hover:bg-purple-darker py-2 px-4 border-2 border-white rounded-md'
                   onClick={() => routerPush('/login')}
-                >
-                  {login}
-                </button>
+                />
               </li>
             ) : (
               ''

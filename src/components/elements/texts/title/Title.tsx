@@ -7,7 +7,7 @@ export interface TitleProps {
   additionalCss?: string;
 }
 
-const Title = ({
+export const Title = ({
   id,
   text,
   variant,

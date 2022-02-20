@@ -6,7 +6,7 @@ export interface ParagraphProps {
   additionalCss?: string;
 }
 
-const Paragraph = ({
+export const Paragraph = ({
   id,
   text,
   color,

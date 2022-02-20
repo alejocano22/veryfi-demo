@@ -16,12 +16,14 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@redux-hooks": ["src/redux/hooks"],
+      "@redux/hooks": ["src/redux/hooks"],
+      "@redux/store": ["src/redux/store"],
       "@redux/user/slice": ["src/redux/user/userSlice"],
       "@redux/user/types": ["src/redux/user/user.types"],
       "@redux/user/mappers": ["src/redux/user/user.mappers"],
       "@redux/user/services": ["src/redux/user/user.services"],
 
+      "@screens": ["src/screens/index"],
       "@footers": ["src/components/elements/footers/index"],
       "@icons": ["src/components/elements/icons/index"],
       "@inputs": ["src/components/elements/inputs/index"],

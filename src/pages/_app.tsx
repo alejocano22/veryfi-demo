@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
+import { wrapper } from '@redux/store';
 import '../styles/globals.css';
-import { wrapper } from '../redux/store';
 
 export function App({ Component, pageProps: { session, ...pageProps } }) {
   return (

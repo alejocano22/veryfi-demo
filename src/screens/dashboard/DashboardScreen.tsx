@@ -4,7 +4,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { addUser } from '@redux/user/slice';
 import { loadCategories } from 'src/redux/categories/categoriesThunks';
 import { selectSession } from 'src/redux/user/userSlice';
-import { useAppSelector } from '@redux-hooks';
+import { useAppSelector } from '@redux/hooks';
 import Navbar from 'src/components/elements/navbars/Navbar';
 import BarChart from 'src/components/elements/charts/BarChart';
 import { userI } from 'src/redux/user/user.types';
