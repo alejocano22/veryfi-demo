@@ -1,81 +1,197 @@
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 import { useMemo } from 'react';
-import { useTable } from 'react-table';
+import { useTable, useGroupBy, useExpanded, useSortBy } from 'react-table';
+import { toLastQuarterTable } from 'src/utils/categories';
 
 export interface TableProps {
   lastQuarter: QuarterCategoryI[];
+  months: string[];
 }
 
-export const Table = ({ lastQuarter }: TableProps) => {
-  const data = useMemo(
-    () => [
-      {
-        col1: '',
-        col2: 'Spent (USD)',
-        // spent: 'Spent (USD)',
-        col3: 'Spent (USD)',
-        col4: 'Spent (USD)',
-      },
-      {
-        col1: lastQuarter[0].name,
-        col2: `$ ${lastQuarter[0].periods[0].spent}`,
-        col3: `$ ${lastQuarter[0].periods[1].spent}`,
-        col4: `$ ${lastQuarter[0].periods[2].spent}`,
-      },
-      {
-        col1: lastQuarter[1].name,
-        col2: `$ ${lastQuarter[1].periods[0].spent}`,
-        col3: `$ ${lastQuarter[1].periods[1].spent}`,
-        col4: `$ ${lastQuarter[1].periods[2].spent}`,
-      },
-      {
-        col1: lastQuarter[2].name,
-        col2: `$ ${lastQuarter[2].periods[0].spent}`,
-        col3: `$ ${lastQuarter[2].periods[1].spent}`,
-        col4: `$ ${lastQuarter[2].periods[2].spent}`,
-      },
-    ],
-    []
-  );
-
+export const Table = ({ lastQuarter, months }: TableProps) => {
+  const data = useMemo(() => [...toLastQuarterTable(lastQuarter)], []);
   const columns = useMemo(
     () => [
       {
-        Header: 'Categories',
-        accessor: 'col1', // accessor is the "key" in the data
+        Header: 'Category',
+        accessor: 'category',
+        Footer: 'Total',
       },
       {
-        Header: 'October 2021',
-        accessor: 'col2',
-        // column: [
-        //   {
-        //     Header: 'Budget',
-        //     accessor: 'budget',
-        //     aggregate: 'average',
-        //     Aggregated: ({ value }) => `${Math.round(value * 100) / 100} (avg)`,
-        //   },
-        //   {
-        //     Header: 'Spent',
-        //     accessor: 'spent',
-        //     aggregate: 'average',
-        //     Aggregated: ({ value }) => `${Math.round(value * 100) / 100} (avg)`,
-        //   },
-        // ],
+        Header: months[0],
+        Footer: '',
+        columns: [
+          {
+            Header: 'Budget',
+            accessor: 'budgetMonth0',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.budgetMonth0 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
+          },
+          {
+            Header: 'Spent',
+            accessor: 'spentMonth0',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.spentMonth0 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
+          },
+          {
+            Header: 'Balance',
+            accessor: 'balanceMonth0',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.balanceMonth0 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
+          },
+        ],
       },
       {
-        Header: 'November 2021',
-        accessor: 'col3',
+        Header: months[1],
+        Footer: '',
+        columns: [
+          {
+            Header: 'Budget',
+            accessor: 'budgetMonth1',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.budgetMonth1 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
+          },
+          {
+            Header: 'Spent',
+            accessor: 'spentMonth1',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.spentMonth1 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
+          },
+          {
+            Header: 'Balance',
+            accessor: 'balanceMonth1',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.balanceMonth1 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
+          },
+        ],
       },
       {
-        Header: 'December 2021',
-        accessor: 'col4',
+        Header: months[2],
+        Footer: '',
+        columns: [
+          {
+            Header: 'Budget',
+            accessor: 'budgetMonth2',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.budgetMonth2 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
+          },
+          {
+            Header: 'Spent',
+            accessor: 'spentMonth2',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.spentMonth2 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
+          },
+          {
+            Header: 'Balance',
+            accessor: 'balanceMonth2',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.balanceMonth2 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
+          },
+        ],
       },
     ],
     []
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
-  const firstPageRows = rows.slice(0, 100);
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    footerGroups,
+  } = useTable(
+    {
+      columns,
+      data,
+    },
+    useGroupBy,
+
+    useSortBy,
+    useExpanded
+  );
+
   return (
     <div className='sm:px-6 border-2 rounded-md border-gray-lighter bg-gray-lighter pb-4'>
       <h1 className='text-xl text-center text-purple-dark my-4'>
@@ -86,25 +202,40 @@ export const Table = ({ lastQuarter }: TableProps) => {
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
+              {headerGroup.headers.map((column, index) => (
                 <th
-                  {...column.getHeaderProps()}
-                  className='text-left pr-6 text-purple-dark'
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  className={[
+                    'p-1',
+                    index === 0 ? '' : 'border-2 border-gray-light',
+                  ].join(' ')}
                 >
-                  {column.canGroupBy ? (
-                    // If the column can be grouped, let's add a toggle
-                    <span {...column.getGroupByToggleProps()}>
-                      {column.isGrouped ? '🛑 ' : '👊 '}
-                    </span>
-                  ) : null}
-                  {column.render('Header')}
+                  <div className='flex items-center justify-center'>
+                    <h3>{column.render('Header')}</h3>
+
+                    <div className='h-3 w-3 ml-2'>
+                      {column.canSort ? (
+                        column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <ChevronDownIcon height={'10px'} width={'10px'} />
+                          ) : (
+                            <ChevronUpIcon height={'10px'} width={'10px'} />
+                          )
+                        ) : (
+                          <></>
+                        )
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                  </div>
                 </th>
               ))}
             </tr>
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {rows.map((row, i) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
@@ -112,9 +243,9 @@ export const Table = ({ lastQuarter }: TableProps) => {
                   return (
                     <td
                       {...cell.getCellProps()}
-                      className='px-4 border-2 border-gray-light rounded-md '
+                      className='py-2 px-4 border-2 border-gray-light text-left'
                     >
-                      {cell.render('Cell')}
+                      $ {cell.render('Cell')}
                     </td>
                   );
                 })}
@@ -122,6 +253,19 @@ export const Table = ({ lastQuarter }: TableProps) => {
             );
           })}
         </tbody>
+        <tfoot>
+          {footerGroups.map((group) => (
+            <tr {...group.getFooterGroupProps()}>
+              {group.headers.map((column) => {
+                return (
+                  <td {...column.getFooterProps()}>
+                    {column.render('Footer')}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tfoot>
       </table>
     </div>
   );

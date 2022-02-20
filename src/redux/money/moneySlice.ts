@@ -5,7 +5,10 @@ import { loadMoneyIn, loadMoneyOut, loaLastQuarter } from './moneyThunks';
 const initialState: moneySliceI = {
   in: null,
   out: null,
-  lastQuarter: null,
+  lastQuarter: {
+    categories: null,
+    months: null,
+  },
 };
 
 export const moneySlice: Slice = createSlice({
@@ -26,9 +29,15 @@ export const moneySlice: Slice = createSlice({
 });
 
 export const selectMoneyIn = (state: RootState): moneyI => state.moneySlice.in;
+
 export const selectMoneyOut = (state: RootState): moneyI =>
   state.moneySlice.out;
-export const selectLastQuarter = (state: RootState): QuarterCategoryI[] =>
-  state.moneySlice.lastQuarter;
+
+export const selectLastQuarterCategories = (
+  state: RootState
+): QuarterCategoryI[] => state.moneySlice.lastQuarter.categories;
+
+export const selectLastQuarterMonths = (state: RootState): string[] =>
+  state.moneySlice.lastQuarter.months;
 
 export default moneySlice.reducer;

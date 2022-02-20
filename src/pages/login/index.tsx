@@ -30,7 +30,7 @@ export default function Login({ csrfToken, providers }) {
         <title>Login</title>
         <meta name='description' content='Veryfi login' />
       </Head>
-      <LoginScreen csrfToken={csrfToken} providers={providers} />
+      <LoginScreen csrfToken={csrfToken} />
     </div>
   );
 }

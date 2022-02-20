@@ -57,10 +57,12 @@ export const loaLastQuarter = createAsyncThunk(
     session,
     startDate,
     endDate,
+    months,
   }: {
     session: string;
     startDate: string;
     endDate: string;
+    months: string[];
   }) => {
     const response = await axios.post(
       `${process.env.NEXTAUTH_URL}/api/money/last-quarter`,
@@ -70,6 +72,6 @@ export const loaLastQuarter = createAsyncThunk(
         endDate,
       }
     );
-    return responseToQuarterCategoriesModel(response.data.categories);
+    return responseToQuarterCategoriesModel(response.data, months);
   }
 );

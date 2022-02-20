@@ -1,18 +1,17 @@
+import { NextApiHandler } from 'next';
+import NextAuth from 'next-auth';
 import {
   responseToModel,
   userToModel,
 } from './../../../screens/login/Login.mappers';
-import { useAppDispatch } from '@redux-hooks';
-import { addUser } from '@redux/user/slice';
-import { NextApiHandler } from 'next';
-import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { loginService } from '../../../screens/login/Login.service';
-import { AppStore } from '../../../redux/store';
-import { JWT } from 'next-auth/jwt';
 
 const authHandler: NextApiHandler = (req, res) =>
   NextAuth(req, res, {
+    session: {
+      maxAge: 15 * 60, // 15 mins
+    },
     providers: [
       CredentialsProvider({
         name: 'Credentials',
