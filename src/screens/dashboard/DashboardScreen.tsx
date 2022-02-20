@@ -5,8 +5,8 @@ import { addUser } from '@redux/user/slice';
 import { loadCategories } from 'src/redux/categories/categoriesThunks';
 import { selectSession } from 'src/redux/user/userSelectors';
 import { useAppSelector } from '@redux-hooks';
-import Navbar from 'src/components/elements/navbar/Navbar';
-import BarChart from 'src/components/elements/chart/BarChart';
+import Navbar from 'src/components/elements/navbars/Navbar';
+import BarChart from 'src/components/elements/charts/BarChart';
 import { userI } from 'src/redux/user/userInterfaces';
 import { selectCategories } from 'src/redux/categories/categoriesSelectors';
 import {
@@ -20,13 +20,13 @@ import { handleTagsChartData } from 'src/utils/tags';
 import { handleProjectsChartData } from 'src/utils/projects';
 import { selectProjects } from 'src/redux/projects/tagsSelectors';
 import { loadProjects } from 'src/redux/projects/projectsThunks';
-import Sidebar from 'src/components/elements/navbar/SideBar';
+import Sidebar from 'src/components/elements/navbars/SideBar';
 import {
   loadMoneyIn,
   loadMoneyOut,
   loaLastQuarter,
 } from 'src/redux/money/moneyThunks';
-import BarLineChart from 'src/components/elements/chart/BarLineChart';
+import BarLineChart from 'src/components/elements/charts/BarLineChart';
 import {
   selectLastQuarterCategories,
   selectLastQuarterMonths,
@@ -36,7 +36,7 @@ import {
 import { getNetAmount } from 'src/utils/money';
 import Table from 'src/components/elements/table/Table';
 import { useRouter } from 'next/router';
-import { i18nMessages } from 'src/i18n/messages';
+import { i18nCommon } from 'src/i18n/common';
 
 export interface DashboardScreenProps {
   user: userI;
@@ -76,7 +76,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   });
   const watch = useWatch({ control });
 
-  const { months } = i18nMessages[locale];
+  const { months } = i18nCommon[locale];
 
   useEffect(() => {
     dispatch(addUser({ value: { ...user } }));

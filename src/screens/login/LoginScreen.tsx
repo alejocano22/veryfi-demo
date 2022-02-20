@@ -2,8 +2,8 @@ import { useRouter } from 'next/router';
 import { i18nLogin } from '../../i18n/login';
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
 import { useState } from 'react';
-import MainNavbar from '../../components/elements/navbar/MainNavbar';
-import Footer from '../../components/elements/footers/Footer';
+import MainNavbar from '../../components/elements/navbars/main-navbar/MainNavbar';
+import MainFooter from '../../components/elements/footers/main-footer/MainFooter';
 import { useDispatch } from 'react-redux';
 import { addUser } from '@redux/user/slice';
 
@@ -103,7 +103,7 @@ export default function LoginScreen({ csrfToken }: LoginScreenProps) {
           </form>
         </div>
       </div>
-      <Footer />
+      <MainFooter />
     </>
   );
 }

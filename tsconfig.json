@@ -18,7 +18,13 @@
     "paths": {
       "@redux-hooks": ["src/redux/hooks"],
       "@redux/user/slice": ["src/redux/user/userSlice"],
-      "@redux/user/interface": ["src/redux/user/userInterface"]
+      "@redux/user/interface": ["src/redux/user/userInterface"],
+      "@footers": ["src/components/elements/footers/index"],
+      "@icons": ["src/components/elements/icons/index"],
+      "@inputs": ["src/components/elements/inputs/index"],
+      "@i18n": ["src/i18n/index"],
+      "@navbars": ["src/components/elements/navbars/index"],
+      "@texts": ["src/components/elements/texts/index"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],

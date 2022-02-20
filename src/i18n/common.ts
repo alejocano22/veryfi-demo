@@ -1,5 +1,6 @@
-export const i18nMessages = {
+export const i18nCommon = {
   en: {
+    footer: 'Veryfi demo | © 2022',
     months: [
       'January',
       'February',
@@ -16,6 +17,7 @@ export const i18nMessages = {
     ],
   },
   es: {
+    footer: 'Veryfi demo | © 2022',
     months: [
       'Enero',
       'Febrero',
