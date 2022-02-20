@@ -239,16 +239,14 @@ export const Table = ({ lastQuarter, months }: TableProps) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map((cell, index) => {
-                  return index > 0 ? (
+                {row.cells.map((cell) => {
+                  return (
                     <td
                       {...cell.getCellProps()}
                       className='py-2 px-4 border-2 border-gray-light text-left'
                     >
                       $ {cell.render('Cell')}
                     </td>
-                  ) : (
-                    ''
                   );
                 })}
               </tr>
