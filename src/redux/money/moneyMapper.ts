@@ -6,9 +6,15 @@ export const responseToMoneyModel = (money: any): moneyI => {
 };
 
 export const responseToQuarterCategoriesModel = (
-  quarterCategories: any[]
-): QuarterCategoryI[] => {
-  return quarterCategories.map((category) => toQuarterCategoryModel(category));
+  quarter: any[],
+  months: string[]
+): QuarterI => {
+  return {
+    categories: quarter['categories'].map((category) =>
+      toQuarterCategoryModel(category)
+    ),
+    months: getQuarterMonths(quarter['periods'], months),
+  };
 };
 
 const toQuarterCategoryModel = (category: any): QuarterCategoryI => {
@@ -30,4 +36,12 @@ const toQuarterPeriodModel = (period: any): QuarterPeriodI => {
     budget: period['budget'],
     spent: period['spent'],
   };
+};
+
+const getQuarterMonths = (periods: any, months: string[]): string[] => {
+  const year = new Date(periods[0]['end_date']).getFullYear();
+  return periods.map(
+    (period: any) =>
+      `${months[new Date(period['end_date']).getMonth()]} ${year}`
+  );
 };

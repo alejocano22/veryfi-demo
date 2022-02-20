@@ -48,15 +48,23 @@ export const toLastQuarterTable = (lastQuarter: QuarterCategoryI[]) => {
   return lastQuarter.map((category) => {
     const periods = {};
     category.periods.forEach((period, index) => {
-      periods['budgetMonth' + (index + 1)] = period.budget;
-      periods['spentMonth' + (index + 1)] = period.spent;
-      periods['balanceMonth' + (index + 1)] = period.balance;
+      periods['budgetMonth' + index] = period.budget;
+      periods['spentMonth' + index] = period.spent;
+      periods['balanceMonth' + index] = period.balance;
     });
     return {
       category: category.name,
       ...periods,
     };
   });
+};
+
+export const createDate = (days: number, months: number, years: number) => {
+  var date = new Date();
+  date.setDate(date.getDate() + days);
+  date.setMonth(date.getMonth() + months);
+  date.setFullYear(date.getFullYear() + years);
+  return date;
 };
 
 const categoriesLabelsMockData = [

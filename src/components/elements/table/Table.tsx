@@ -1,58 +1,15 @@
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 import { useMemo } from 'react';
 import { useTable, useGroupBy, useExpanded, useSortBy } from 'react-table';
 import { toLastQuarterTable } from 'src/utils/categories';
 
 export interface TableProps {
   lastQuarter: QuarterCategoryI[];
+  months: string[];
 }
 
-export const Table = ({ lastQuarter }: TableProps) => {
-  console.log('from redux', lastQuarter);
-  const d = toLastQuarterTable(lastQuarter);
-  console.log('new data', d);
-  const data = useMemo(
-    () => [
-      ...d,
-      // {
-      //   category: 'A',
-      //   budgetMonth1: 1,
-      //   spentMonth1: 2,
-      //   balanceMonth1: 64,
-      //   budgetMonth2: 1,
-      //   spentMonth2: 3,
-      //   balanceMonth2: 64,
-      //   budgetMonth3: 2,
-      //   spentMonth3: 28,
-      //   balanceMonth3: 64,
-      // },
-      // {
-      //   category: 'B',
-      //   budgetMonth1: 2,
-      //   spentMonth1: 28,
-      //   balanceMonth1: 64,
-      //   budgetMonth2: 2,
-      //   spentMonth2: 28,
-      //   balanceMonth2: 64,
-      //   budgetMonth3: 2,
-      //   spentMonth3: 28,
-      //   balanceMonth3: 64,
-      // },
-      // {
-      //   category: 'C',
-      //   budgetMonth1: 3,
-      //   spentMonth1: 28,
-      //   balanceMonth1: 64,
-      //   budgetMonth2: 2,
-      //   spentMonth2: 28,
-      //   balanceMonth2: 64,
-      //   budgetMonth3: 2,
-      //   spentMonth3: 28,
-      //   balanceMonth3: 64,
-      // },
-    ],
-    []
-  );
-
+export const Table = ({ lastQuarter, months }: TableProps) => {
+  const data = useMemo(() => [...toLastQuarterTable(lastQuarter)], []);
   const columns = useMemo(
     () => [
       {
@@ -61,7 +18,58 @@ export const Table = ({ lastQuarter }: TableProps) => {
         Footer: 'Total',
       },
       {
-        Header: 'OCTOBER 2021',
+        Header: months[0],
+        Footer: '',
+        columns: [
+          {
+            Header: 'Budget',
+            accessor: 'budgetMonth0',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.budgetMonth0 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
+          },
+          {
+            Header: 'Spent',
+            accessor: 'spentMonth0',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.spentMonth0 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
+          },
+          {
+            Header: 'Balance',
+            accessor: 'balanceMonth0',
+            Footer: (info) => {
+              const total = useMemo(
+                () =>
+                  info.rows.reduce(
+                    (sum, row) => row.values.balanceMonth0 + sum,
+                    0
+                  ),
+                [info.rows]
+              );
+              return `$ ${total}`;
+            },
+          },
+        ],
+      },
+      {
+        Header: months[1],
         Footer: '',
         columns: [
           {
@@ -112,7 +120,7 @@ export const Table = ({ lastQuarter }: TableProps) => {
         ],
       },
       {
-        Header: 'NOVEMBER 2021',
+        Header: months[2],
         Footer: '',
         columns: [
           {
@@ -162,57 +170,6 @@ export const Table = ({ lastQuarter }: TableProps) => {
           },
         ],
       },
-      {
-        Header: 'DECEMBER 2021',
-        Footer: '',
-        columns: [
-          {
-            Header: 'Budget',
-            accessor: 'budgetMonth3',
-            Footer: (info) => {
-              const total = useMemo(
-                () =>
-                  info.rows.reduce(
-                    (sum, row) => row.values.budgetMonth3 + sum,
-                    0
-                  ),
-                [info.rows]
-              );
-              return `$ ${total}`;
-            },
-          },
-          {
-            Header: 'Spent',
-            accessor: 'spentMonth3',
-            Footer: (info) => {
-              const total = useMemo(
-                () =>
-                  info.rows.reduce(
-                    (sum, row) => row.values.spentMonth3 + sum,
-                    0
-                  ),
-                [info.rows]
-              );
-              return `$ ${total}`;
-            },
-          },
-          {
-            Header: 'Balance',
-            accessor: 'balanceMonth3',
-            Footer: (info) => {
-              const total = useMemo(
-                () =>
-                  info.rows.reduce(
-                    (sum, row) => row.values.balanceMonth3 + sum,
-                    0
-                  ),
-                [info.rows]
-              );
-              return `$ ${total}`;
-            },
-          },
-        ],
-      },
     ],
     []
   );
@@ -249,21 +206,29 @@ export const Table = ({ lastQuarter }: TableProps) => {
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   className={[
-                    'p-2',
+                    'p-1',
                     index === 0 ? '' : 'border-2 border-gray-light',
                   ].join(' ')}
                 >
-                  {column.render('Header')}
+                  <div className='flex items-center justify-center'>
+                    <h3>{column.render('Header')}</h3>
 
-                  <span>
-                    {column.canSort
-                      ? column.isSorted
-                        ? column.isSortedDesc
-                          ? ' 🔽'
-                          : ' 🔼'
-                        : ' ⏺'
-                      : ''}
-                  </span>
+                    <div className='h-3 w-3 ml-2'>
+                      {column.canSort ? (
+                        column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <ChevronDownIcon height={'10px'} width={'10px'} />
+                          ) : (
+                            <ChevronUpIcon height={'10px'} width={'10px'} />
+                          )
+                        ) : (
+                          <></>
+                        )
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                  </div>
                 </th>
               ))}
             </tr>
