@@ -1,4 +1,4 @@
-import { Scatter, Bar, Chart } from 'react-chartjs-2';
+import { Chart } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,6 +9,7 @@ import {
   Legend,
   PointElement,
   LineElement,
+  LineController,
 } from 'chart.js';
 import { triggerAsyncId } from 'async_hooks';
 ChartJS.register(
@@ -19,7 +20,8 @@ ChartJS.register(
   Tooltip,
   Legend,
   PointElement,
-  LineElement
+  LineElement,
+  LineController
 );
 
 export interface BarLineChartProps {
