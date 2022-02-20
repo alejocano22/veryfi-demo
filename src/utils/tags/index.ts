@@ -1,4 +1,4 @@
-import { tagI } from './../../redux/tags/tagsInterfaces';
+import { tagI } from '../../redux/tags/tags.types';
 import { BarChartProps } from 'src/components/elements/charts/BarChart';
 
 export const handleTagsChartData = (tags: tagI[]): BarChartProps => {

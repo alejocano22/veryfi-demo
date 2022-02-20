@@ -15,7 +15,7 @@ import {
   handleCategoriesChartData,
 } from 'src/utils/categories';
 import { loadTags } from 'src/redux/tags/tagsThunks';
-import { selectTags } from 'src/redux/tags/tagsSelectors';
+import { selectTags } from '@redux/tags/slice';
 import { handleTagsChartData } from 'src/utils/tags';
 import { handleProjectsChartData } from 'src/utils/projects';
 import { selectProjects } from 'src/redux/projects/tagsSelectors';

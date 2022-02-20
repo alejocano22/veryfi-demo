@@ -32,6 +32,11 @@
       "@redux/categories/mappers": ["src/redux/categories/categories.mappers"],
       "@redux/categories/thunks": ["src/redux/categories/categoriesThunks"],
 
+      "@redux/tags/slice": ["src/redux/tags/tagsSlice"],
+      "@redux/tags/types": ["src/redux/tags/tags.types"],
+      "@redux/tags/mappers": ["src/redux/tags/tags.mappers"],
+      "@redux/tags/thunks": ["src/redux/tags/tagsThunks"],
+
       "@screens": ["src/screens/index"],
       "@footers": ["src/components/elements/footers/index"],
       "@icons": ["src/components/elements/icons/index"],
