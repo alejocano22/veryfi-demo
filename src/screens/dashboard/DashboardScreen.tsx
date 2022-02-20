@@ -3,11 +3,11 @@ import { useDispatch } from 'react-redux';
 import { useForm, useWatch } from 'react-hook-form';
 import { addUser } from '@redux/user/slice';
 import { loadCategories } from 'src/redux/categories/categoriesThunks';
-import { selectSession } from 'src/redux/user/userSelectors';
+import { selectSession } from 'src/redux/user/userSlice';
 import { useAppSelector } from '@redux-hooks';
 import Navbar from 'src/components/elements/navbars/Navbar';
 import BarChart from 'src/components/elements/charts/BarChart';
-import { userI } from 'src/redux/user/userInterfaces';
+import { userI } from 'src/redux/user/user.types';
 import { selectCategories } from 'src/redux/categories/categoriesSelectors';
 import {
   createDate,
@@ -79,7 +79,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   const { months } = i18nCommon[locale];
 
   useEffect(() => {
-    dispatch(addUser({ value: { ...user } }));
+    dispatch(addUser({ ...user }));
     if (session) {
       fetch();
     } else {

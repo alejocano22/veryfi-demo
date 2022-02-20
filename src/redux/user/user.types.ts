@@ -4,10 +4,7 @@ export interface userI {
   firstName: string;
   lastName: string;
   email: string;
-  username: string;
   companyName: string;
-  created: string;
   session: string;
-  status: string;
   type: string;
 }
