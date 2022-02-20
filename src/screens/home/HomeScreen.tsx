@@ -30,7 +30,11 @@ export default function HomeScreen() {
               color='text-white'
               additionalCss='leading-normal mb-8'
             />
-            <Button text={startButton} onClick={() => routerPush('/login')} />
+            <Button
+              text={startButton}
+              variant='action'
+              onClick={() => routerPush('/login')}
+            />
           </div>
 
           <div className='w-full md:w-3/5 py-6 z-20 text-center'>

@@ -1,5 +1,9 @@
 export const i18nCommon = {
   en: {
+    productsNavbar: 'Products',
+    pricingNavbar: 'Pricing',
+    resourcesNavbar: 'Resources',
+    login: 'Login',
     footer: 'Veryfi demo | © 2022',
     months: [
       'January',
@@ -17,6 +21,10 @@ export const i18nCommon = {
     ],
   },
   es: {
+    productsNavbar: 'Productos',
+    pricingNavbar: 'Tarifas',
+    resourcesNavbar: 'Recursos',
+    login: 'Iniciar sesión',
     footer: 'Veryfi demo | © 2022',
     months: [
       'Enero',

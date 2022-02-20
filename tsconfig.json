@@ -24,7 +24,8 @@
       "@inputs": ["src/components/elements/inputs/index"],
       "@i18n": ["src/i18n/index"],
       "@navbars": ["src/components/elements/navbars/index"],
-      "@texts": ["src/components/elements/texts/index"]
+      "@texts": ["src/components/elements/texts/index"],
+      "@language": ["src/components/elements/language/index"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],

@@ -1,16 +1,22 @@
-import { MenuIcon, XIcon } from '@heroicons/react/outline';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
-import Language from '../../../utils/language/Language';
+import { useRouter } from 'next/router';
+import { i18nCommon } from '@i18n';
+import { Language } from '@language';
+import { Button } from '@inputs';
+
 export interface MainNavbarProps {}
-const navigation = [
-  { name: 'Blogs', href: '#' },
-  { name: 'Solutions', href: '#' },
-  { name: 'Pricing', href: '#' },
-];
+
 export const MainNavbar = ({}: MainNavbarProps) => {
-  const { push: routerPush, pathname } = useRouter();
+  const { push: routerPush, pathname, locale } = useRouter();
   const [isMobileMenu, setIsMobileMenu] = useState<boolean>(false);
+  const { productsNavbar, pricingNavbar, resourcesNavbar, login } =
+    i18nCommon[locale];
+  const navigation = [
+    { name: productsNavbar, href: '#' },
+    { name: pricingNavbar, href: '#' },
+    { name: resourcesNavbar, href: '#' },
+  ];
+
   return (
     <nav className='fixed w-full z-30 top-0 bg-gradient-to-r from-purple to-purple-darker py-4'>
       <div className='w-full container mx-auto flex flex-wrap items-center justify-between mt-0'>
@@ -21,30 +27,44 @@ export const MainNavbar = ({}: MainNavbarProps) => {
           <img src='/images/veryfi-logo.png' height={50} width={50}></img>
         </div>
         <div className='block lg:hidden pr-4'>
-          <button
-            className='flex items-center p-1 hover:text-gray0 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out'
+          <Button
+            variant='default'
+            type='button'
+            icon='burger'
+            backgroundColor='bg-transparent'
+            additionalCss='flex items-center p-1 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out'
+            iconColor='white'
+            iconHeight={32}
+            iconWidth={32}
             onClick={() => setIsMobileMenu(true)}
-          >
-            <MenuIcon className='text-white w-8 h-8'></MenuIcon>
-          </button>
+          />
         </div>
         {isMobileMenu ? (
           <div className='absolute z-10 top-0 inset-x-0 p-2 transition transform origin-top-right lg:hidden'>
             <div className='rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden'>
-              <button className='absolute rounded-md p-2 inline-flex justify-end  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 mr-5'>
-                <span className='sr-only'>Close main menu</span>
-                <XIcon
-                  className='h-6 w-6'
-                  aria-hidden='true'
-                  onClick={() => setIsMobileMenu(false)}
-                />
-              </button>
+              <Button
+                variant='default'
+                type='button'
+                icon='x'
+                backgroundColor='bg-transparent'
+                additionalCss='absolute rounded-md p-2 focus:outline-none'
+                iconColor='purple-darker'
+                iconHeight={24}
+                iconWidth={24}
+                onClick={() => setIsMobileMenu(false)}
+              />
+              <Language
+                iconColor='purple-darker'
+                textColor='purple-darker'
+                textHoverColor='text-purple-light'
+                additionalCss='m-2 justify-end'
+              />
               <div className='px-2 pt-2 pb-3 space-y-1'>
                 {navigation.map((item) => (
                   <a
                     key={item.name}
                     href={item.href}
-                    className='block w-full px-5 py-1 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100'
+                    className='block w-full px-5 py-1 text-center font-medium text-purple-darker hover:text-purple-light'
                   >
                     {item.name}
                   </a>
@@ -57,7 +77,7 @@ export const MainNavbar = ({}: MainNavbarProps) => {
                   routerPush('/login');
                 }}
               >
-                Log in
+                {login}
               </button>
             </div>
           </div>
@@ -69,30 +89,16 @@ export const MainNavbar = ({}: MainNavbarProps) => {
           id='nav-content'
         >
           <ul className='list-reset lg:flex justify-end flex-1 items-center'>
-            <li className='mr-3'>
-              <a
-                className='inline-block py-2 px-4 text-white font-bold no-underline'
-                href='#'
-              >
-                Blogs
-              </a>
-            </li>
-            <li className='mr-3'>
-              <a
-                className='inline-block text-white no-underline hover:text-gray-800 hover:text-underline py-2 px-4'
-                href='#'
-              >
-                Solutions
-              </a>
-            </li>
-            <li className='mr-3'>
-              <a
-                className='inline-block text-white no-underline hover:text-gray-800 hover:text-underline py-2 px-4'
-                href='#'
-              >
-                Pricing
-              </a>
-            </li>
+            {navigation.map((item) => (
+              <li className='mr-3'>
+                <a
+                  className='inline-block text-white no-underline hover:text-gray-light py-2 px-4'
+                  href={item.href}
+                >
+                  {item.name}
+                </a>
+              </li>
+            ))}
             <li className='mr-3'>
               <Language />
             </li>
@@ -102,7 +108,7 @@ export const MainNavbar = ({}: MainNavbarProps) => {
                   className='inline-block text-white no-underline hover:bg-purple-darker py-2 px-4 border-2 border-white rounded-md'
                   onClick={() => routerPush('/login')}
                 >
-                  {'Login'}
+                  {login}
                 </button>
               </li>
             ) : (

@@ -1,7 +1,7 @@
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import Language from '../../utils/language/Language';
+import { Language } from '@language';
 import { useSession, signOut } from 'next-auth/react';
 
 export interface NavbarProps {}
