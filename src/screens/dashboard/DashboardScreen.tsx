@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useForm, useWatch } from 'react-hook-form';
 import { addUser } from '@redux/user/slice';
 import { loadCategories } from 'src/redux/categories/categoriesThunks';
 import { selectSession } from 'src/redux/user/userSelectors';
@@ -9,6 +10,7 @@ import BarChart from 'src/components/elements/chart/BarChart';
 import { userI } from 'src/redux/user/userInterfaces';
 import { selectCategories } from 'src/redux/categories/categoriesSelectors';
 import {
+  createDate,
   getLastQuarter,
   handleCategoriesChartData,
 } from 'src/utils/categories';
@@ -26,18 +28,22 @@ import {
 } from 'src/redux/money/moneyThunks';
 import BarLineChart from 'src/components/elements/chart/BarLineChart';
 import {
-  selectLastQuarter,
+  selectLastQuarterCategories,
+  selectLastQuarterMonths,
   selectMoneyIn,
   selectMoneyOut,
 } from 'src/redux/money/moneySlice';
 import { getNetAmount } from 'src/utils/money';
 import Table from 'src/components/elements/table/Table';
+import { useRouter } from 'next/router';
+import { i18nMessages } from 'src/i18n/messages';
 
 export interface DashboardScreenProps {
   user: userI;
 }
 
 export default function DashboardScree({ user }: DashboardScreenProps) {
+  const { push: routerPush, locale } = useRouter();
   const dispatch = useDispatch();
   const session = useAppSelector(selectSession);
   const categories = handleCategoriesChartData(
@@ -48,59 +54,84 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   const tags = handleTagsChartData(useAppSelector(selectTags));
   const moneyIn = useAppSelector(selectMoneyIn);
   const moneyOut = useAppSelector(selectMoneyOut);
-  const lastQuarter = useAppSelector(selectLastQuarter);
+  const lastQuarterCategories = useAppSelector(selectLastQuarterCategories);
+  const lastQuarterMonths = useAppSelector(selectLastQuarterMonths);
 
   const [chart, setChart] = useState(0);
+  const [startDate, setStartDate] = useState('2000-01-01');
+  const [endDate, setEndDate] = useState(
+    new Date().toISOString().split('T')[0]
+  );
+
+  const today = new Date().toISOString().split('T')[0];
+  const defaultEndDate = createDate(0, 0, -1).toISOString().split('T')[0];
+
+  const { register, control, getValues } = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    defaultValues: {
+      startDate: defaultEndDate,
+      endDate: today,
+    },
+  });
+  const watch = useWatch({ control });
+
+  const { months } = i18nMessages[locale];
 
   useEffect(() => {
     dispatch(addUser({ value: { ...user } }));
     if (session) {
       fetch();
+    } else {
+      routerPush('/dashboard');
     }
-  }, [session]);
+  }, [session, watch]);
 
   const fetch = () => {
-    const { startDate, endDate } = getLastQuarter();
+    const quarterTimes = getLastQuarter();
+    const startDate = watch.startDate;
+    const endDate = watch.endDate;
     dispatch(
       loadCategories({
         session,
-        startDate: '2000-01-01',
-        endDate: '2022-02-14',
+        startDate,
+        endDate,
       })
     );
     dispatch(
       loadTags({
         session,
-        startDate: '2000-01-01',
-        endDate: '2022-02-14',
+        startDate,
+        endDate,
       })
     );
     dispatch(
       loadProjects({
         session,
-        startDate: '2000-01-01',
-        endDate: '2022-02-14',
+        startDate,
+        endDate,
       })
     );
     dispatch(
       loadMoneyIn({
         session,
-        startDate: '2021-11-01',
-        endDate: '2022-02-14',
+        startDate,
+        endDate,
       })
     );
     dispatch(
       loadMoneyOut({
         session,
-        startDate: '2021-11-01',
-        endDate: '2022-02-14',
+        startDate,
+        endDate,
       })
     );
     dispatch(
       loaLastQuarter({
         session,
-        startDate: startDate,
-        endDate: endDate,
+        startDate: quarterTimes.startDate,
+        endDate: quarterTimes.endDate,
+        months: months,
       })
     );
   };
@@ -167,13 +198,36 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
           <Sidebar />
           <div className='flex-1'>
             <header className='bg-white shadow mt-20'>
-              <div className='max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8'>
+              <div className='flex items-center max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 gap-7'>
                 <h1 className='text-3xl font-bold text-purple-dark'>
                   Veryfi Dashboard
                 </h1>
+                <form className='flex gap-1 items-center'>
+                  <label>{'Start date:'}</label>
+                  <input
+                    className='border-2 rounded-md border-gray-light p-1 mr-5'
+                    id={'startDate'}
+                    name={'startDate'}
+                    type='date'
+                    min={defaultEndDate}
+                    max={getValues('endDate')}
+                    {...register('startDate')}
+                  />
+
+                  <label>{'End date:'}</label>
+                  <input
+                    className='border-2 rounded-md border-gray-light p-1'
+                    id={'endDate'}
+                    name={'endDate'}
+                    type='date'
+                    min={getValues('startDate')}
+                    max={today}
+                    {...register('endDate')}
+                  />
+                </form>
               </div>
             </header>
-            <main className='flex items-center justify-center flex-col'>
+            <main className='flex items-center justify-center flex-col mb-10'>
               <div className='flex flex-col gap-10 mx-10 justify-center items-end lg:flex-row max-w-7xl py-6 sm:px-6'>
                 <div className='flex flex-col justify-center items-center'>
                   <div className='w-full flex items-start gap-1'>
@@ -236,7 +290,14 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                 </div>
               </div>
               <div className='flex flex-col justify-center items-center mx-10'>
-                {lastQuarter ? <Table lastQuarter={lastQuarter} /> : ''}
+                {lastQuarterCategories ? (
+                  <Table
+                    lastQuarter={lastQuarterCategories}
+                    months={lastQuarterMonths}
+                  />
+                ) : (
+                  ''
+                )}
               </div>
             </main>
           </div>

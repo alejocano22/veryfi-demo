@@ -18,7 +18,7 @@ export const MainNavbar = ({}: MainNavbarProps) => {
           className='pl-4 flex items-center cursor-pointer space-x-1'
           onClick={() => routerPush('/')}
         >
-          <img src='./images/veryfi-logo.png' height={50} width={50}></img>
+          <img src='/images/veryfi-logo.png' height={50} width={50}></img>
         </div>
         <div className='block lg:hidden pr-4'>
           <button

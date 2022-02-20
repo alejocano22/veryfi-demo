@@ -9,13 +9,9 @@ import { addUser } from '@redux/user/slice';
 
 export interface LoginScreenProps {
   csrfToken: any;
-  providers: any;
 }
 
-export default function LoginScreen({
-  csrfToken,
-  providers,
-}: LoginScreenProps) {
+export default function LoginScreen({ csrfToken }: LoginScreenProps) {
   const [email, setEmail] = useState<string>('');
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<boolean>(false);
@@ -56,6 +52,7 @@ export default function LoginScreen({
             Welcome.
           </h2>
           <form>
+            <input type='hidden' value={csrfToken} required />
             <div className='mb-4'>
               <label className='block mb-1' id='email'>
                 Email

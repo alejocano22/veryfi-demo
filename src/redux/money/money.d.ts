@@ -1,12 +1,17 @@
 interface moneySliceI {
   in: moneyI;
   out: moneyI;
-  lastQuarter: QuarterCategoryI[];
+  lastQuarter: QuarterI;
 }
 
 interface moneyI {
   labels: string[];
   totals: number[];
+}
+
+interface QuarterI {
+  categories: QuarterCategoryI[];
+  months: string[];
 }
 
 interface QuarterCategoryI {

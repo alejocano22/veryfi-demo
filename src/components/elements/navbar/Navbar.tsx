@@ -13,7 +13,7 @@ const navigation = [
 ];
 
 export const Navbar = ({}: NavbarProps) => {
-  const { push: routerPush, locale } = useRouter();
+  const { push: routerPush, locale, asPath } = useRouter();
   const [isMobileMenu, setIsMobileMenu] = useState<boolean>(false);
   return (
     <nav className='fixed w-full z-30 top-0 bg-white py-4 border-b-2 border-purple-darker'>
@@ -22,7 +22,7 @@ export const Navbar = ({}: NavbarProps) => {
           className='pl-4 flex items-center cursor-pointer space-x-1'
           onClick={() => routerPush('/')}
         >
-          <img src='./images/veryfi-logo.png' height={50} width={50}></img>
+          <img src='/images/veryfi-logo.png' height={50} width={50}></img>
         </div>
         <div className='block lg:hidden pr-4'>
           <button
