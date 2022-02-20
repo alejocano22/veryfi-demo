@@ -13,7 +13,13 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@redux-hooks": ["src/redux/hooks"],
+      "@redux/user/slice": ["src/redux/user/userSlice"],
+      "@redux/user/interface": ["src/redux/user/userInterface"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],
   "exclude": ["node_modules"]

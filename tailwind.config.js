@@ -9,11 +9,11 @@ module.exports = {
   },
   theme: {
     colors: {
-      'purple-lighter': '#F2E6FF',
-      'purple-light': '#B066FF',
-      purple: '#6600CC',
-      'purple-dark': '#4D0099',
-      'purple-darker': '#0C001a',
+      'purple-lighter': '#C6B6F6',
+      'purple-light': '#AB93F1',
+      purple: '#9172EC',
+      'purple-dark': '#6751A9',
+      'purple-darker': '#292043',
       white: '#FFF',
       black: '#000',
       'gray-lighter': '#E6E6E6',

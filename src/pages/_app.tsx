@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
 import '../styles/globals.css';
+import { wrapper } from '../redux/store';
 
 export function App({ Component, pageProps: { session, ...pageProps } }) {
   return (
@@ -10,9 +11,9 @@ export function App({ Component, pageProps: { session, ...pageProps } }) {
           <link rel='icon' href='/images/favicon.ico' />
         </Head>
         <Component {...pageProps} />
-      </SessionProvider>{' '}
+      </SessionProvider>
     </>
   );
 }
 
-export default App;
+export default wrapper.withRedux(App);
