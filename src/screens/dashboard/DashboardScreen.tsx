@@ -1,70 +1,68 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, useWatch } from 'react-hook-form';
-import { addUser } from '@redux/user/slice';
-import { loadCategories } from 'src/redux/categories/categoriesThunks';
-import { selectSession } from 'src/redux/user/userSelectors';
-import { useAppSelector } from '@redux-hooks';
-import Navbar from 'src/components/elements/navbar/Navbar';
-import BarChart from 'src/components/elements/chart/BarChart';
-import { userI } from 'src/redux/user/userInterfaces';
-import { selectCategories } from 'src/redux/categories/categoriesSelectors';
+import { useRouter } from 'next/router';
+import { useAppSelector } from '@redux/hooks';
+import { i18nCommon, i18nDashboard } from '@i18n';
+import { addUser, selectSession } from '@redux/user/slice';
+import { userI } from '@redux/user/types';
+import { loadCategories } from '@redux/categories/thunks';
+import { selectCategories } from '@redux/categories/slice';
+import { loadTags } from '@redux/tags/thunks';
+import { selectTags } from '@redux/tags/slice';
+import { loadProjects } from '@redux/projects/thunks';
+import { selectProjects } from '@redux/projects/slice';
+import { loadMoneyIn, loadMoneyOut, loadQuarter } from '@redux/money/thunks';
 import {
-  createDate,
-  getLastQuarter,
-  handleCategoriesChartData,
-} from 'src/utils/categories';
-import { loadTags } from 'src/redux/tags/tagsThunks';
-import { selectTags } from 'src/redux/tags/tagsSelectors';
-import { handleTagsChartData } from 'src/utils/tags';
-import { handleProjectsChartData } from 'src/utils/projects';
-import { selectProjects } from 'src/redux/projects/tagsSelectors';
-import { loadProjects } from 'src/redux/projects/projectsThunks';
-import Sidebar from 'src/components/elements/navbar/SideBar';
-import {
-  loadMoneyIn,
-  loadMoneyOut,
-  loaLastQuarter,
-} from 'src/redux/money/moneyThunks';
-import BarLineChart from 'src/components/elements/chart/BarLineChart';
-import {
-  selectLastQuarterCategories,
-  selectLastQuarterMonths,
+  selectQuarterCategories,
+  selectQuarterMonths,
   selectMoneyIn,
   selectMoneyOut,
-} from 'src/redux/money/moneySlice';
-import { getNetAmount } from 'src/utils/money';
-import Table from 'src/components/elements/table/Table';
-import { useRouter } from 'next/router';
-import { i18nMessages } from 'src/i18n/messages';
+} from '@redux/money/slice';
+import { Navbar, Sidebar } from '@navbars';
+import { BarChart, BarLineChart } from '@charts';
+import { QuarterTable } from '@tables';
+import { getLastQuarter } from '@components/utils';
+import { createDate } from '@components/utils';
+import { getNetAmount } from '@components/utils';
+import { toBarChartData } from '@components/utils';
+import { Button } from '@inputs';
+import { Paragraph, Title } from '@texts';
 
 export interface DashboardScreenProps {
   user: userI;
 }
 
 export default function DashboardScree({ user }: DashboardScreenProps) {
-  const { push: routerPush, locale } = useRouter();
   const dispatch = useDispatch();
+  const [chart, setChart] = useState(0);
+  const { push: routerPush, locale } = useRouter();
   const session = useAppSelector(selectSession);
-  const categories = handleCategoriesChartData(
-    useAppSelector(selectCategories)
+  const categories = toBarChartData(
+    useAppSelector(selectCategories),
+    'category'
   );
-  const projects = handleProjectsChartData(useAppSelector(selectProjects));
-
-  const tags = handleTagsChartData(useAppSelector(selectTags));
+  const tags = toBarChartData(useAppSelector(selectTags), 'tags');
+  const projects = toBarChartData(useAppSelector(selectProjects), 'projects');
   const moneyIn = useAppSelector(selectMoneyIn);
   const moneyOut = useAppSelector(selectMoneyOut);
-  const lastQuarterCategories = useAppSelector(selectLastQuarterCategories);
-  const lastQuarterMonths = useAppSelector(selectLastQuarterMonths);
-
-  const [chart, setChart] = useState(0);
-  const [startDate, setStartDate] = useState('2000-01-01');
-  const [endDate, setEndDate] = useState(
-    new Date().toISOString().split('T')[0]
-  );
-
+  const lastQuarterCategories = useAppSelector(selectQuarterCategories);
+  const lastQuarterMonths = useAppSelector(selectQuarterMonths);
   const today = new Date().toISOString().split('T')[0];
   const defaultEndDate = createDate(0, 0, -1).toISOString().split('T')[0];
+  const {
+    categoriesTitle,
+    tagsTitle,
+    projectsTitle,
+    mockMessage,
+    moneyTitle,
+    quarterTitle,
+    budgetLabel,
+    spentLabel,
+    balanceLabel,
+  } = i18nDashboard[locale];
+  const { months } = i18nCommon[locale];
+  const tabsTitles = [categoriesTitle, tagsTitle, projectsTitle];
 
   const { register, control, getValues } = useForm({
     mode: 'onChange',
@@ -76,10 +74,8 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   });
   const watch = useWatch({ control });
 
-  const { months } = i18nMessages[locale];
-
   useEffect(() => {
-    dispatch(addUser({ value: { ...user } }));
+    dispatch(addUser({ ...user }));
     if (session) {
       fetch();
     } else {
@@ -127,7 +123,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
       })
     );
     dispatch(
-      loaLastQuarter({
+      loadQuarter({
         session,
         startDate: quarterTimes.startDate,
         endDate: quarterTimes.endDate,
@@ -141,168 +137,151 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
       default:
       case 0:
         return (
-          <div className='border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
-            <h1 className='text-xl text-center text-purple-dark my-4'>
-              {'Categories'}
-            </h1>
-            <div className='h-72 p-4 rounded-md'>
-              <BarChart
-                labels={categories?.labels}
-                values={categories?.values}
-                label={'Spent'}
-              />
-            </div>
-          </div>
+          <BarChart
+            labels={categories?.labels}
+            values={categories?.values}
+            label={'Spent'}
+          />
         );
 
       case 1:
         return (
-          <div className='border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
-            <h1 className='text-xl text-center text-purple-dark my-4'>
-              {'Tags'}
-            </h1>
-            <div className='h-72 p-4 rounded-md'>
-              <BarChart
-                labels={tags?.labels}
-                values={tags?.values}
-                label={'Spent'}
-              />
-            </div>
-          </div>
+          <BarChart
+            labels={tags?.labels}
+            values={tags?.values}
+            label={'Spent'}
+          />
         );
 
       case 2:
         return (
-          <div className='flex flex-col w-full border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
-            <h1 className='text-xl text-center text-purple-dark my-4'>
-              {'Projects'}
-            </h1>
-            <div className='h-72 p-4 rounded-md'>
-              <BarChart
-                labels={projects?.labels}
-                values={projects?.values}
-                label={'Spent'}
-              />
-            </div>
-          </div>
+          <BarChart
+            labels={projects?.labels}
+            values={projects?.values}
+            label={'Spent'}
+          />
         );
     }
   };
 
   return (
     <>
-      <div className='min-h-full'>
-        <Navbar />
+      <Navbar />
+      <div className='lg:h-auto flex'>
+        <Sidebar />
+        <div className='flex-1 bg-gray-lighter'>
+          <header className='bg-gray-lighter shadow mt-20'>
+            <div className='flex items-center max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 gap-7'>
+              <form className='flex gap-1 items-center  '>
+                <label>{'Start date:'}</label>
+                <input
+                  className='border-2 rounded-md border-gray-light p-1 mr-5'
+                  id={'startDate'}
+                  name={'startDate'}
+                  type='date'
+                  min={defaultEndDate}
+                  max={getValues('endDate')}
+                  {...register('startDate')}
+                />
 
-        <div className='flex'>
-          <Sidebar />
-          <div className='flex-1'>
-            <header className='bg-white shadow mt-20'>
-              <div className='flex items-center max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 gap-7'>
-                <h1 className='text-3xl font-bold text-purple-dark'>
-                  Veryfi Dashboard
-                </h1>
-                <form className='flex gap-1 items-center'>
-                  <label>{'Start date:'}</label>
-                  <input
-                    className='border-2 rounded-md border-gray-light p-1 mr-5'
-                    id={'startDate'}
-                    name={'startDate'}
-                    type='date'
-                    min={defaultEndDate}
-                    max={getValues('endDate')}
-                    {...register('startDate')}
-                  />
-
-                  <label>{'End date:'}</label>
-                  <input
-                    className='border-2 rounded-md border-gray-light p-1'
-                    id={'endDate'}
-                    name={'endDate'}
-                    type='date'
-                    min={getValues('startDate')}
-                    max={today}
-                    {...register('endDate')}
-                  />
-                </form>
-              </div>
-            </header>
-            <main className='flex items-center justify-center flex-col mb-10'>
-              <div className='flex flex-col gap-10 mx-10 justify-center items-end lg:flex-row max-w-7xl py-6 sm:px-6'>
-                <div className='flex flex-col justify-center items-center'>
-                  <div className='w-full flex items-start gap-1'>
-                    <button
-                      className={`border-2 border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2 ${
-                        chart === 0 ? 'bg-gray-lighter' : 'bg-white'
-                      }`}
-                      onClick={() => setChart(0)}
-                    >
-                      {'Categories'}
-                    </button>
-                    <button
-                      className={`border-2 border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2 ${
-                        chart === 1 ? 'bg-gray-lighter' : 'bg-white'
-                      }`}
-                      onClick={() => setChart(1)}
-                    >
-                      {'Tags'}
-                    </button>
-                    <button
-                      className={`border-2 border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2 ${
-                        chart === 2 ? 'bg-gray-lighter' : 'bg-white'
-                      }`}
-                      onClick={() => setChart(2)}
-                    >
-                      {'Projects'}
-                    </button>
-                  </div>
+                <label>{'End date:'}</label>
+                <input
+                  className='border-2 rounded-md border-gray-light p-1'
+                  id={'endDate'}
+                  name={'endDate'}
+                  type='date'
+                  min={getValues('startDate')}
+                  max={today}
+                  {...register('endDate')}
+                />
+              </form>
+            </div>
+          </header>
+          <main className='h-auto lg:h-auto flex items-center justify-center flex-col bg-gray-lighter'>
+            <div className='w-10/12 flex flex-col xl:flex-row gap-10 mx-10 justify-center items-end drop-shadow-lg'>
+              <div className='w-full h-auto flex flex-col justify-center items-center drop-shadow-lg'>
+                <div className='w-full flex gap-2'>
+                  {tabsTitles.map((tab, index) => (
+                    <Button
+                      key={`tab-${index}`}
+                      id={`tab-${index}`}
+                      text={tab}
+                      textColor={chart === index ? 'text-purple-dark' : ''}
+                      backgroundColor={
+                        chart === index
+                          ? 'bg-white border-white'
+                          : 'bg-gray-light border-gray-light'
+                      }
+                      additionalCss='border border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2'
+                      onClick={() => setChart(index)}
+                    />
+                  ))}
+                </div>
+                <div className='w-full h-72 p-4 rounded-b-md rounded-tr-md border-white bg-white'>
                   {chartSwitch(chart)}
-                  {categories.mock ? (
-                    <h4 className='text-gray-light'>{`Pssst... you don't have enough data to render the Top 10 Projects chart. We added some sample data so you can see how it'd look.`}</h4>
-                  ) : (
-                    ''
-                  )}
                 </div>
-                <div className='flex flex-col justify-center items-center'>
-                  <div className='border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
-                    <h1 className='text-xl text-center text-purple-dark my-4'>
-                      {'Money In/Out'}
-                    </h1>
-                    <div className='h-72 p-4 rounded-md'>
-                      {moneyIn && moneyOut ? (
-                        <BarLineChart
-                          labels={moneyIn?.labels}
-                          labelBarOne={'Money In'}
-                          valuesBarOne={moneyIn?.totals}
-                          labelBarTwo={'Money Out'}
-                          valuesBarTwo={moneyOut?.totals}
-                          labelLine={'Net amount'}
-                          valuesLine={getNetAmount(
-                            moneyIn?.totals,
-                            moneyOut?.totals
-                          )}
-                        />
-                      ) : (
-                        <h1>Loading...</h1>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='flex flex-col justify-center items-center mx-10'>
-                {lastQuarterCategories ? (
-                  <Table
-                    lastQuarter={lastQuarterCategories}
-                    months={lastQuarterMonths}
+                {categories.mock ? (
+                  <Paragraph
+                    text={mockMessage}
+                    color='text-purple'
+                    additionalCss='mt-2'
                   />
                 ) : (
                   ''
                 )}
               </div>
-            </main>
-          </div>
+              <div className='w-full flex flex-col justify-center items-center drop-shadow-lg'>
+                <div className='w-full flex flex-col justify-center items-center drop-shadow-lg bg-white rounded-md border-white'>
+                  <Title
+                    text={moneyTitle}
+                    variant='h3'
+                    color='text-purple-dark'
+                    additionalCss='my-2'
+                  />
+                  <div className='w-full h-72 p-4 '>
+                    <BarLineChart
+                      labels={moneyIn?.labels}
+                      labelBarOne={'Money In'}
+                      valuesBarOne={moneyIn?.totals}
+                      labelBarTwo={'Money Out'}
+                      valuesBarTwo={moneyOut?.totals}
+                      labelLine={'Net amount'}
+                      valuesLine={getNetAmount(
+                        moneyIn?.totals,
+                        moneyOut?.totals
+                      )}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className='w-10/12 h-96 m-10 drop-shadow-lg rounded-md bg-white border-white'>
+              <Title
+                text={quarterTitle}
+                variant='h3'
+                color='text-purple-dark'
+                additionalCss='w-full text-center mt-4'
+              />
+              <div className='fixed w-full h-auto flex flex-col justify-start p-4 overflow-scroll'>
+                {lastQuarterCategories ? (
+                  <QuarterTable
+                    lastQuarter={lastQuarterCategories}
+                    months={lastQuarterMonths}
+                    budgetLabel={budgetLabel}
+                    spentLabel={spentLabel}
+                    balanceLabel={balanceLabel}
+                    categoryLabel={categoriesTitle}
+                  />
+                ) : (
+                  ''
+                )}
+              </div>
+            </div>
+          </main>
         </div>
       </div>
     </>
   );
 }
+// TODO 266 lines

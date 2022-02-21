@@ -1,6 +1,7 @@
 import { createSlice, Slice } from '@reduxjs/toolkit';
-import { projectsI } from './projectsInterfaces';
-import { loadProjects } from './projectsThunks';
+import { RootState } from '@redux/store';
+import { projectI, projectsI } from '@redux/projects/types';
+import { loadProjects } from '@redux/projects/thunks';
 
 const initialState: projectsI = {
   projects: null,
@@ -16,5 +17,8 @@ export const projectsSlice: Slice = createSlice({
     });
   },
 });
+
+export const selectProjects = (state: RootState): projectI[] =>
+  state.projectsSlice.projects;
 
 export default projectsSlice.reducer;

@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
   responseToMoneyModel,
   responseToQuarterCategoriesModel,
-} from './moneyMapper';
+} from '@redux/money/mappers';
 
 export const loadMoneyIn = createAsyncThunk(
   'moneyIn/load',
@@ -51,8 +51,8 @@ export const loadMoneyOut = createAsyncThunk(
   }
 );
 
-export const loaLastQuarter = createAsyncThunk(
-  'lastQuarter/load',
+export const loadQuarter = createAsyncThunk(
+  'quarter/load',
   async ({
     session,
     startDate,

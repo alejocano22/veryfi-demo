@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { responseToProjectsModel } from './projectsMapper';
+import { responseToProjectsModel } from '@redux/projects/mappers';
 
 export const loadProjects = createAsyncThunk(
   'projects/load',

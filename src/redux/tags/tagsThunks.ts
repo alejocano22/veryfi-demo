@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { responseToTagsModel } from './tagsMapper';
+import { responseToTagsModel } from '@redux/tags/mappers';
 
 export const loadTags = createAsyncThunk(
   'tags/load',
