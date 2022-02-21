@@ -30,7 +30,6 @@ export const LoginScreen = ({ csrfToken }: LoginScreenProps) => {
   };
 
   const manageLogin = async () => {
-    console.log('here');
     setLoader(true);
     await signIn('credentials', {
       username: getValues('email'),

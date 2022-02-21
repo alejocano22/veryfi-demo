@@ -3,18 +3,31 @@ import { useTable, useGroupBy, useExpanded, useSortBy } from 'react-table';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 import { quarterCategoryI } from '@redux/money/types';
 import { toLastQuarterTable } from '@components/utils';
+import { i18nDashboard } from '@i18n';
+import { useRouter } from 'next/router';
 
 export interface QuarterTableProps {
   lastQuarter: quarterCategoryI[];
   months: string[];
+  budgetLabel: string;
+  spentLabel: string;
+  balanceLabel: string;
+  categoryLabel: string;
 }
 
-export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
+export const QuarterTable = ({
+  lastQuarter,
+  months,
+  budgetLabel,
+  spentLabel,
+  balanceLabel,
+  categoryLabel,
+}: QuarterTableProps) => {
   const data = useMemo(() => [...toLastQuarterTable(lastQuarter)], []);
   const columns = useMemo(
     () => [
       {
-        Header: 'Category',
+        Header: categoryLabel,
         accessor: 'category',
         Footer: 'Total',
       },
@@ -23,7 +36,7 @@ export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
         Footer: '',
         columns: [
           {
-            Header: 'Budget',
+            Header: budgetLabel,
             accessor: 'budgetMonth0',
             Footer: (info) => {
               const total = useMemo(
@@ -38,7 +51,7 @@ export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
             },
           },
           {
-            Header: 'Spent',
+            Header: spentLabel,
             accessor: 'spentMonth0',
             Footer: (info) => {
               const total = useMemo(
@@ -53,7 +66,7 @@ export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
             },
           },
           {
-            Header: 'Balance',
+            Header: balanceLabel,
             accessor: 'balanceMonth0',
             Footer: (info) => {
               const total = useMemo(
@@ -74,7 +87,7 @@ export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
         Footer: '',
         columns: [
           {
-            Header: 'Budget',
+            Header: budgetLabel,
             accessor: 'budgetMonth1',
             Footer: (info) => {
               const total = useMemo(
@@ -89,7 +102,7 @@ export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
             },
           },
           {
-            Header: 'Spent',
+            Header: spentLabel,
             accessor: 'spentMonth1',
             Footer: (info) => {
               const total = useMemo(
@@ -104,7 +117,7 @@ export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
             },
           },
           {
-            Header: 'Balance',
+            Header: balanceLabel,
             accessor: 'balanceMonth1',
             Footer: (info) => {
               const total = useMemo(
@@ -125,7 +138,7 @@ export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
         Footer: '',
         columns: [
           {
-            Header: 'Budget',
+            Header: budgetLabel,
             accessor: 'budgetMonth2',
             Footer: (info) => {
               const total = useMemo(
@@ -140,7 +153,7 @@ export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
             },
           },
           {
-            Header: 'Spent',
+            Header: spentLabel,
             accessor: 'spentMonth2',
             Footer: (info) => {
               const total = useMemo(
@@ -155,7 +168,7 @@ export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
             },
           },
           {
-            Header: 'Balance',
+            Header: balanceLabel,
             accessor: 'balanceMonth2',
             Footer: (info) => {
               const total = useMemo(
@@ -207,7 +220,9 @@ export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
                 ].join(' ')}
               >
                 <div className='flex items-center justify-center'>
-                  <h3>{column.render('Header')}</h3>
+                  <h3 className='text-purple-darker'>
+                    {column.render('Header')}
+                  </h3>
 
                   <div className='h-3 w-3 ml-2'>
                     {column.canSort ? (
@@ -235,13 +250,13 @@ export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
           prepareRow(row);
           return (
             <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => {
+              {row.cells.map((cell, i) => {
                 return (
                   <td
                     {...cell.getCellProps()}
                     className='py-1 px-1 border border-gray-light text-left'
                   >
-                    $ {cell.render('Cell')}
+                    {i !== 0 ? '$' : ''} {cell.render('Cell')}
                   </td>
                 );
               })}

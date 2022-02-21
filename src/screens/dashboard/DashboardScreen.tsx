@@ -57,6 +57,9 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     mockMessage,
     moneyTitle,
     quarterTitle,
+    budgetLabel,
+    spentLabel,
+    balanceLabel,
   } = i18nDashboard[locale];
   const { months } = i18nCommon[locale];
   const tabsTitles = [categoriesTitle, tagsTitle, projectsTitle];
@@ -265,6 +268,10 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                   <QuarterTable
                     lastQuarter={lastQuarterCategories}
                     months={lastQuarterMonths}
+                    budgetLabel={budgetLabel}
+                    spentLabel={spentLabel}
+                    balanceLabel={balanceLabel}
+                    categoryLabel={categoriesTitle}
                   />
                 ) : (
                   ''
