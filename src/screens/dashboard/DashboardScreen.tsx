@@ -9,15 +9,11 @@ import Navbar from 'src/components/elements/navbars/Navbar';
 import BarChart from 'src/components/elements/charts/BarChart';
 import { userI } from 'src/redux/user/user.types';
 import { selectCategories } from 'src/redux/categories/categoriesSlice';
-import {
-  createDate,
-  getLastQuarter,
-  handleCategoriesChartData,
-} from 'src/utils/categories';
+import { getLastQuarter } from '../../components/utils/quarter';
+import { createDate } from '../../components/utils/dates';
 import { loadTags } from 'src/redux/tags/tagsThunks';
 import { selectTags } from '@redux/tags/slice';
-import { handleTagsChartData } from 'src/utils/tags';
-import { handleProjectsChartData } from 'src/utils/projects';
+
 import { selectProjects } from '@redux/projects/slice';
 import { loadProjects } from 'src/redux/projects/projectsThunks';
 import Sidebar from 'src/components/elements/navbars/SideBar';
@@ -37,6 +33,7 @@ import { getNetAmount } from 'src/utils/money';
 import Table from 'src/components/elements/table/Table';
 import { useRouter } from 'next/router';
 import { i18nCommon } from 'src/i18n/common';
+import { toBarChartData } from '../../components/utils/barChart';
 
 export interface DashboardScreenProps {
   user: userI;
@@ -46,12 +43,13 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   const { push: routerPush, locale } = useRouter();
   const dispatch = useDispatch();
   const session = useAppSelector(selectSession);
-  const categories = handleCategoriesChartData(
-    useAppSelector(selectCategories)
+  const categories = toBarChartData(
+    useAppSelector(selectCategories),
+    'category'
   );
-  const projects = handleProjectsChartData(useAppSelector(selectProjects));
+  const tags = toBarChartData(useAppSelector(selectTags), 'tags');
+  const projects = toBarChartData(useAppSelector(selectProjects), 'projects');
 
-  const tags = handleTagsChartData(useAppSelector(selectTags));
   const moneyIn = useAppSelector(selectMoneyIn);
   const moneyOut = useAppSelector(selectMoneyOut);
   const lastQuarterCategories = useAppSelector(selectLastQuarterCategories);

@@ -1,7 +1,7 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 import { useMemo } from 'react';
 import { useTable, useGroupBy, useExpanded, useSortBy } from 'react-table';
-import { toLastQuarterTable } from 'src/utils/categories';
+import { toLastQuarterTable } from '../../utils/quarter';
 
 export interface TableProps {
   lastQuarter: QuarterCategoryI[];

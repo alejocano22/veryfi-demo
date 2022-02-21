@@ -42,6 +42,7 @@
       "@redux/projects/mappers": ["src/redux/projects/projects.mappers"],
       "@redux/projects/thunks": ["src/redux/projects/projectsThunks"],
 
+      "@utils": ["src/utils/index"],
       "@screens": ["src/screens/index"],
       "@footers": ["src/components/elements/footers/index"],
       "@icons": ["src/components/elements/icons/index"],
