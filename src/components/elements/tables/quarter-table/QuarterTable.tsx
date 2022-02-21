@@ -3,8 +3,6 @@ import { useTable, useGroupBy, useExpanded, useSortBy } from 'react-table';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 import { quarterCategoryI } from '@redux/money/types';
 import { toLastQuarterTable } from '@components/utils';
-import { i18nDashboard } from '@i18n';
-import { useRouter } from 'next/router';
 
 export interface QuarterTableProps {
   lastQuarter: quarterCategoryI[];
@@ -185,7 +183,7 @@ export const QuarterTable = ({
         ],
       },
     ],
-    []
+    [months, budgetLabel, spentLabel, balanceLabel, categoryLabel]
   );
 
   const {

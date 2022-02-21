@@ -50,6 +50,8 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   const lastQuarterMonths = useAppSelector(selectQuarterMonths);
   const today = new Date().toISOString().split('T')[0];
   const defaultEndDate = createDate(0, 0, -1).toISOString().split('T')[0];
+  const quarterTimes = getLastQuarter();
+
   const {
     categoriesTitle,
     tagsTitle,
@@ -60,6 +62,11 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     budgetLabel,
     spentLabel,
     balanceLabel,
+    startDateLabel,
+    endDateLabel,
+    moneyInLabel,
+    moneyOutLabel,
+    moneyNetLabel,
   } = i18nDashboard[locale];
   const { months } = i18nCommon[locale];
   const tabsTitles = [categoriesTitle, tagsTitle, projectsTitle];
@@ -73,6 +80,8 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     },
   });
   const watch = useWatch({ control });
+  const startDate = watch.startDate;
+  const endDate = watch.endDate;
 
   useEffect(() => {
     dispatch(addUser({ ...user }));
@@ -84,9 +93,6 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   }, [session, watch]);
 
   const fetch = () => {
-    const quarterTimes = getLastQuarter();
-    const startDate = watch.startDate;
-    const endDate = watch.endDate;
     dispatch(
       loadCategories({
         session,
@@ -127,7 +133,6 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
         session,
         startDate: quarterTimes.startDate,
         endDate: quarterTimes.endDate,
-        months: months,
       })
     );
   };
@@ -140,7 +145,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
           <BarChart
             labels={categories?.labels}
             values={categories?.values}
-            label={'Spent'}
+            label={spentLabel}
           />
         );
 
@@ -149,7 +154,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
           <BarChart
             labels={tags?.labels}
             values={tags?.values}
-            label={'Spent'}
+            label={spentLabel}
           />
         );
 
@@ -158,7 +163,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
           <BarChart
             labels={projects?.labels}
             values={projects?.values}
-            label={'Spent'}
+            label={spentLabel}
           />
         );
     }
@@ -173,7 +178,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
           <header className='bg-gray-lighter shadow mt-20'>
             <div className='flex items-center max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 gap-7'>
               <form className='flex gap-1 items-center  '>
-                <label>{'Start date:'}</label>
+                <label>{startDateLabel}</label>
                 <input
                   className='border-2 rounded-md border-gray-light p-1 mr-5'
                   id={'startDate'}
@@ -184,7 +189,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                   {...register('startDate')}
                 />
 
-                <label>{'End date:'}</label>
+                <label>{endDateLabel}</label>
                 <input
                   className='border-2 rounded-md border-gray-light p-1'
                   id={'endDate'}
@@ -241,11 +246,11 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                   <div className='w-full h-72 p-4 '>
                     <BarLineChart
                       labels={moneyIn?.labels}
-                      labelBarOne={'Money In'}
+                      labelBarOne={moneyInLabel}
                       valuesBarOne={moneyIn?.totals}
-                      labelBarTwo={'Money Out'}
+                      labelBarTwo={moneyOutLabel}
                       valuesBarTwo={moneyOut?.totals}
-                      labelLine={'Net amount'}
+                      labelLine={moneyNetLabel}
                       valuesLine={getNetAmount(
                         moneyIn?.totals,
                         moneyOut?.totals
@@ -267,7 +272,10 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                 {lastQuarterCategories ? (
                   <QuarterTable
                     lastQuarter={lastQuarterCategories}
-                    months={lastQuarterMonths}
+                    months={lastQuarterMonths.map(
+                      (month) =>
+                        `${months[month]} ${quarterTimes.endDate.split('-')[0]}`
+                    )}
                     budgetLabel={budgetLabel}
                     spentLabel={spentLabel}
                     balanceLabel={balanceLabel}
