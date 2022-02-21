@@ -8,7 +8,7 @@ export const Sidebar = ({}: SidebarProps) => {
   const navigation = getNavbarNavigation(locale);
 
   return (
-    <div className='h-100% flex-row bg-white hidden lg:flex'>
+    <div className='h-auto flex-row bg-white hidden lg:flex'>
       <div className='h-full flex flex-col w-56 bg-purple-darker overflow-hidden'>
         <ul className='flex flex-col py-4 mt-20'>
           {navigation.map((item) => (

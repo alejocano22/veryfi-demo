@@ -1,8 +1,8 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
-import { quarterCategoryI } from '@redux/money/types';
 import { useMemo } from 'react';
 import { useTable, useGroupBy, useExpanded, useSortBy } from 'react-table';
-import { toLastQuarterTable } from '../../../utils/quarter';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
+import { quarterCategoryI } from '@redux/money/types';
+import { toLastQuarterTable } from '@components/utils';
 
 export interface QuarterTableProps {
   lastQuarter: quarterCategoryI[];
@@ -194,81 +194,73 @@ export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
   );
 
   return (
-    <div className='sm:px-6 border-2 rounded-md border-gray-lighter bg-gray-lighter pb-4'>
-      <h1 className='text-xl text-center text-purple-dark my-4'>
-        {'Activity for Quarter'}
-      </h1>
+    <table {...getTableProps()} className='table-fixed'>
+      <thead>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column, index) => (
+              <th
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+                className={[
+                  'p-1',
+                  index === 0 ? '' : 'border border-gray-light',
+                ].join(' ')}
+              >
+                <div className='flex items-center justify-center'>
+                  <h3>{column.render('Header')}</h3>
 
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column, index) => (
-                <th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className={[
-                    'p-1',
-                    index === 0 ? '' : 'border-2 border-gray-light',
-                  ].join(' ')}
-                >
-                  <div className='flex items-center justify-center'>
-                    <h3>{column.render('Header')}</h3>
-
-                    <div className='h-3 w-3 ml-2'>
-                      {column.canSort ? (
-                        column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <ChevronDownIcon height={'10px'} width={'10px'} />
-                          ) : (
-                            <ChevronUpIcon height={'10px'} width={'10px'} />
-                          )
+                  <div className='h-3 w-3 ml-2'>
+                    {column.canSort ? (
+                      column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <ChevronDownIcon height={'10px'} width={'10px'} />
                         ) : (
-                          <></>
+                          <ChevronUpIcon height={'10px'} width={'10px'} />
                         )
                       ) : (
-                        ''
-                      )}
-                    </div>
+                        <></>
+                      )
+                    ) : (
+                      ''
+                    )}
                   </div>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td
-                      {...cell.getCellProps()}
-                      className='py-2 px-4 border-2 border-gray-light text-left'
-                    >
-                      $ {cell.render('Cell')}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-        <tfoot>
-          {footerGroups.map((group) => (
-            <tr {...group.getFooterGroupProps()}>
-              {group.headers.map((column) => {
+                </div>
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row) => {
+          prepareRow(row);
+          return (
+            <tr {...row.getRowProps()}>
+              {row.cells.map((cell) => {
                 return (
-                  <td {...column.getFooterProps()}>
-                    {column.render('Footer')}
+                  <td
+                    {...cell.getCellProps()}
+                    className='py-1 px-1 border border-gray-light text-left'
+                  >
+                    $ {cell.render('Cell')}
                   </td>
                 );
               })}
             </tr>
-          ))}
-        </tfoot>
-      </table>
-    </div>
+          );
+        })}
+      </tbody>
+      <tfoot>
+        {footerGroups.map((group) => (
+          <tr {...group.getFooterGroupProps()}>
+            {group.headers.map((column) => {
+              return (
+                <td {...column.getFooterProps()}>{column.render('Footer')}</td>
+              );
+            })}
+          </tr>
+        ))}
+      </tfoot>
+    </table>
   );
 };
 

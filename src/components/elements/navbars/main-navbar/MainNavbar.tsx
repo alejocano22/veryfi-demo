@@ -44,6 +44,7 @@ export const MainNavbar = ({}: MainNavbarProps) => {
           navigation={navigation}
           isMobileMenu={isMobileMenu}
           setIsMobileMenu={setIsMobileMenu}
+          isLogin={true}
         />
         <div
           className='w-full flex-grow lg:flex lg:items-center lg:w-auto hidden mt-2 lg:mt-0 lg:bg-transparent text-black p-4 lg:p-0 z-20'

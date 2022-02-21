@@ -26,6 +26,8 @@ import { getLastQuarter } from '@components/utils';
 import { createDate } from '@components/utils';
 import { getNetAmount } from '@components/utils';
 import { toBarChartData } from '@components/utils';
+import { Button } from '@inputs';
+import { Paragraph, Title } from '@texts';
 
 export interface DashboardScreenProps {
   user: userI;
@@ -48,8 +50,16 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   const lastQuarterMonths = useAppSelector(selectQuarterMonths);
   const today = new Date().toISOString().split('T')[0];
   const defaultEndDate = createDate(0, 0, -1).toISOString().split('T')[0];
-  const { title } = i18nDashboard[locale];
+  const {
+    categoriesTitle,
+    tagsTitle,
+    projectsTitle,
+    mockMessage,
+    moneyTitle,
+    quarterTitle,
+  } = i18nDashboard[locale];
   const { months } = i18nCommon[locale];
+  const tabsTitles = [categoriesTitle, tagsTitle, projectsTitle];
 
   const { register, control, getValues } = useForm({
     mode: 'onChange',
@@ -124,63 +134,42 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
       default:
       case 0:
         return (
-          <div className='border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
-            <h1 className='text-xl text-center text-purple-dark my-4'>
-              {'Categories'}
-            </h1>
-            <div className='h-72 p-4 rounded-md'>
-              <BarChart
-                labels={categories?.labels}
-                values={categories?.values}
-                label={'Spent'}
-              />
-            </div>
-          </div>
+          <BarChart
+            labels={categories?.labels}
+            values={categories?.values}
+            label={'Spent'}
+          />
         );
 
       case 1:
         return (
-          <div className='border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
-            <h1 className='text-xl text-center text-purple-dark my-4'>
-              {'Tags'}
-            </h1>
-            <div className='h-72 p-4 rounded-md'>
-              <BarChart
-                labels={tags?.labels}
-                values={tags?.values}
-                label={'Spent'}
-              />
-            </div>
-          </div>
+          <BarChart
+            labels={tags?.labels}
+            values={tags?.values}
+            label={'Spent'}
+          />
         );
 
       case 2:
         return (
-          <div className='flex flex-col w-full border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
-            <h1 className='text-xl text-center text-purple-dark my-4'>
-              {'Projects'}
-            </h1>
-            <div className='h-72 p-4 rounded-md'>
-              <BarChart
-                labels={projects?.labels}
-                values={projects?.values}
-                label={'Spent'}
-              />
-            </div>
-          </div>
+          <BarChart
+            labels={projects?.labels}
+            values={projects?.values}
+            label={'Spent'}
+          />
         );
     }
   };
 
   return (
-    <div className='min-h-full'>
+    <>
       <Navbar />
-      <div className='flex'>
+      <div className='lg:h-auto flex'>
         <Sidebar />
-        <div className='flex-1'>
-          <header className='bg-white shadow mt-20'>
+        <div className='flex-1 bg-gray-lighter'>
+          <header className='bg-gray-lighter shadow mt-20'>
             <div className='flex items-center max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 gap-7'>
-              <form className='flex gap-1 items-center'>
+              <form className='flex gap-1 items-center  '>
                 <label>{'Start date:'}</label>
                 <input
                   className='border-2 rounded-md border-gray-light p-1 mr-5'
@@ -205,81 +194,87 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
               </form>
             </div>
           </header>
-          <main className='flex items-center justify-center flex-col mb-10'>
-            <div className='flex flex-col gap-10 mx-10 justify-center items-end lg:flex-row max-w-7xl py-6 sm:px-6'>
-              <div className='flex flex-col justify-center items-center'>
-                <div className='w-full flex items-start gap-1'>
-                  <button
-                    className={`border-2 border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2 ${
-                      chart === 0 ? 'bg-gray-lighter' : 'bg-white'
-                    }`}
-                    onClick={() => setChart(0)}
-                  >
-                    {'Categories'}
-                  </button>
-                  <button
-                    className={`border-2 border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2 ${
-                      chart === 1 ? 'bg-gray-lighter' : 'bg-white'
-                    }`}
-                    onClick={() => setChart(1)}
-                  >
-                    {'Tags'}
-                  </button>
-                  <button
-                    className={`border-2 border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2 ${
-                      chart === 2 ? 'bg-gray-lighter' : 'bg-white'
-                    }`}
-                    onClick={() => setChart(2)}
-                  >
-                    {'Projects'}
-                  </button>
+          <main className='h-auto lg:h-auto flex items-center justify-center flex-col bg-gray-lighter'>
+            <div className='w-10/12 flex flex-col xl:flex-row gap-10 mx-10 justify-center items-end drop-shadow-lg'>
+              <div className='w-full h-auto flex flex-col justify-center items-center drop-shadow-lg'>
+                <div className='w-full flex gap-2'>
+                  {tabsTitles.map((tab, index) => (
+                    <Button
+                      key={`tab-${index}`}
+                      id={`tab-${index}`}
+                      text={tab}
+                      textColor={chart === index ? 'text-purple-dark' : ''}
+                      backgroundColor={
+                        chart === index
+                          ? 'bg-white border-white'
+                          : 'bg-gray-light border-gray-light'
+                      }
+                      additionalCss='border border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2'
+                      onClick={() => setChart(index)}
+                    />
+                  ))}
                 </div>
-                {chartSwitch(chart)}
+                <div className='w-full h-72 p-4 rounded-b-md rounded-tr-md border-white bg-white'>
+                  {chartSwitch(chart)}
+                </div>
                 {categories.mock ? (
-                  <h4 className='text-gray-light'>{`Pssst... you don't have enough data to render the Top 10 Projects chart. We added some sample data so you can see how it'd look.`}</h4>
+                  <Paragraph
+                    text={mockMessage}
+                    color='text-purple'
+                    additionalCss='mt-2'
+                  />
                 ) : (
                   ''
                 )}
               </div>
-              <div className='flex flex-col justify-center items-center'>
-                <div className='border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
-                  <h1 className='text-xl text-center text-purple-dark my-4'>
-                    {'Money In/Out'}
-                  </h1>
-                  <div className='h-72 p-4 rounded-md'>
-                    {moneyIn && moneyOut ? (
-                      <BarLineChart
-                        labels={moneyIn?.labels}
-                        labelBarOne={'Money In'}
-                        valuesBarOne={moneyIn?.totals}
-                        labelBarTwo={'Money Out'}
-                        valuesBarTwo={moneyOut?.totals}
-                        labelLine={'Net amount'}
-                        valuesLine={getNetAmount(
-                          moneyIn?.totals,
-                          moneyOut?.totals
-                        )}
-                      />
-                    ) : (
-                      <h1>Loading...</h1>
-                    )}
+              <div className='w-full flex flex-col justify-center items-center drop-shadow-lg'>
+                <div className='w-full flex flex-col justify-center items-center drop-shadow-lg bg-white rounded-md border-white'>
+                  <Title
+                    text={moneyTitle}
+                    variant='h3'
+                    color='text-purple-dark'
+                    additionalCss='my-2'
+                  />
+                  <div className='w-full h-72 p-4 '>
+                    <BarLineChart
+                      labels={moneyIn?.labels}
+                      labelBarOne={'Money In'}
+                      valuesBarOne={moneyIn?.totals}
+                      labelBarTwo={'Money Out'}
+                      valuesBarTwo={moneyOut?.totals}
+                      labelLine={'Net amount'}
+                      valuesLine={getNetAmount(
+                        moneyIn?.totals,
+                        moneyOut?.totals
+                      )}
+                    />
                   </div>
                 </div>
               </div>
             </div>
-            <div className='flex flex-col justify-center items-center mx-10'>
-              {lastQuarterCategories ? (
-                <QuarterTable
-                  lastQuarter={lastQuarterCategories}
-                  months={lastQuarterMonths}
-                />
-              ) : (
-                ''
-              )}
+
+            <div className='w-10/12 h-96 m-10 drop-shadow-lg rounded-md bg-white border-white'>
+              <Title
+                text={quarterTitle}
+                variant='h3'
+                color='text-purple-dark'
+                additionalCss='w-full text-center mt-4'
+              />
+              <div className='fixed w-full h-auto flex flex-col justify-start p-4 overflow-scroll'>
+                {lastQuarterCategories ? (
+                  <QuarterTable
+                    lastQuarter={lastQuarterCategories}
+                    months={lastQuarterMonths}
+                  />
+                ) : (
+                  ''
+                )}
+              </div>
             </div>
           </main>
         </div>
       </div>
-    </div>
+    </>
   );
 }
+// TODO 266 lines

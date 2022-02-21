@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -16,6 +17,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
 export interface BarChartProps {
   labels: string[];
   values: number[];
@@ -30,8 +32,18 @@ export const BarChart = ({ labels, values, label }: BarChartProps) => {
       {
         label: label,
         data: values,
-        backgroundColor: ['#292043'],
-        borderColor: ['#292043'],
+        backgroundColor: [
+          '#003F5C',
+          '#2F4b7C',
+          '#665191',
+          '#A05195',
+          '#D45087',
+          '#F95D6A',
+          '#FF7C43',
+          '#FFA600',
+          '#D48A00',
+          '#A96E00',
+        ],
         borderWidth: 1,
       },
     ],
@@ -39,8 +51,8 @@ export const BarChart = ({ labels, values, label }: BarChartProps) => {
   return (
     <Bar
       data={barData}
-      width={400}
-      height={200}
+      width={'auto'}
+      height={'auto'}
       options={{
         maintainAspectRatio: false,
       }}

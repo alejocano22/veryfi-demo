@@ -14,15 +14,17 @@ export interface MobileMenuProps {
   navigation: navigation[];
   isMobileMenu: boolean;
   setIsMobileMenu: Dispatch<SetStateAction<boolean>>;
+  isLogin: boolean;
 }
 
 export const MobileMenu = ({
   navigation,
   isMobileMenu,
   setIsMobileMenu,
+  isLogin,
 }: MobileMenuProps) => {
-  const { locale } = useRouter();
-  const { logout } = i18nCommon[locale];
+  const { push: routerPush, locale } = useRouter();
+  const { logout, login } = i18nCommon[locale];
 
   return isMobileMenu ? (
     <div className='absolute z-10 top-0 inset-x-0 p-2 transition transform origin-top-right lg:hidden'>
@@ -55,18 +57,33 @@ export const MobileMenu = ({
             </a>
           ))}
         </div>
-        <Button
-          variant='default'
-          text={logout}
-          textColor='text-purple-dark'
-          type='button'
-          backgroundColor='bg-transparent'
-          additionalCss='block w-full px-5 py-3 text-center font-medium text-purple-dark hover:text-purple-light'
-          onClick={() => {
-            setIsMobileMenu(false);
-            signOut();
-          }}
-        />
+        {isLogin ? (
+          <Button
+            variant='default'
+            text={login}
+            textColor='text-purple-dark'
+            type='button'
+            backgroundColor='bg-transparent'
+            additionalCss='block w-full px-5 py-3 text-center font-medium text-purple-dark hover:text-purple-light'
+            onClick={() => {
+              setIsMobileMenu(false);
+              routerPush('/login');
+            }}
+          />
+        ) : (
+          <Button
+            variant='default'
+            text={logout}
+            textColor='text-purple-dark'
+            type='button'
+            backgroundColor='bg-transparent'
+            additionalCss='block w-full px-5 py-3 text-center font-medium text-purple-dark hover:text-purple-light'
+            onClick={() => {
+              setIsMobileMenu(false);
+              signOut();
+            }}
+          />
+        )}
       </div>
     </div>
   ) : (
