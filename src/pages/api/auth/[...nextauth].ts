@@ -1,11 +1,8 @@
 import { NextApiHandler } from 'next';
 import NextAuth from 'next-auth';
-import {
-  responseToModel,
-  userToModel,
-} from './../../../screens/login/Login.mappers';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { loginService } from '../../../screens/login/Login.service';
+import { userResponseToModel, userToModel } from '@redux/user/mappers';
+import { loginService } from '@redux/user/services';
 
 const authHandler: NextApiHandler = (req, res) =>
   NextAuth(req, res, {
@@ -16,7 +13,7 @@ const authHandler: NextApiHandler = (req, res) =>
       CredentialsProvider({
         name: 'Credentials',
         credentials: {
-          username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
+          username: { label: 'Username', type: 'text' },
           password: { label: 'Password', type: 'password' },
         },
         async authorize(credentials, req) {
@@ -24,11 +21,8 @@ const authHandler: NextApiHandler = (req, res) =>
             email: credentials.username,
             password: credentials.password,
           });
-
           if (!response.error) {
-            const user = responseToModel(response);
-
-            return user;
+            return userResponseToModel(response);
           } else {
             throw '/login';
           }
@@ -46,18 +40,14 @@ const authHandler: NextApiHandler = (req, res) =>
           token.id = user.id;
           token.firstName = user.firstName;
           token.lastName = user.lastName;
-          token.username = user.username;
           token.companyName = user.companyName;
-          token.created = user.created;
           token.session = user.session;
-          token.status = user.status;
           token.type = user.type;
         }
         return Promise.resolve(token);
       },
       session: async ({ session, user, token }) => {
-        const userData = userToModel(token);
-        session.user = userData as any;
+        session.user = userToModel(token);
         return Promise.resolve(session);
       },
     },

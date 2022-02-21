@@ -1,5 +1,6 @@
 import { createSlice, Slice } from '@reduxjs/toolkit';
-import { userI } from './userInterfaces';
+import { RootState } from '@redux/store';
+import { userI } from '@redux/user/types';
 
 const initialState: userI = {
   error: null,
@@ -7,11 +8,8 @@ const initialState: userI = {
   firstName: null,
   lastName: null,
   email: null,
-  username: null,
   companyName: null,
-  created: null,
   session: null,
-  status: null,
   type: null,
 };
 
@@ -20,11 +18,14 @@ export const userSlice: Slice = createSlice({
   initialState,
   reducers: {
     addUser: (state, action) => {
-      return { ...state, ...action.payload.value };
+      return (state = action.payload);
     },
   },
 });
 
 export const { addUser } = userSlice.actions;
+
+export const selectSession = (state: RootState) => state.userSlice.session;
+export const selectUser = (state: RootState) => state.userSlice;
 
 export default userSlice.reducer;

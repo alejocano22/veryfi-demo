@@ -1,11 +1,15 @@
 export const i18nLogin = {
   en: {
-    title: 'Login Page',
-    go: 'Go to home page',
+    welcome: 'Welcome.',
+    emailLabel: 'Email',
+    passwordLabel: 'Password',
+    errorMessage: 'Wrong email or password',
   },
   es: {
-    title: 'Página de inicio de sesión',
-    go: 'Ir a la página de inicio',
+    welcome: 'Bienvenido.',
+    emailLabel: 'Correo electrónico',
+    passwordLabel: 'Contraseña',
+    errorMessage: 'Usuario o contraseña erroneos',
   },
 };
 

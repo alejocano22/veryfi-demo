@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { responseToCategoriesModel } from './categoriesMapper';
+import { responseToCategoriesModel } from '@redux/categories/mappers';
 
 export const loadCategories = createAsyncThunk(
   'categories/load',

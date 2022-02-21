@@ -1,5 +1,7 @@
 import { createSlice, Slice } from '@reduxjs/toolkit';
-import { loadCategories } from './categoriesThunks';
+import { RootState } from '@redux/store';
+import { loadCategories } from '@redux/categories/thunks';
+import { categoriesI, categoryI } from '@redux/categories/types';
 
 const initialState: categoriesI = {
   categories: null,
@@ -15,5 +17,8 @@ export const categoriesSlice: Slice = createSlice({
     });
   },
 });
+
+export const selectCategories = (state: RootState): categoryI[] =>
+  state.categoriesSlice.categories;
 
 export default categoriesSlice.reducer;
