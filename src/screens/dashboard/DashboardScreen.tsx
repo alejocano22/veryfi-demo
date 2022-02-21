@@ -20,12 +20,12 @@ import Sidebar from 'src/components/elements/navbars/SideBar';
 import {
   loadMoneyIn,
   loadMoneyOut,
-  loaLastQuarter,
+  loadQuarter,
 } from 'src/redux/money/moneyThunks';
 import BarLineChart from 'src/components/elements/charts/BarLineChart';
 import {
-  selectLastQuarterCategories,
-  selectLastQuarterMonths,
+  selectQuarterCategories,
+  selectQuarterMonths,
   selectMoneyIn,
   selectMoneyOut,
 } from 'src/redux/money/moneySlice';
@@ -52,8 +52,8 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
 
   const moneyIn = useAppSelector(selectMoneyIn);
   const moneyOut = useAppSelector(selectMoneyOut);
-  const lastQuarterCategories = useAppSelector(selectLastQuarterCategories);
-  const lastQuarterMonths = useAppSelector(selectLastQuarterMonths);
+  const lastQuarterCategories = useAppSelector(selectQuarterCategories);
+  const lastQuarterMonths = useAppSelector(selectQuarterMonths);
 
   const [chart, setChart] = useState(0);
   const [startDate, setStartDate] = useState('2000-01-01');
@@ -125,7 +125,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
       })
     );
     dispatch(
-      loaLastQuarter({
+      loadQuarter({
         session,
         startDate: quarterTimes.startDate,
         endDate: quarterTimes.endDate,

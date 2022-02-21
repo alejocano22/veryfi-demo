@@ -42,6 +42,11 @@
       "@redux/projects/mappers": ["src/redux/projects/projects.mappers"],
       "@redux/projects/thunks": ["src/redux/projects/projectsThunks"],
 
+      "@redux/money/slice": ["src/redux/money/moneySlice"],
+      "@redux/money/types": ["src/redux/money/money.types"],
+      "@redux/money/mappers": ["src/redux/money/money.mappers"],
+      "@redux/money/thunks": ["src/redux/money/moneyThunks"],
+
       "@utils": ["src/utils/index"],
       "@screens": ["src/screens/index"],
       "@footers": ["src/components/elements/footers/index"],

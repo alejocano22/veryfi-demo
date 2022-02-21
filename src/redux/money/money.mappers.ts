@@ -1,3 +1,10 @@
+import {
+  moneyI,
+  quarterCategoryI,
+  quarterCategoriesI,
+  quarterPeriodI,
+} from '@redux/money/types';
+
 export const responseToMoneyModel = (money: any): moneyI => {
   return {
     labels: money['labels'],
@@ -8,7 +15,7 @@ export const responseToMoneyModel = (money: any): moneyI => {
 export const responseToQuarterCategoriesModel = (
   quarter: any[],
   months: string[]
-): QuarterI => {
+): quarterCategoriesI => {
   return {
     categories: quarter['categories'].map((category) =>
       toQuarterCategoryModel(category)
@@ -17,7 +24,7 @@ export const responseToQuarterCategoriesModel = (
   };
 };
 
-const toQuarterCategoryModel = (category: any): QuarterCategoryI => {
+const toQuarterCategoryModel = (category: any): quarterCategoryI => {
   return {
     id: category['id'],
     name: category['name'],
@@ -25,11 +32,11 @@ const toQuarterCategoryModel = (category: any): QuarterCategoryI => {
   };
 };
 
-const toQuarterPeriodsModel = (periods: any): QuarterPeriodI[] => {
+const toQuarterPeriodsModel = (periods: any): quarterPeriodI[] => {
   return periods.map((period) => toQuarterPeriodModel(period));
 };
 
-const toQuarterPeriodModel = (period: any): QuarterPeriodI => {
+const toQuarterPeriodModel = (period: any): quarterPeriodI => {
   return {
     id: period['id'],
     balance: period['balance'],
