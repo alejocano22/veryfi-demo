@@ -26,7 +26,7 @@ import { getLastQuarter } from '@components/utils';
 import { createDate } from '@components/utils';
 import { getNetAmount } from '@components/utils';
 import { toBarChartData } from '@components/utils';
-import { Button } from '@inputs';
+import { Button, DatePicker } from '@inputs';
 import { Paragraph, Title } from '@texts';
 
 export interface DashboardScreenProps {
@@ -50,6 +50,8 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   const lastQuarterMonths = useAppSelector(selectQuarterMonths);
   const today = new Date().toISOString().split('T')[0];
   const defaultEndDate = createDate(0, 0, -1).toISOString().split('T')[0];
+  const quarterTimes = getLastQuarter();
+
   const {
     categoriesTitle,
     tagsTitle,
@@ -60,6 +62,11 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     budgetLabel,
     spentLabel,
     balanceLabel,
+    startDateLabel,
+    endDateLabel,
+    moneyInLabel,
+    moneyOutLabel,
+    moneyNetLabel,
   } = i18nDashboard[locale];
   const { months } = i18nCommon[locale];
   const tabsTitles = [categoriesTitle, tagsTitle, projectsTitle];
@@ -73,6 +80,8 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     },
   });
   const watch = useWatch({ control });
+  const startDate = watch.startDate;
+  const endDate = watch.endDate;
 
   useEffect(() => {
     dispatch(addUser({ ...user }));
@@ -84,9 +93,6 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   }, [session, watch]);
 
   const fetch = () => {
-    const quarterTimes = getLastQuarter();
-    const startDate = watch.startDate;
-    const endDate = watch.endDate;
     dispatch(
       loadCategories({
         session,
@@ -127,7 +133,6 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
         session,
         startDate: quarterTimes.startDate,
         endDate: quarterTimes.endDate,
-        months: months,
       })
     );
   };
@@ -140,7 +145,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
           <BarChart
             labels={categories?.labels}
             values={categories?.values}
-            label={'Spent'}
+            label={spentLabel}
           />
         );
 
@@ -149,7 +154,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
           <BarChart
             labels={tags?.labels}
             values={tags?.values}
-            label={'Spent'}
+            label={spentLabel}
           />
         );
 
@@ -158,9 +163,20 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
           <BarChart
             labels={projects?.labels}
             values={projects?.values}
-            label={'Spent'}
+            label={spentLabel}
           />
         );
+    }
+  };
+
+  const handleMockDataMessage = (chart: number): boolean => {
+    switch (chart) {
+      case 0:
+        return categories.mock;
+      case 1:
+        return tags.mock;
+      case 2:
+        return projects.mock;
     }
   };
 
@@ -173,32 +189,27 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
           <header className='bg-gray-lighter shadow mt-20'>
             <div className='flex items-center max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 gap-7'>
               <form className='flex gap-1 items-center  '>
-                <label>{'Start date:'}</label>
-                <input
-                  className='border-2 rounded-md border-gray-light p-1 mr-5'
-                  id={'startDate'}
-                  name={'startDate'}
-                  type='date'
+                <DatePicker
+                  id='startDate'
+                  label={startDateLabel}
+                  name='startDate'
                   min={defaultEndDate}
                   max={getValues('endDate')}
-                  {...register('startDate')}
+                  register={register}
                 />
-
-                <label>{'End date:'}</label>
-                <input
-                  className='border-2 rounded-md border-gray-light p-1'
-                  id={'endDate'}
-                  name={'endDate'}
-                  type='date'
+                <DatePicker
+                  id='endDate'
+                  label={endDateLabel}
+                  name='endDate'
                   min={getValues('startDate')}
                   max={today}
-                  {...register('endDate')}
+                  register={register}
                 />
               </form>
             </div>
           </header>
           <main className='h-auto lg:h-auto flex items-center justify-center flex-col bg-gray-lighter'>
-            <div className='w-10/12 flex flex-col xl:flex-row gap-10 mx-10 justify-center items-end drop-shadow-lg'>
+            <div className='w-10/12 flex flex-col xl:flex-row gap-10 mx-10 justify-center items-start drop-shadow-lg'>
               <div className='w-full h-auto flex flex-col justify-center items-center drop-shadow-lg'>
                 <div className='w-full flex gap-2'>
                   {tabsTitles.map((tab, index) => (
@@ -220,7 +231,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                 <div className='w-full h-72 p-4 rounded-b-md rounded-tr-md border-white bg-white'>
                   {chartSwitch(chart)}
                 </div>
-                {categories.mock ? (
+                {handleMockDataMessage(chart) ? (
                   <Paragraph
                     text={mockMessage}
                     color='text-purple'
@@ -241,11 +252,11 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                   <div className='w-full h-72 p-4 '>
                     <BarLineChart
                       labels={moneyIn?.labels}
-                      labelBarOne={'Money In'}
+                      labelBarOne={moneyInLabel}
                       valuesBarOne={moneyIn?.totals}
-                      labelBarTwo={'Money Out'}
+                      labelBarTwo={moneyOutLabel}
                       valuesBarTwo={moneyOut?.totals}
-                      labelLine={'Net amount'}
+                      labelLine={moneyNetLabel}
                       valuesLine={getNetAmount(
                         moneyIn?.totals,
                         moneyOut?.totals
@@ -256,18 +267,21 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
               </div>
             </div>
 
-            <div className='relative flex flex-col items-center w-10/12 h-96 m-10 drop-shadow-lg rounded-md bg-white border-white '>
+            <div className='relative flex flex-col items-center w-10/12 h-96 m-10 drop-shadow-lg rounded-md bg-white border-white'>
               <Title
                 text={quarterTitle}
                 variant='h3'
                 color='text-purple-dark'
                 additionalCss='w-full text-center mt-4'
               />
-              <div className='absolute mt-14 w-10/12 h-80 overflow-scroll'>
+              <div className='absolute mt-14 w-10/12 h-80 overflow-scroll flex flex-col items-center'>
                 {lastQuarterCategories ? (
                   <QuarterTable
                     lastQuarter={lastQuarterCategories}
-                    months={lastQuarterMonths}
+                    months={lastQuarterMonths.map(
+                      (month) =>
+                        `${months[month]} ${quarterTimes.endDate.split('-')[0]}`
+                    )}
                     budgetLabel={budgetLabel}
                     spentLabel={spentLabel}
                     balanceLabel={balanceLabel}

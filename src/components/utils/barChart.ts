@@ -19,6 +19,9 @@ export const toBarChartData = (
   if (elements) {
     elements
       .filter((category) => category.spent > 0)
+      .sort((a, b) => {
+        return b.spent - a.spent;
+      })
       .map((c) => {
         labels.push(c.name);
         values.push(c.spent);
@@ -28,6 +31,10 @@ export const toBarChartData = (
         ...getMockData(type),
         mock: true,
       };
+    }
+    if (labels.length > 10) {
+      labels = labels.slice(0, 10);
+      values = values.slice(0, 10);
     }
   }
   return {

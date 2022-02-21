@@ -5,7 +5,7 @@ import { MainFooter } from '@footers';
 import { i18nLogin, i18nCommon } from '@i18n';
 import { Button, TextField } from '@inputs';
 import { MainNavbar } from '@navbars';
-import { Title } from '@texts';
+import { Paragraph, Title } from '@texts';
 import { useForm } from 'react-hook-form';
 
 export interface LoginScreenProps {
@@ -85,7 +85,7 @@ export const LoginScreen = ({ csrfToken }: LoginScreenProps) => {
             />
             {error ? (
               <div className='flex justify-center'>
-                <h1 className='text-red'>{errorMessage}</h1>
+                <Paragraph text={errorMessage} color='text-red' />
               </div>
             ) : (
               ''

@@ -13,14 +13,13 @@ export const responseToMoneyModel = (money: any): moneyI => {
 };
 
 export const responseToQuarterCategoriesModel = (
-  quarter: any[],
-  months: string[]
+  quarter: any[]
 ): quarterCategoriesI => {
   return {
     categories: quarter['categories'].map((category) =>
       toQuarterCategoryModel(category)
     ),
-    months: getQuarterMonths(quarter['periods'], months),
+    months: getQuarterMonths(quarter['periods']),
   };
 };
 
@@ -45,10 +44,7 @@ const toQuarterPeriodModel = (period: any): quarterPeriodI => {
   };
 };
 
-const getQuarterMonths = (periods: any, months: string[]): string[] => {
-  const year = new Date(periods[0]['end_date']).getFullYear();
-  return periods.map(
-    (period: any) =>
-      `${months[new Date(period['end_date']).getMonth()]} ${year}`
-  );
+const getQuarterMonths = (periods: any): number[] => {
+  // const year = new Date(periods[0]['end_date']).getFullYear();
+  return periods.map((period: any) => new Date(period['end_date']).getMonth());
 };

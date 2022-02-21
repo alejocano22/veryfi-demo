@@ -37,7 +37,7 @@ export const selectMoneyOut = (state: RootState): moneyI =>
 export const selectQuarterCategories = (state: RootState): quarterCategoryI[] =>
   state.moneySlice.quarter.categories;
 
-export const selectQuarterMonths = (state: RootState): string[] =>
+export const selectQuarterMonths = (state: RootState): number[] =>
   state.moneySlice.quarter.months;
 
 export default moneySlice.reducer;
