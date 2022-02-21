@@ -263,7 +263,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                 color='text-purple-dark'
                 additionalCss='w-full text-center mt-4'
               />
-              <div className='fixed w-full h-auto flex flex-col justify-start p-4 overflow-scroll'>
+              <div className='fixed w-full h-80 flex flex-col justify-start xl:items-center p-4 overflow-scroll'>
                 {lastQuarterCategories ? (
                   <QuarterTable
                     lastQuarter={lastQuarterCategories}
