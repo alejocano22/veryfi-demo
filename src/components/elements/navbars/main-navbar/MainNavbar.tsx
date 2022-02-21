@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { i18nCommon } from '@i18n';
 import { Language } from '@language';
 import { Button } from '@inputs';
+import { MobileMenu } from '@navbars';
 
 export interface MainNavbarProps {}
 
@@ -39,51 +40,11 @@ export const MainNavbar = ({}: MainNavbarProps) => {
             onClick={() => setIsMobileMenu(true)}
           />
         </div>
-        {isMobileMenu ? (
-          <div className='absolute z-10 top-0 inset-x-0 p-2 transition transform origin-top-right lg:hidden'>
-            <div className='rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden'>
-              <Button
-                variant='default'
-                type='button'
-                icon='x'
-                backgroundColor='bg-transparent'
-                additionalCss='absolute rounded-md p-2 focus:outline-none'
-                iconColor='purple-darker'
-                iconHeight={24}
-                iconWidth={24}
-                onClick={() => setIsMobileMenu(false)}
-              />
-              <Language
-                iconColor='purple-darker'
-                textColor='purple-darker'
-                textHoverColor='text-purple-light'
-                additionalCss='m-2 justify-end'
-              />
-              <div className='px-2 pt-2 pb-3 space-y-1'>
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className='block w-full px-5 py-1 text-center font-medium text-purple-darker hover:text-purple-light'
-                  >
-                    {item.name}
-                  </a>
-                ))}
-              </div>
-              <button
-                className='block w-full px-5 py-3 text-center font-medium text-purple-dark bg-gray-50 hover:bg-gray-100'
-                onClick={() => {
-                  setIsMobileMenu(false);
-                  routerPush('/login');
-                }}
-              >
-                {login}
-              </button>
-            </div>
-          </div>
-        ) : (
-          ''
-        )}
+        <MobileMenu
+          navigation={navigation}
+          isMobileMenu={isMobileMenu}
+          setIsMobileMenu={setIsMobileMenu}
+        />
         <div
           className='w-full flex-grow lg:flex lg:items-center lg:w-auto hidden mt-2 lg:mt-0 lg:bg-transparent text-black p-4 lg:p-0 z-20'
           id='nav-content'

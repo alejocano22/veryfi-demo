@@ -32,8 +32,9 @@ export interface DashboardScreenProps {
 }
 
 export default function DashboardScree({ user }: DashboardScreenProps) {
-  const { push: routerPush, locale } = useRouter();
   const dispatch = useDispatch();
+  const [chart, setChart] = useState(0);
+  const { push: routerPush, locale } = useRouter();
   const session = useAppSelector(selectSession);
   const categories = toBarChartData(
     useAppSelector(selectCategories),
@@ -41,17 +42,12 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   );
   const tags = toBarChartData(useAppSelector(selectTags), 'tags');
   const projects = toBarChartData(useAppSelector(selectProjects), 'projects');
-
   const moneyIn = useAppSelector(selectMoneyIn);
   const moneyOut = useAppSelector(selectMoneyOut);
   const lastQuarterCategories = useAppSelector(selectQuarterCategories);
   const lastQuarterMonths = useAppSelector(selectQuarterMonths);
-
-  const [chart, setChart] = useState(0);
-
   const today = new Date().toISOString().split('T')[0];
   const defaultEndDate = createDate(0, 0, -1).toISOString().split('T')[0];
-
   const { title } = i18nDashboard[locale];
   const { months } = i18nCommon[locale];
 
@@ -180,7 +176,6 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     <>
       <div className='min-h-full'>
         <Navbar />
-
         <div className='flex'>
           <Sidebar />
           <div className='flex-1'>
