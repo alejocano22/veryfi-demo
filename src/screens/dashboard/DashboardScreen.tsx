@@ -29,7 +29,7 @@ import {
   selectMoneyIn,
   selectMoneyOut,
 } from 'src/redux/money/moneySlice';
-import { getNetAmount } from 'src/utils/money';
+import { getNetAmount } from '../../components/utils/money';
 import Table from 'src/components/elements/table/Table';
 import { useRouter } from 'next/router';
 import { i18nCommon } from 'src/i18n/common';
