@@ -26,7 +26,7 @@ import { getLastQuarter } from '@components/utils';
 import { createDate } from '@components/utils';
 import { getNetAmount } from '@components/utils';
 import { toBarChartData } from '@components/utils';
-import { Button } from '@inputs';
+import { Button, DatePicker } from '@inputs';
 import { Paragraph, Title } from '@texts';
 
 export interface DashboardScreenProps {
@@ -178,26 +178,21 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
           <header className='bg-gray-lighter shadow mt-20'>
             <div className='flex items-center max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 gap-7'>
               <form className='flex gap-1 items-center  '>
-                <label>{startDateLabel}</label>
-                <input
-                  className='border-2 rounded-md border-gray-light p-1 mr-5'
-                  id={'startDate'}
-                  name={'startDate'}
-                  type='date'
+                <DatePicker
+                  id='startDate'
+                  label={startDateLabel}
+                  name='startDate'
                   min={defaultEndDate}
                   max={getValues('endDate')}
-                  {...register('startDate')}
+                  register={register}
                 />
-
-                <label>{endDateLabel}</label>
-                <input
-                  className='border-2 rounded-md border-gray-light p-1'
-                  id={'endDate'}
-                  name={'endDate'}
-                  type='date'
+                <DatePicker
+                  id='endDate'
+                  label={endDateLabel}
+                  name='endDate'
                   min={getValues('startDate')}
                   max={today}
-                  {...register('endDate')}
+                  register={register}
                 />
               </form>
             </div>
