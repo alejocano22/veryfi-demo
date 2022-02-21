@@ -173,118 +173,113 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   };
 
   return (
-    <>
-      <div className='min-h-full'>
-        <Navbar />
-        <div className='flex'>
-          <Sidebar />
-          <div className='flex-1'>
-            <header className='bg-white shadow mt-20'>
-              <div className='flex items-center max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 gap-7'>
-                <h1 className='text-3xl font-bold text-purple-dark'>
-                  Veryfi Dashboard
-                </h1>
-                <form className='flex gap-1 items-center'>
-                  <label>{'Start date:'}</label>
-                  <input
-                    className='border-2 rounded-md border-gray-light p-1 mr-5'
-                    id={'startDate'}
-                    name={'startDate'}
-                    type='date'
-                    min={defaultEndDate}
-                    max={getValues('endDate')}
-                    {...register('startDate')}
-                  />
+    <div className='min-h-full'>
+      <Navbar />
+      <div className='flex'>
+        <Sidebar />
+        <div className='flex-1'>
+          <header className='bg-white shadow mt-20'>
+            <div className='flex items-center max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 gap-7'>
+              <form className='flex gap-1 items-center'>
+                <label>{'Start date:'}</label>
+                <input
+                  className='border-2 rounded-md border-gray-light p-1 mr-5'
+                  id={'startDate'}
+                  name={'startDate'}
+                  type='date'
+                  min={defaultEndDate}
+                  max={getValues('endDate')}
+                  {...register('startDate')}
+                />
 
-                  <label>{'End date:'}</label>
-                  <input
-                    className='border-2 rounded-md border-gray-light p-1'
-                    id={'endDate'}
-                    name={'endDate'}
-                    type='date'
-                    min={getValues('startDate')}
-                    max={today}
-                    {...register('endDate')}
-                  />
-                </form>
-              </div>
-            </header>
-            <main className='flex items-center justify-center flex-col mb-10'>
-              <div className='flex flex-col gap-10 mx-10 justify-center items-end lg:flex-row max-w-7xl py-6 sm:px-6'>
-                <div className='flex flex-col justify-center items-center'>
-                  <div className='w-full flex items-start gap-1'>
-                    <button
-                      className={`border-2 border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2 ${
-                        chart === 0 ? 'bg-gray-lighter' : 'bg-white'
-                      }`}
-                      onClick={() => setChart(0)}
-                    >
-                      {'Categories'}
-                    </button>
-                    <button
-                      className={`border-2 border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2 ${
-                        chart === 1 ? 'bg-gray-lighter' : 'bg-white'
-                      }`}
-                      onClick={() => setChart(1)}
-                    >
-                      {'Tags'}
-                    </button>
-                    <button
-                      className={`border-2 border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2 ${
-                        chart === 2 ? 'bg-gray-lighter' : 'bg-white'
-                      }`}
-                      onClick={() => setChart(2)}
-                    >
-                      {'Projects'}
-                    </button>
-                  </div>
-                  {chartSwitch(chart)}
-                  {categories.mock ? (
-                    <h4 className='text-gray-light'>{`Pssst... you don't have enough data to render the Top 10 Projects chart. We added some sample data so you can see how it'd look.`}</h4>
-                  ) : (
-                    ''
-                  )}
+                <label>{'End date:'}</label>
+                <input
+                  className='border-2 rounded-md border-gray-light p-1'
+                  id={'endDate'}
+                  name={'endDate'}
+                  type='date'
+                  min={getValues('startDate')}
+                  max={today}
+                  {...register('endDate')}
+                />
+              </form>
+            </div>
+          </header>
+          <main className='flex items-center justify-center flex-col mb-10'>
+            <div className='flex flex-col gap-10 mx-10 justify-center items-end lg:flex-row max-w-7xl py-6 sm:px-6'>
+              <div className='flex flex-col justify-center items-center'>
+                <div className='w-full flex items-start gap-1'>
+                  <button
+                    className={`border-2 border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2 ${
+                      chart === 0 ? 'bg-gray-lighter' : 'bg-white'
+                    }`}
+                    onClick={() => setChart(0)}
+                  >
+                    {'Categories'}
+                  </button>
+                  <button
+                    className={`border-2 border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2 ${
+                      chart === 1 ? 'bg-gray-lighter' : 'bg-white'
+                    }`}
+                    onClick={() => setChart(1)}
+                  >
+                    {'Tags'}
+                  </button>
+                  <button
+                    className={`border-2 border-b-0 rounded-t-md border-gray-lighter  cursor-pointer p-2 ${
+                      chart === 2 ? 'bg-gray-lighter' : 'bg-white'
+                    }`}
+                    onClick={() => setChart(2)}
+                  >
+                    {'Projects'}
+                  </button>
                 </div>
-                <div className='flex flex-col justify-center items-center'>
-                  <div className='border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
-                    <h1 className='text-xl text-center text-purple-dark my-4'>
-                      {'Money In/Out'}
-                    </h1>
-                    <div className='h-72 p-4 rounded-md'>
-                      {moneyIn && moneyOut ? (
-                        <BarLineChart
-                          labels={moneyIn?.labels}
-                          labelBarOne={'Money In'}
-                          valuesBarOne={moneyIn?.totals}
-                          labelBarTwo={'Money Out'}
-                          valuesBarTwo={moneyOut?.totals}
-                          labelLine={'Net amount'}
-                          valuesLine={getNetAmount(
-                            moneyIn?.totals,
-                            moneyOut?.totals
-                          )}
-                        />
-                      ) : (
-                        <h1>Loading...</h1>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='flex flex-col justify-center items-center mx-10'>
-                {lastQuarterCategories ? (
-                  <QuarterTable
-                    lastQuarter={lastQuarterCategories}
-                    months={lastQuarterMonths}
-                  />
+                {chartSwitch(chart)}
+                {categories.mock ? (
+                  <h4 className='text-gray-light'>{`Pssst... you don't have enough data to render the Top 10 Projects chart. We added some sample data so you can see how it'd look.`}</h4>
                 ) : (
                   ''
                 )}
               </div>
-            </main>
-          </div>
+              <div className='flex flex-col justify-center items-center'>
+                <div className='border-2 rounded-b-md rounded-tr-md border-gray-lighter bg-gray-lighter'>
+                  <h1 className='text-xl text-center text-purple-dark my-4'>
+                    {'Money In/Out'}
+                  </h1>
+                  <div className='h-72 p-4 rounded-md'>
+                    {moneyIn && moneyOut ? (
+                      <BarLineChart
+                        labels={moneyIn?.labels}
+                        labelBarOne={'Money In'}
+                        valuesBarOne={moneyIn?.totals}
+                        labelBarTwo={'Money Out'}
+                        valuesBarTwo={moneyOut?.totals}
+                        labelLine={'Net amount'}
+                        valuesLine={getNetAmount(
+                          moneyIn?.totals,
+                          moneyOut?.totals
+                        )}
+                      />
+                    ) : (
+                      <h1>Loading...</h1>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className='flex flex-col justify-center items-center mx-10'>
+              {lastQuarterCategories ? (
+                <QuarterTable
+                  lastQuarter={lastQuarterCategories}
+                  months={lastQuarterMonths}
+                />
+              ) : (
+                ''
+              )}
+            </div>
+          </main>
         </div>
       </div>
-    </>
+    </div>
   );
 }

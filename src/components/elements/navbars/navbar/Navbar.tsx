@@ -6,40 +6,16 @@ import { Title } from '@texts';
 import { Button } from '@inputs';
 import { i18nCommon } from '@i18n';
 import { MobileMenu } from '@navbars';
+import { getNavbarNavigation } from '@components/utils';
 
 export interface NavbarProps {}
 
 export const Navbar = ({}: NavbarProps) => {
   const { push: routerPush, locale } = useRouter();
   const [isMobileMenu, setIsMobileMenu] = useState<boolean>(false);
-  const {
-    billingNavbar,
-    dashboardNavbar,
-    inboxNavbar,
-    bankFeedsNavbar,
-    myTeamNavbar,
-    reportsNavbar,
-    fileStorageNavbar,
-    projectsNavbar,
-    timeSheetsNavbar,
-    logbookNavbar,
-    settings,
-    logout,
-  } = i18nCommon[locale];
+  const { logout } = i18nCommon[locale];
+  const navigation = getNavbarNavigation(locale);
 
-  const navigation = [
-    { name: billingNavbar, href: '#' },
-    { name: dashboardNavbar, href: '#' },
-    { name: inboxNavbar, href: '#' },
-    { name: bankFeedsNavbar, href: '#' },
-    { name: myTeamNavbar, href: '#' },
-    { name: reportsNavbar, href: '#' },
-    { name: fileStorageNavbar, href: '#' },
-    { name: projectsNavbar, href: '#' },
-    { name: timeSheetsNavbar, href: '#' },
-    { name: logbookNavbar, href: '#' },
-    { name: settings, href: '#' },
-  ];
   return (
     <nav className='fixed w-full z-30 top-0 bg-white py-4 border-b-2 border-purple-darker'>
       <div className='w-full container mx-auto flex flex-wrap items-center justify-between mt-0'>
