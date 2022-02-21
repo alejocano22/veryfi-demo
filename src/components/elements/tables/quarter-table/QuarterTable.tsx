@@ -207,8 +207,7 @@ export const QuarterTable = ({
   );
 
   return (
-
-    <table {...getTableProps()} className='table-fixed block'>
+    <table {...getTableProps()} className='table-fixed'>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>

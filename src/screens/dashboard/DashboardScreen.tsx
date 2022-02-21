@@ -256,14 +256,14 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
               </div>
             </div>
 
-            <div className='relative flex flex-col items-center w-10/12 h-96 m-10 drop-shadow-lg rounded-md bg-white border-white '>
+            <div className='relative flex flex-col items-center w-10/12 h-96 m-10 drop-shadow-lg rounded-md bg-white border-white'>
               <Title
                 text={quarterTitle}
                 variant='h3'
                 color='text-purple-dark'
                 additionalCss='w-full text-center mt-4'
               />
-              <div className='absolute mt-14 w-10/12 h-80 overflow-scroll'>
+              <div className='absolute mt-14 w-10/12 h-80 overflow-scroll flex flex-col items-center'>
                 {lastQuarterCategories ? (
                   <QuarterTable
                     lastQuarter={lastQuarterCategories}
