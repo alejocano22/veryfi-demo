@@ -1,13 +1,11 @@
+import { chartI } from '@redux/common/types';
+
 export interface projectsI {
   projects: projectI[];
 }
 
-export interface projectI {
+export interface projectI extends chartI {
   id: number;
   description: string;
-  name: string;
-  totalReceived: number;
-  spent: number;
   estimatedTotal: number;
-  status: string;
 }

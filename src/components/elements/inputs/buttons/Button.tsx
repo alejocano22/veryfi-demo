@@ -74,7 +74,7 @@ const Button = ({
 
   const isDisabled = (disabled: boolean) => {
     if (disabled) {
-      return 'disabled:opacity-75 cursor-default';
+      return 'disabled:opacity-75 cursor-default disabled:hover:none';
     }
     return '';
   };

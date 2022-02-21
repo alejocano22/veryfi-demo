@@ -1,5 +1,5 @@
 import { BarChartProps } from 'src/components/elements/charts/BarChart';
-import { projectI } from 'src/redux/projects/projectsInterfaces';
+import { projectI } from '@redux/projects/types';
 
 export const handleProjectsChartData = (
   projects: projectI[]

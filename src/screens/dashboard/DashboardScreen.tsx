@@ -18,7 +18,7 @@ import { loadTags } from 'src/redux/tags/tagsThunks';
 import { selectTags } from '@redux/tags/slice';
 import { handleTagsChartData } from 'src/utils/tags';
 import { handleProjectsChartData } from 'src/utils/projects';
-import { selectProjects } from 'src/redux/projects/tagsSelectors';
+import { selectProjects } from '@redux/projects/slice';
 import { loadProjects } from 'src/redux/projects/projectsThunks';
 import Sidebar from 'src/components/elements/navbars/SideBar';
 import {

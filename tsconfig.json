@@ -37,6 +37,11 @@
       "@redux/tags/mappers": ["src/redux/tags/tags.mappers"],
       "@redux/tags/thunks": ["src/redux/tags/tagsThunks"],
 
+      "@redux/projects/slice": ["src/redux/projects/projectsSlice"],
+      "@redux/projects/types": ["src/redux/projects/projects.types"],
+      "@redux/projects/mappers": ["src/redux/projects/projects.mappers"],
+      "@redux/projects/thunks": ["src/redux/projects/projectsThunks"],
+
       "@screens": ["src/screens/index"],
       "@footers": ["src/components/elements/footers/index"],
       "@icons": ["src/components/elements/icons/index"],
