@@ -7,7 +7,7 @@ import {
   tagsLabelsMockData,
   tagsValuesMockData,
 } from '@utils';
-import { BarChartProps } from '../elements/charts/BarChart';
+import { BarChartProps } from '../elements/charts/bar-chart/BarChart';
 
 export const toBarChartData = (
   elements: chartI[],

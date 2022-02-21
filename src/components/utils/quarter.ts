@@ -1,3 +1,5 @@
+import { quarterCategoryI } from '@redux/money/types';
+
 export const getLastQuarter = (): { startDate: string; endDate: string } => {
   const today = new Date();
   const quarter = Math.floor(today.getMonth() / 3);
@@ -13,7 +15,7 @@ export const getLastQuarter = (): { startDate: string; endDate: string } => {
   };
 };
 
-export const toLastQuarterTable = (lastQuarter: QuarterCategoryI[]) => {
+export const toLastQuarterTable = (lastQuarter: quarterCategoryI[]) => {
   return lastQuarter.map((category) => {
     const periods = {};
     category.periods.forEach((period, index) => {

@@ -1,2 +1,5 @@
 import { MainNavbar } from './main-navbar/MainNavbar';
-export { MainNavbar };
+import { Navbar } from './navbar/Navbar';
+import { Sidebar } from './sidebar/SideBar';
+
+export { MainNavbar, Navbar, Sidebar };

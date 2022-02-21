@@ -1,6 +1,6 @@
-import { getSession } from 'next-auth/react';
 import Head from 'next/head';
-import DashboardScreen from '../../screens/dashboard/DashboardScreen';
+import { getSession } from 'next-auth/react';
+import { DashboardScreen } from '@screens';
 
 export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req });
@@ -22,7 +22,7 @@ export default function Dashboard({ user }) {
   return (
     <>
       <Head>
-        <title>Dashboard</title>
+        <title>{'Dashboard'}</title>
         <meta name='description' content='Veryfi dashboard' />
       </Head>
       <DashboardScreen user={user} />

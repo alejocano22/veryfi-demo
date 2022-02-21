@@ -1,39 +1,31 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, useWatch } from 'react-hook-form';
-import { addUser } from '@redux/user/slice';
-import { loadCategories } from 'src/redux/categories/categoriesThunks';
-import { selectSession } from 'src/redux/user/userSlice';
+import { useRouter } from 'next/router';
 import { useAppSelector } from '@redux/hooks';
-import Navbar from 'src/components/elements/navbars/Navbar';
-import BarChart from 'src/components/elements/charts/BarChart';
-import { userI } from 'src/redux/user/user.types';
-import { selectCategories } from 'src/redux/categories/categoriesSlice';
-import { getLastQuarter } from '../../components/utils/quarter';
-import { createDate } from '../../components/utils/dates';
-import { loadTags } from 'src/redux/tags/tagsThunks';
+import { i18nCommon, i18nDashboard } from '@i18n';
+import { addUser, selectSession } from '@redux/user/slice';
+import { userI } from '@redux/user/types';
+import { loadCategories } from '@redux/categories/thunks';
+import { selectCategories } from '@redux/categories/slice';
+import { loadTags } from '@redux/tags/thunks';
 import { selectTags } from '@redux/tags/slice';
-
+import { loadProjects } from '@redux/projects/thunks';
 import { selectProjects } from '@redux/projects/slice';
-import { loadProjects } from 'src/redux/projects/projectsThunks';
-import Sidebar from 'src/components/elements/navbars/SideBar';
-import {
-  loadMoneyIn,
-  loadMoneyOut,
-  loadQuarter,
-} from 'src/redux/money/moneyThunks';
-import BarLineChart from 'src/components/elements/charts/BarLineChart';
+import { loadMoneyIn, loadMoneyOut, loadQuarter } from '@redux/money/thunks';
 import {
   selectQuarterCategories,
   selectQuarterMonths,
   selectMoneyIn,
   selectMoneyOut,
-} from 'src/redux/money/moneySlice';
-import { getNetAmount } from '../../components/utils/money';
-import Table from 'src/components/elements/table/Table';
-import { useRouter } from 'next/router';
-import { i18nCommon } from 'src/i18n/common';
-import { toBarChartData } from '../../components/utils/barChart';
+} from '@redux/money/slice';
+import { Navbar, Sidebar } from '@navbars';
+import { BarChart, BarLineChart } from '@charts';
+import { QuarterTable } from '@tables';
+import { getLastQuarter } from '@components/utils';
+import { createDate } from '@components/utils';
+import { getNetAmount } from '@components/utils';
+import { toBarChartData } from '@components/utils';
 
 export interface DashboardScreenProps {
   user: userI;
@@ -56,13 +48,12 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   const lastQuarterMonths = useAppSelector(selectQuarterMonths);
 
   const [chart, setChart] = useState(0);
-  const [startDate, setStartDate] = useState('2000-01-01');
-  const [endDate, setEndDate] = useState(
-    new Date().toISOString().split('T')[0]
-  );
 
   const today = new Date().toISOString().split('T')[0];
   const defaultEndDate = createDate(0, 0, -1).toISOString().split('T')[0];
+
+  const { title } = i18nDashboard[locale];
+  const { months } = i18nCommon[locale];
 
   const { register, control, getValues } = useForm({
     mode: 'onChange',
@@ -73,8 +64,6 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     },
   });
   const watch = useWatch({ control });
-
-  const { months } = i18nCommon[locale];
 
   useEffect(() => {
     dispatch(addUser({ ...user }));
@@ -289,7 +278,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
               </div>
               <div className='flex flex-col justify-center items-center mx-10'>
                 {lastQuarterCategories ? (
-                  <Table
+                  <QuarterTable
                     lastQuarter={lastQuarterCategories}
                     months={lastQuarterMonths}
                   />

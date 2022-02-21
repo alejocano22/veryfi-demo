@@ -1,14 +1,15 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
+import { quarterCategoryI } from '@redux/money/types';
 import { useMemo } from 'react';
 import { useTable, useGroupBy, useExpanded, useSortBy } from 'react-table';
-import { toLastQuarterTable } from '../../utils/quarter';
+import { toLastQuarterTable } from '../../../utils/quarter';
 
-export interface TableProps {
-  lastQuarter: QuarterCategoryI[];
+export interface QuarterTableProps {
+  lastQuarter: quarterCategoryI[];
   months: string[];
 }
 
-export const Table = ({ lastQuarter, months }: TableProps) => {
+export const QuarterTable = ({ lastQuarter, months }: QuarterTableProps) => {
   const data = useMemo(() => [...toLastQuarterTable(lastQuarter)], []);
   const columns = useMemo(
     () => [
@@ -271,4 +272,4 @@ export const Table = ({ lastQuarter, months }: TableProps) => {
   );
 };
 
-export default Table;
+export default QuarterTable;
