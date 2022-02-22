@@ -11,7 +11,7 @@ export interface moneyI {
 
 export interface quarterCategoriesI {
   categories: quarterCategoryI[];
-  months: string[];
+  months: number[];
 }
 
 export interface quarterCategoryI {

@@ -43,7 +43,7 @@ export const i18nCommon = {
     myTeamNavbar: 'Mi equipo',
     reportsNavbar: 'Reportes',
     fileStorageNavbar: 'Almacenamiento',
-    projectsNavbar: 'Projectos',
+    projectsNavbar: 'Proyectos',
     timeSheetsNavbar: 'Hojas de horas',
     logbookNavbar: 'Cuaderno',
     settings: 'Ajustes',

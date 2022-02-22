@@ -1,3 +1,35 @@
 # Veryfi demo
 
-This is a starter template for [Learn Next.js](https://nextjs.org/learn).
+Alejandro Cano
+
+## Installation
+
+Installs packages and all its dependencies
+
+```bash
+npm install
+```
+
+## Usage
+
+```bash
+npm run dev
+```
+
+Open on port localhost:3000
+
+## Tests
+
+Fill cypress.json missing fields
+
+### Interactive
+
+```bash
+npm run cypress
+```
+
+### Terminal
+
+```bash
+npm run cypress:run
+```
