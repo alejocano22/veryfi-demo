@@ -306,7 +306,6 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                 </div>
               </div>
             </div>
-
             <div className='relative flex flex-col items-center w-10/12 h-96 m-10 drop-shadow-lg rounded-md bg-white border-white'>
               <Title
                 text={quarterTitle}
