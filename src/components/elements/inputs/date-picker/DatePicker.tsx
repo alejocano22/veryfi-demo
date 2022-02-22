@@ -25,7 +25,10 @@ const DatePicker = ({
     <>
       <label
         htmlFor={name}
-        className={[hideLabel && 'sr-only', 'block mb-1'].join(' ')}
+        className={[
+          hideLabel && 'sr-only',
+          'block mb-1 text-xs lg:text-base',
+        ].join(' ')}
       >
         {label}
       </label>
@@ -38,7 +41,7 @@ const DatePicker = ({
         required={required}
         {...register(name)}
         className={[
-          'border-2 rounded-md border-gray-light p-1 mr-5',
+          'border rounded-md border-gray-light p-1 mr-1 lg:mr-5',
           additionalCss,
         ].join(' ')}
       />
