@@ -12,8 +12,12 @@ export const i18nDashboard = {
     budgetLabel: 'Budget',
     spentLabel: 'Spent',
     balanceLabel: 'Balance',
-    startDateLabel: 'Start date',
-    endDateLabel: 'End date',
+    startDateLabel: 'Start',
+    endDateLabel: 'End',
+    yearAgoLabel: 'Year ago',
+    monthAgoLabel: 'Month ago',
+    weekAgoLabel: 'Week ago',
+    dateCustomLabel: 'Custom',
   },
   es: {
     categoriesTitle: 'Categorias',
@@ -30,6 +34,10 @@ export const i18nDashboard = {
     balanceLabel: 'Balance',
     startDateLabel: 'Comienzo',
     endDateLabel: 'Fin',
+    yearAgoLabel: 'Hace un año',
+    monthAgoLabel: 'Hace un mes',
+    weekAgoLabel: 'Hace una semana',
+    dateCustomLabel: 'Personalizado',
   },
 };
 

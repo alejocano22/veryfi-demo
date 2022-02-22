@@ -26,7 +26,7 @@ import { getLastQuarter } from '@components/utils';
 import { createDate } from '@components/utils';
 import { getNetAmount } from '@components/utils';
 import { toBarChartData } from '@components/utils';
-import { Button, DatePicker } from '@inputs';
+import { Button, DatePicker, Dropdown } from '@inputs';
 import { Paragraph, Title } from '@texts';
 
 export interface DashboardScreenProps {
@@ -35,23 +35,26 @@ export interface DashboardScreenProps {
 
 export default function DashboardScree({ user }: DashboardScreenProps) {
   const dispatch = useDispatch();
-  const [chart, setChart] = useState(0);
   const { push: routerPush, locale } = useRouter();
-  const session = useAppSelector(selectSession);
+  const [chart, setChart] = useState(0);
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const [dropdownOption, setDropdownOption] = useState(3);
   const categories = toBarChartData(
     useAppSelector(selectCategories),
     'category'
   );
+  const session = useAppSelector(selectSession);
   const tags = toBarChartData(useAppSelector(selectTags), 'tags');
   const projects = toBarChartData(useAppSelector(selectProjects), 'projects');
   const moneyIn = useAppSelector(selectMoneyIn);
   const moneyOut = useAppSelector(selectMoneyOut);
   const lastQuarterCategories = useAppSelector(selectQuarterCategories);
   const lastQuarterMonths = useAppSelector(selectQuarterMonths);
+  const defaultStartDate = createDate(0, 0, -1).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
-  const defaultEndDate = createDate(0, 0, -1).toISOString().split('T')[0];
+  const weekAgo = createDate(-7, 0, 0).toISOString().split('T')[0];
+  const monthAgo = createDate(0, -1, 0).toISOString().split('T')[0];
   const quarterTimes = getLastQuarter();
-
   const {
     categoriesTitle,
     tagsTitle,
@@ -67,32 +70,57 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     moneyInLabel,
     moneyOutLabel,
     moneyNetLabel,
+    yearAgoLabel,
+    monthAgoLabel,
+    weekAgoLabel,
+    dateCustomLabel,
   } = i18nDashboard[locale];
   const { months } = i18nCommon[locale];
   const tabsTitles = [categoriesTitle, tagsTitle, projectsTitle];
-
   const { register, control, getValues } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues: {
-      startDate: defaultEndDate,
+      startDate: defaultStartDate,
       endDate: today,
     },
   });
   const watch = useWatch({ control });
-  const startDate = watch.startDate;
-  const endDate = watch.endDate;
 
   useEffect(() => {
     dispatch(addUser({ ...user }));
     if (session) {
-      fetch();
+      dispatch(
+        loadQuarter({
+          session,
+          startDate: quarterTimes.startDate,
+          endDate: quarterTimes.endDate,
+        })
+      );
+      fetch(defaultStartDate, today);
     } else {
       routerPush('/dashboard');
     }
-  }, [session, watch]);
+  }, [session]);
 
-  const fetch = () => {
+  useEffect(() => {
+    switch (dropdownOption) {
+      case 0:
+        fetch(defaultStartDate, today);
+        break;
+      case 1:
+        fetch(monthAgo, today);
+        break;
+      case 2:
+        fetch(weekAgo, today);
+        break;
+      case 3:
+        fetch(watch.startDate, watch.endDate);
+        break;
+    }
+  }, [dropdownOption, watch]);
+
+  const fetch = (startDate, endDate) => {
     dispatch(
       loadCategories({
         session,
@@ -126,13 +154,6 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
         session,
         startDate,
         endDate,
-      })
-    );
-    dispatch(
-      loadQuarter({
-        session,
-        startDate: quarterTimes.startDate,
-        endDate: quarterTimes.endDate,
       })
     );
   };
@@ -187,25 +208,44 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
         <Sidebar />
         <div className='flex-1 bg-gray-lighter'>
           <header className='bg-gray-lighter shadow mt-20'>
-            <div className='flex items-center max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 gap-7'>
-              <form className='flex gap-1 items-center  '>
-                <DatePicker
-                  id='startDate'
-                  label={startDateLabel}
-                  name='startDate'
-                  min={defaultEndDate}
-                  max={getValues('endDate')}
-                  register={register}
-                />
-                <DatePicker
-                  id='endDate'
-                  label={endDateLabel}
-                  name='endDate'
-                  min={getValues('startDate')}
-                  max={today}
-                  register={register}
-                />
-              </form>
+            <div className='flex items-center w-10/12 mx-auto py-6'>
+              <Dropdown
+                id='time-options'
+                options={[
+                  yearAgoLabel,
+                  monthAgoLabel,
+                  weekAgoLabel,
+                  dateCustomLabel,
+                ]}
+                defaultOption={dropdownOption}
+                setOption={setDropdownOption}
+                isOpened={openDropdown}
+                setIsOpened={setOpenDropdown}
+              />
+              {dropdownOption === 3 ? (
+                <form className='ml-1 lg:ml-7 flex gap-1 items-center'>
+                  <DatePicker
+                    id='startDate'
+                    label={startDateLabel}
+                    name='startDate'
+                    min={defaultStartDate}
+                    max={getValues('endDate')}
+                    register={register}
+                    additionalCss='text-xs lg:text-base w-32 lg:w-44'
+                  />
+                  <DatePicker
+                    id='endDate'
+                    label={endDateLabel}
+                    name='endDate'
+                    min={getValues('startDate')}
+                    max={today}
+                    register={register}
+                    additionalCss='text-xs lg:text-base w-32 lg:w-44'
+                  />
+                </form>
+              ) : (
+                ''
+              )}
             </div>
           </header>
           <main className='h-auto lg:h-auto flex items-center justify-center flex-col bg-gray-lighter'>
@@ -274,7 +314,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                 color='text-purple-dark'
                 additionalCss='w-full text-center mt-4'
               />
-              <div className='absolute mt-14 w-10/12 h-80 overflow-scroll flex flex-col items-center'>
+              <div className='absolute mt-14 w-10/12 h-80 overflow-scroll'>
                 {lastQuarterCategories ? (
                   <QuarterTable
                     lastQuarter={lastQuarterCategories}

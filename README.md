@@ -28,7 +28,7 @@ Fill cypress.json missing fields
 npm run cypress
 ```
 
-### Console
+### Terminal
 
 ```bash
 npm run cypress:run
