@@ -1,0 +1,18 @@
+{
+  "viewportWidth": 1429,
+  "viewportHeight": 962,
+  "video": false,
+  "env": {
+    "apiUrl": "http://localhost:3000",
+    "loginMessage": "Welcome.",
+    "mainTitleEn": "Turn Unstructured Documents into Structured Data in Seconds",
+    "mainTitleEs": "Convierta documentos no estructurados en datos estructurados en segundos",
+    "categoriesLabelEn": "Categories",
+    "categoriesLabelEs": "Categorias",
+    "tagsLabelEn": "Tags",
+    "projectsLabelEn": "Projects",
+    "loginErrorMessage": "Wrong email or password",
+    "testEmail": "",
+    "testPassword": ""
+  }
+}

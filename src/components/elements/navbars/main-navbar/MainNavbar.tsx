@@ -22,6 +22,7 @@ export const MainNavbar = ({}: MainNavbarProps) => {
     <nav className='fixed w-full z-30 top-0 bg-gradient-to-r from-purple to-purple-darker py-4'>
       <div className='w-full container mx-auto flex flex-wrap items-center justify-between mt-0'>
         <div
+          id='logo'
           className='pl-4 flex items-center cursor-pointer space-x-1'
           onClick={() => routerPush('/')}
         >
@@ -67,6 +68,7 @@ export const MainNavbar = ({}: MainNavbarProps) => {
             {pathname !== '/login' ? (
               <li className='mr-3'>
                 <Button
+                  id='navbar-login-button'
                   variant='default'
                   text={login}
                   textColor='text-white'

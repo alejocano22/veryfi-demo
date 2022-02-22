@@ -65,6 +65,7 @@ export const Navbar = ({}: NavbarProps) => {
             </li>
             <li className='mr-3'>
               <Button
+                id='navbar-logout-button'
                 variant='default'
                 text={logout}
                 textColor='text-purple-darker'

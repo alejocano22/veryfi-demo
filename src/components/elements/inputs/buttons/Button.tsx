@@ -82,6 +82,7 @@ const Button = ({
   return (
     <button
       id={id}
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={[

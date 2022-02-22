@@ -20,6 +20,7 @@ export default function HomeScreen() {
         <div className='container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center'>
           <div className='flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left'>
             <Title
+              id='main-title'
               text={title}
               color='text-white'
               additionalCss='my-4 font-bold leading-tight'
