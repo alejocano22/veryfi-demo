@@ -208,7 +208,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
         <Sidebar />
         <div className='flex-1 bg-gray-lighter'>
           <header className='bg-gray-lighter shadow mt-20'>
-            <div className='flex items-center w-10/12 mx-auto py-6'>
+            <div className='flex items-center w-10/12 mx-6 lg:mx-auto py-6'>
               <Dropdown
                 id='time-options'
                 options={[

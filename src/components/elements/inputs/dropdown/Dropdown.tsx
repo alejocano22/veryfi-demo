@@ -25,7 +25,7 @@ const Dropdown = ({
     <div id={id} className={['flex flex-col', additionalCss].join(' ')}>
       <button
         id={`${id}-button`}
-        className='flex gap-2 w-24 lg:w-52 text-purple-darker bg-white border border-gray-light rounded-md py-1 px-2 items-center text-xs lg:text-base'
+        className='flex gap-2 w-28 lg:w-52 text-purple-darker bg-white border border-gray-light rounded-md py-1 px-2 items-center text-xs lg:text-base'
         type='button'
         onClick={() => setIsOpened(!isOpened)}
       >
@@ -36,7 +36,7 @@ const Dropdown = ({
         id={`${id}-dropdown`}
         className={`${
           isOpened ? 'flex flex-col' : 'hidden'
-        } absolute mt-8 lg:mt-10 z-10 w-24 lg:w-52 bg-white rounded shadow border border-gray-light`}
+        } absolute mt-8 lg:mt-10 z-10 w-28 lg:w-52 bg-white rounded shadow border border-gray-light`}
       >
         {options.map((option, index) => (
           <a
