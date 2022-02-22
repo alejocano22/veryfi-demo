@@ -27,6 +27,7 @@ export default function Language({
       />
       <Link href={asPath} locale={locale === 'en' ? 'es' : 'en'}>
         <a
+          data-cy='language-button'
           className={`${textColor ? textColor : 'text-white'} 
           hover:${textHoverColor ? textHoverColor : 'text-gray-light'}`}
         >

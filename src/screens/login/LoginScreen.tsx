@@ -51,6 +51,7 @@ export const LoginScreen = ({ csrfToken }: LoginScreenProps) => {
       <div className='mt-52 w-auto bg-gray-50 flex flex-col justify-center items-center pt-6 sm:pt-0'>
         <div className='w-full sm:max-w-md p-5 mx-auto'>
           <Title
+            id='login-title'
             variant='h1'
             text={welcome}
             additionalCss='mb-12 text-center font-extrabold'
@@ -74,6 +75,7 @@ export const LoginScreen = ({ csrfToken }: LoginScreenProps) => {
               register={register}
             />
             <Button
+              id='login-button'
               text={login}
               textColor='text-white'
               backgroundColor='bg-purple'
@@ -85,7 +87,11 @@ export const LoginScreen = ({ csrfToken }: LoginScreenProps) => {
             />
             {error ? (
               <div className='flex justify-center'>
-                <Paragraph text={errorMessage} color='text-red' />
+                <Paragraph
+                  id='login-error-message'
+                  text={errorMessage}
+                  color='text-red'
+                />
               </div>
             ) : (
               ''
