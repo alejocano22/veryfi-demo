@@ -10,6 +10,8 @@ After cloning the repository, go to the project folder and run the following com
 npm install
 ```
 
+Rename .env.example file to .env.local and fill the values
+
 ## Usage
 
 In the project folder run de following command
