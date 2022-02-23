@@ -74,6 +74,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
     monthAgoLabel,
     weekAgoLabel,
     dateCustomLabel,
+    trendTitle,
   } = i18nDashboard[locale];
   const { months } = i18nCommon[locale];
   const tabsTitles = [categoriesTitle, tagsTitle, projectsTitle];
@@ -325,6 +326,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                     spentLabel={spentLabel}
                     balanceLabel={balanceLabel}
                     categoryLabel={categoriesTitle}
+                    trendLabel={trendTitle}
                   />
                 ) : (
                   ''

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useTable, useGroupBy, useExpanded, useSortBy } from 'react-table';
+import Trend from 'react-trend';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 import { quarterCategoryI } from '@redux/money/types';
 import { toLastQuarterTable } from '@components/utils';
@@ -11,6 +12,7 @@ export interface QuarterTableProps {
   spentLabel: string;
   balanceLabel: string;
   categoryLabel: string;
+  trendLabel: string;
 }
 
 export const QuarterTable = ({
@@ -20,6 +22,7 @@ export const QuarterTable = ({
   spentLabel,
   balanceLabel,
   categoryLabel,
+  trendLabel,
 }: QuarterTableProps) => {
   const data = useMemo(() => [...toLastQuarterTable(lastQuarter)], []);
   const columns = useMemo(
@@ -28,6 +31,21 @@ export const QuarterTable = ({
         Header: categoryLabel,
         accessor: 'category',
         Footer: 'Total',
+      },
+      {
+        Header: trendLabel,
+        accessor: (info) => {
+          const { spentMonth0, spentMonth1, spentMonth2 } = info;
+          return (
+            <Trend
+              data={[spentMonth0, spentMonth1, spentMonth2]}
+              stroke='purple'
+              strokeWidth={3}
+              className='w-16'
+            />
+          );
+        },
+        Footer: '',
       },
       {
         Header: months[0],
@@ -183,7 +201,7 @@ export const QuarterTable = ({
         ],
       },
     ],
-    [months, budgetLabel, spentLabel, balanceLabel, categoryLabel]
+    [months, budgetLabel, spentLabel, balanceLabel, categoryLabel, trendLabel]
   );
 
   const {
@@ -214,7 +232,7 @@ export const QuarterTable = ({
                 {...column.getHeaderProps(column.getSortByToggleProps())}
                 className={[
                   'p-1',
-                  index === 0 ? '' : 'border border-gray-light',
+                  index <= 1 ? '' : 'border border-gray-light',
                 ].join(' ')}
               >
                 <div className='flex items-center justify-center'>
@@ -254,7 +272,7 @@ export const QuarterTable = ({
                     {...cell.getCellProps()}
                     className='py-1 px-1 border border-gray-light text-left'
                   >
-                    {i !== 0 ? '$' : ''} {cell.render('Cell')}
+                    {i >= 2 ? '$' : ''} {cell.render('Cell')}
                   </td>
                 );
               })}
