@@ -8,7 +8,7 @@ export const categoriesValuesMockData = [300, 200, 100];
 
 export const tagsLabelsMockData = ['#Food', '#Books', '#Travel'];
 
-export const tagsValuesMockData = [600, 400, 450];
+export const tagsValuesMockData = [600, 400, 300];
 
 export const projectsLabelsMockData = [
   'NY Project',

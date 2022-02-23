@@ -19,10 +19,7 @@ export const Navbar = ({}: NavbarProps) => {
   return (
     <nav className='fixed w-full z-30 top-0 bg-white py-4 border-b-2 border-purple-darker'>
       <div className='w-full container mx-auto flex flex-wrap items-center justify-between mt-0'>
-        <div
-          className='pl-4 flex items-center cursor-pointer space-x-1'
-          onClick={() => routerPush('/')}
-        >
+        <div className='pl-4 flex items-center space-x-1'>
           <img src='/images/veryfi-logo.png' height={50} width={50}></img>
         </div>
         <Title
