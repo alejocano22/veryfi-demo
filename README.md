@@ -4,7 +4,7 @@ Alejandro Cano
 
 ## Installation
 
-Installs packages and all its dependencies
+After cloning the repository, go to the project folder and run the following command, it will install packages and all its dependencies
 
 ```bash
 npm install
@@ -12,11 +12,13 @@ npm install
 
 ## Usage
 
+In the project folder run de following command
+
 ```bash
 npm run dev
 ```
 
-Open on port localhost:3000
+By default it will be open on port localhost:3000
 
 ## Tests
 
