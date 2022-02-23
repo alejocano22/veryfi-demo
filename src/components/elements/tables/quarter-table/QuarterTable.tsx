@@ -201,11 +201,7 @@ export const QuarterTable = ({
         ],
       },
     ],
-<<<<<<< HEAD
     [months, budgetLabel, spentLabel, balanceLabel, categoryLabel, trendLabel]
-=======
-    [months, budgetLabel, spentLabel, balanceLabel, categoryLabel]
->>>>>>> origin/main
   );
 
   const {
