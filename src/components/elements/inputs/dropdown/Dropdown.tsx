@@ -36,7 +36,7 @@ const Dropdown = ({
         id={`${id}-dropdown`}
         className={`${
           isOpened ? 'flex flex-col' : 'hidden'
-        } absolute mt-8 lg:mt-10 z-10 w-28 lg:w-52 bg-white rounded shadow border border-gray-light`}
+        } absolute mt-8 lg:mt-10 z-10 w-24 lg:w-52 bg-white rounded shadow border border-gray-light`}
       >
         {options.map((option, index) => (
           <a

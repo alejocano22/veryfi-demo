@@ -18,6 +18,7 @@ export const i18nDashboard = {
     monthAgoLabel: 'Month ago',
     weekAgoLabel: 'Week ago',
     dateCustomLabel: 'Custom',
+    trendTitle: 'Trend',
   },
   es: {
     categoriesTitle: 'Categorias',
@@ -38,6 +39,7 @@ export const i18nDashboard = {
     monthAgoLabel: 'Hace un mes',
     weekAgoLabel: 'Hace una semana',
     dateCustomLabel: 'Personalizado',
+    trendTitle: 'Tendencia',
   },
 };
 
