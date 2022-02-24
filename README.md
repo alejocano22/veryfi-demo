@@ -24,7 +24,8 @@ By default it will be open on port localhost:3000
 
 ## Tests
 
-Fill cypress.json missing fields
+Fill cypress.json missing fields.
+Note: Remember to open a new terminal to run the tests, project must be running on localhost:3000
 
 ### Interactive
 
@@ -37,3 +38,19 @@ npm run cypress
 ```bash
 npm run cypress:run
 ```
+
+### Code coverage
+
+After running the tests
+
+```bash
+npm run cypress:run
+```
+
+Run
+
+```bash
+open coverage/lcov-report/index.html
+```
+
+You'll see a new window with the code coverage

@@ -26,7 +26,7 @@ export const LoginScreen = ({ csrfToken }: LoginScreenProps) => {
   const removeError = () => {
     setTimeout(() => {
       setError(false);
-    }, 4000);
+    }, 6000);
   };
 
   const manageLogin = async () => {
