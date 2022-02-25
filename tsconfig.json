@@ -14,6 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "types": ["cypress"],
     "baseUrl": ".",
     "paths": {
       "@redux/hooks": ["src/redux/hooks"],
