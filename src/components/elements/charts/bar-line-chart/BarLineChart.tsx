@@ -77,9 +77,8 @@ export const BarLineChart = ({
           },
         ],
       }}
-      width={400}
-      height={200}
       options={{
+        responsive: true,
         maintainAspectRatio: false,
         interaction: {
           intersect: false,

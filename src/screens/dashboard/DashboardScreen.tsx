@@ -249,9 +249,9 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
               )}
             </div>
           </header>
-          <main className='h-auto lg:h-auto flex items-center justify-center flex-col bg-gray-lighter'>
+          <main className='w-full h-auto flex items-center justify-center flex-col bg-gray-lighter'>
             <div className='w-10/12 flex flex-col xl:flex-row gap-10 mx-10 justify-center items-start drop-shadow-lg'>
-              <div className='w-full h-auto flex flex-col justify-center items-center drop-shadow-lg'>
+              <div className='w-full xl:w-1/2 h-auto flex flex-col justify-center items-center drop-shadow-lg'>
                 <div className='w-full flex gap-2'>
                   {tabsTitles.map((tab, index) => (
                     <Button
@@ -282,7 +282,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                   ''
                 )}
               </div>
-              <div className='w-full flex flex-col justify-center items-center drop-shadow-lg'>
+              <div className='w-full xl:w-1/2 flex flex-col justify-center items-center drop-shadow-lg'>
                 <div className='w-full flex flex-col justify-center items-center drop-shadow-lg bg-white rounded-md border-white'>
                   <Title
                     text={moneyTitle}
@@ -290,7 +290,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
                     color='text-purple-dark'
                     additionalCss='my-2'
                   />
-                  <div className='w-full h-72 p-4 '>
+                  <div className='w-full h-72 p-4'>
                     <BarLineChart
                       labels={moneyIn?.labels}
                       labelBarOne={moneyInLabel}

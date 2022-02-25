@@ -51,9 +51,8 @@ export const BarChart = ({ labels, values, label }: BarChartProps) => {
   return (
     <Bar
       data={barData}
-      width={'auto'}
-      height={'auto'}
       options={{
+        responsive: true,
         maintainAspectRatio: false,
         interaction: {
           intersect: false,
