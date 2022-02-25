@@ -55,6 +55,32 @@ export const BarChart = ({ labels, values, label }: BarChartProps) => {
       height={'auto'}
       options={{
         maintainAspectRatio: false,
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        scales: {
+          x: {
+            stacked: true,
+          },
+          y: {
+            stacked: true,
+            ticks: {
+              callback: (value) => {
+                return '$' + value;
+              },
+            },
+          },
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                return `${context.dataset.label}: $${context.parsed.y}` || '';
+              },
+            },
+          },
+        },
       }}
     />
   );

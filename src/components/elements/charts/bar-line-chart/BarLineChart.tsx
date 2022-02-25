@@ -11,7 +11,6 @@ import {
   LineElement,
   LineController,
 } from 'chart.js';
-import { triggerAsyncId } from 'async_hooks';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -82,13 +81,30 @@ export const BarLineChart = ({
       height={200}
       options={{
         maintainAspectRatio: false,
-        responsive: true,
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
         scales: {
           x: {
             stacked: true,
           },
           y: {
             stacked: true,
+            ticks: {
+              callback: (value) => {
+                return '$' + value;
+              },
+            },
+          },
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                return `${context.dataset.label}: $ ${context.parsed.y}` || '';
+              },
+            },
           },
         },
       }}
