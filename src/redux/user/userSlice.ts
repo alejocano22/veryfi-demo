@@ -1,6 +1,7 @@
 import { createSlice, Slice } from '@reduxjs/toolkit';
 import { RootState } from '@redux/store';
 import { userI } from '@redux/user/types';
+import { loadUserSession } from './userThunks';
 
 const initialState: userI = {
   error: null,
@@ -20,6 +21,11 @@ export const userSlice: Slice = createSlice({
     addUser: (state, action) => {
       return (state = action.payload);
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(loadUserSession.fulfilled, (state, action) => {
+      state.session = action.payload;
+    });
   },
 });
 

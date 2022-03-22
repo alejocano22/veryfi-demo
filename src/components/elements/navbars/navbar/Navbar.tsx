@@ -61,7 +61,7 @@ export const Navbar = ({}: NavbarProps) => {
               />
             </li>
             <li className='mr-3'>
-              <Button
+              {/* <Button
                 id='navbar-logout-button'
                 variant='default'
                 text={logout}
@@ -70,6 +70,16 @@ export const Navbar = ({}: NavbarProps) => {
                 backgroundColor='bg-transparent'
                 additionalCss='no-underline hover:bg-gray-lighter py-2 px-4 border-2 border-purple-darker rounded-md'
                 onClick={() => signOut()}
+              /> */}
+              <Button
+                id='navbar-redirect-button'
+                variant='default'
+                text={'Go back!'}
+                textColor='text-purple-darker'
+                type='button'
+                backgroundColor='bg-transparent'
+                additionalCss='no-underline hover:bg-red-lighter py-2 px-4 border-2 border-purple-darker rounded-md ml-4'
+                onClick={() => routerPush('/hub')}
               />
             </li>
           </ul>

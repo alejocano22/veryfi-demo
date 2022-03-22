@@ -16,4 +16,13 @@ module.exports = {
     VERYFI_API_URL: process.env.VERYFI_API_URL,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
+  async redirects() {
+    return [
+      {
+        source: '/hub',
+        destination: 'https://hub.veryfi.com/dashboard/',
+        permanent: false,
+      },
+    ];
+  },
 };

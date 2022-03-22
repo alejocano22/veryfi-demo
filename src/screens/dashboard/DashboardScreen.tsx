@@ -89,7 +89,7 @@ export default function DashboardScree({ user }: DashboardScreenProps) {
   const watch = useWatch({ control });
 
   useEffect(() => {
-    dispatch(addUser({ ...user }));
+    // dispatch(addUser({ ...user }));
     if (session) {
       dispatch(
         loadQuarter({
