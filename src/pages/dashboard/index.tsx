@@ -8,23 +8,25 @@ import { loadUserSession } from 'src/redux/user/userThunks';
 export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req });
   const cookies = parseCookies(context.req);
-  // console.log(session.user);
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login',
-  //     },
-  //   };
-  // }
-  return {
-    props: {
-      veryfiToken: cookies?.veryfiSession || '',
-    },
-  };
+  if (!cookies.veryfiSession) {
+    return {
+        redirect: {
+          destination: '/hub/login',
+        },
+      };
+  }
+    // console.log(session.user);
+    // if (!session) {
+    //   
+    // }
+    return {
+      props: {
+        veryfiToken: cookies?.veryfiSession || "",
+      },
+    };
 }
 
 export default function Dashboard({ user, veryfiToken }) {
-  console.log('hereeeeee', veryfiToken);
   const dispatch = useDispatch();
   dispatch(loadUserSession({ session: veryfiToken }));
   return (

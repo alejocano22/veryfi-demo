@@ -11,8 +11,6 @@ export async function getServerSideProps(context) {
 const session = context.params.session;
 //   if (session) {
 
-    
-    console.log('Session token: ', session);  
     Cookie.set('veryfiSession', session);
     return {
       props: {

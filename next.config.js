@@ -19,8 +19,13 @@ module.exports = {
   async redirects() {
     return [
       {
-        source: '/hub',
-        destination: 'https://hub.veryfi.com/dashboard/',
+        source: "/hub",
+        destination: "https://hub.veryfi.com/dashboard/",
+        permanent: false,
+      },
+      {
+        source: "/hub/login",
+        destination: "https://hub.veryfi.com/signin/",
         permanent: false,
       },
     ];
